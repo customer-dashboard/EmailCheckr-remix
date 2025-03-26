@@ -1,0 +1,44 @@
+{% assign setting = shop.metafields.customer_accounts_email_verification.Settings.value %}
+
+{% if setting contains "app_status" %}
+
+{% comment %}
+Detect if the old block exists and prevent its script from running
+{% endcomment %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const remixBlock = document.querySelector("[data-remix-app]");
+    const oldBlock = document.querySelector("[data-theme-embedded]");
+
+    if (remixBlock) {
+      console.log("New Remix App Block detected - Running new script");
+      loadScript("{{ 'script.js' | asset_url }}");
+    } else {
+      console.log("Only Old Theme Embedded Block detected - Running old script");
+      loadScript("{{ 'scripttag.js' | asset_url }}");
+    }
+  });
+
+  function loadScript(url) {
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
+    document.body.appendChild(script);
+  }
+</script>
+
+{% else %}
+  "app_status not found"
+{% endif %}
+
+{% schema %}
+  {
+    "name": "EmailCheckr",
+    "target": "head",
+    "templates": ["customers/register"],
+    "settings": []
+  }
+{% endschema %}
+
+

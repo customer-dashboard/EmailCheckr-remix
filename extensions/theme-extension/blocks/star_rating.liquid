@@ -1,0 +1,237 @@
+{% assign setting = shop.metafields.customer_accounts_email_verification.Settings.value %}
+
+{% if setting contains "app_status" %}
+  {{ setting.app_status }}
+
+{% comment %}
+Detect if the old block exists and prevent its script from running
+{% endcomment %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const remixBlock = document.querySelector("[data-remix-app]");
+    const oldBlock = document.querySelector("[data-theme-embedded]");
+
+  // Prevent script from loading multiple times
+  if (window.__remixScriptLoaded) {
+    console.log("New script already loaded, skipping...");
+    return;
+  }
+  
+    if (remixBlock) {
+      console.log("New Remix App Block detected - Running new script");
+      loadScript("{{ 'script.js' | asset_url }}");
+      window.__remixScriptLoaded = true;
+    } else if (oldBlock) {
+      console.log("Only Old Theme Embedded Block detected - Running old script");
+      loadScript("{{ 'scripttag.js' | asset_url }}");
+    }
+  });
+
+  function loadScript(url) {
+    if (document.querySelector(`script[src="${url}"]`)) {
+    console.log(`Script ${url} already exists, skipping...`);
+    return;
+  }
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
+    document.body.appendChild(script);
+  }
+</script>
+
+{% else %}
+  "app_status not found"
+{% endif %}
+
+<div data-remix-app>
+    <div class="form-container">
+     <h1>Create account</h1>
+     <form id="registration-form">
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" name="first-name" required>
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" name="last-name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+ 
+      <div class="form-group">
+        <button type="submit" class="btn-submit">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+  
+<script>
+  window.shopMetafields = {
+    metafileds: JSON.parse({{ shop.metafields.customer_accounts_email_verification.Settings.value | json }})
+  };
+console.log("metafileds0", window.shopMetafields.metafileds);
+
+if (window.shopMetafields.metafileds && window.shopMetafields.metafileds.translation) {
+  console.log("translation", window.shopMetafields.metafileds.translation);
+} else {
+  console.warn("Translation is undefined or missing!");
+}
+</script>
+
+
+
+{% schema %}
+{
+  "name": "EmailCheckr",
+  "target": "section",
+  "templates": ["customers/register"],
+  "settings": [
+  {
+    "type": "color",
+    "id": "bgcolor",
+    "label": "Background Color",
+    "default": "#ffffff"
+  },
+  {
+    "type": "color",
+    "id": "color",
+    "label": "Text Color",
+    "default": "#000000"
+  },
+  {
+    "type": "range",
+    "id": "form_width",
+    "label": "Form Width (px)",
+    "min": 200,
+    "max": 1200,
+    "step": 10,
+    "default": 400
+  },
+  {
+    "type": "range",
+    "id": "border_radius",
+    "label": "Border Radius (px)",
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "default": 5
+  },
+  {
+    "type": "range",
+    "id": "margin_top_bottom",
+    "label": "Margin Top & Bottom (px)",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "default": 20
+  },
+  {
+    "type": "checkbox",
+    "id": "box_shadow",
+    "label": "Enable Box Shadow",
+    "default": true
+  },
+  {
+    "type": "header",
+    "content": "Button Settings"
+  },
+  {
+    "type": "color",
+    "id": "button_bgcolor",
+    "label": "Button Background Color",
+    "default": "#000000"
+  },
+  {
+    "type": "color",
+    "id": "button_textcolor",
+    "label": "Button Text Color",
+    "default": "#ffffff"
+  },
+  {
+    "type": "header",
+    "content": "Input Settings"
+  },
+  {
+    "type": "color",
+    "id": "input_border_color",
+    "label": "Input Border Color",
+    "default": "#cccccc"
+  }
+  ]
+}
+{% endschema %}
+
+{% style %}
+
+.form-container {
+  background-color: {{block.settings.bgcolor}};
+  color: {{block.settings.color}};
+  padding: 20px 30px;
+  border-radius: {{block.settings.border_radius}}px;
+  box-shadow: {% if block.settings.box_shadow %} 0 4px 8px rgba(0, 0, 0, 0.2); {%else%} none; {%endif%}
+  width: 100%;
+  max-width: {{block.settings.form_width}}px;
+  margin: {{block.settings.margin_top_bottom}}px auto;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+#registration-form .form-group {
+  margin-bottom: 15px;
+}
+
+#registration-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: {{block.settings.input_border_color}};
+  outline: none;
+  box-shadow: 0 0 3px rgba(9, 9, 9, 0.5);
+}
+
+#registration-form .btn-submit {
+  background-color: {{block.settings.button_bgcolor}};
+  color: {{block.settings.button_textcolor}};
+  font-size: 16px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-submit:hover {
+  box-shadow: 0 0 3px rgba(9, 9, 9, 0.5);
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    padding: 15px 20px;
+  }
+}
+{% endstyle %}
+

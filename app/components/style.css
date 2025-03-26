@@ -1,0 +1,81 @@
+.color_picker {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+/* .Polaris-Page-Header__RightAlign button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantPrimary,
+.installation .Polaris-Button--variantPrimary.Polaris-Button--sizeMedium.Polaris-Button--textAlignCenter {
+  background: rgba(0, 122, 92, 1);
+  padding: 7px 16px;
+  border: 4px;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0);
+} */
+
+/* .Polaris-LegacyCard__LastSectionPadding .Polaris-Layout{
+  flex-wrap: nowrap;
+}
+.Polaris-LegacyCard__LastSectionPadding .Polaris-Layout__Section{
+  min-width: 31%;
+}
+
+.btm-border{
+  border-bottom: 1px solid #efefef!important;
+}
+.border .Polaris-LegacyCard__LastSectionPadding{
+  border-top: 1px solid #efefef!important;
+}
+.left_pd .Polaris-Box{
+  padding-left: 0;
+}
+.left_pd .Polaris-LegacyCard__Section{
+  padding-left: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.cd_flex_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.selected_position .Polaris-Button {
+  background: #ee8633;
+  color: #fff;
+  box-shadow: none;
+  box-shadow: none;
+  border-radius: 4px;
+  border: 1px solid #ee8633;
+}
+.selected_position .Polaris-Button:hover {
+  background: #ee8633;
+  color: #fff;
+  box-shadow: none;
+}
+.not_selected .Polaris-Button:hover {
+  background: #ee8633;
+  box-shadow: none;
+  color: #fff;
+}
+.not_selected .Polaris-Button {
+  background: transparent;
+  color: #ee8633;
+  border: 1px solid #ee8633;
+  box-shadow: none;
+  border-radius: 4px;
+}
+.Polaris-Grid-Cell .Polaris-ButtonGroup {
+  justify-content: center;
+} 
+
+.cd_flex_container span.Polaris-Choice__Control {
+  display: none;
+}
+.Polaris-LegacyCard__Section .Polaris-InlineStack {
+  justify-content: center;
+}
+
+.Polaris-LegacyCard__Section button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantSecondary.Polaris-Button--sizeMedium.Polaris-Button--textAlignLeft.Polaris-Button--fullWidth.Polaris-Button--removeUnderline {
+  box-shadow: none;
+} */
