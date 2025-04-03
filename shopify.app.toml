@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://holdem-brothers-commitment-miniature.trycloudflare.com"
+application_url = "https://passed-barely-included-leeds.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -15,12 +15,20 @@ include_config_on_deploy = true
 api_version = "2025-01"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
-
-  [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  uri = "/api/webhooks/customers_data_request"
+  compliance_topics = [ "customers/data_request" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/api/webhooks/customers_redact"
+  compliance_topics = [ "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/api/webhooks/shop_redact"
+  compliance_topics = [ "shop/redact" ]
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -28,13 +36,13 @@ scopes = "read_customers,read_locales,write_customers,write_products,read_themes
 
 [auth]
 redirect_urls = [
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/auth/callback",
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/auth/shopify/callback",
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/api/auth/callback"
+  "https://passed-barely-included-leeds.trycloudflare.com/auth/callback",
+  "https://passed-barely-included-leeds.trycloudflare.com/auth/shopify/callback",
+  "https://passed-barely-included-leeds.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://holdem-brothers-commitment-miniature.trycloudflare.com/app/post-api"
+url = "https://passed-barely-included-leeds.trycloudflare.com/app/post-api"
 subpath = "test-api"
 prefix = "apps"
 

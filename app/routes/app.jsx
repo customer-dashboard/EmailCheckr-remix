@@ -7,6 +7,7 @@ import { Links, LiveReload, Meta, Scripts } from '@remix-run/react';
 import { useEffect, useState } from "react";
 import { json } from '@remix-run/node';
 import { getSettings } from "../Modals/Grapql";
+// import "@shopify/polaris-viz/build/esm/styles.css";
 
 //https://my-public-app.myshopify.com/apps/test-app
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
@@ -14,7 +15,6 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }) => {
   const session = await authenticate.admin(request);
-
   if (!session) {
     throw new Response("Unauthorized", { status: 401 });
   }
@@ -41,10 +41,40 @@ export default function App() {
     count=1;
   }
   }, []);
-  useEffect(() => {
-    console.log("change", defSetting);
-  }, [defSetting]);
   
+  useEffect(()=>{
+    // if (count==0) {
+      getLocals();
+      getThemes();
+      Database();
+      // forCheck();
+      customerStatus();
+    //   count=1;
+    // }
+  },[])
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const queryParameters = new URLSearchParams(window.location.search);
+      const charge_id = queryParameters.get("charge_id");
+      // console.log("charge_id", charge_id);
+      if (charge_id) {
+        // setProgress2(true);
+        const data = await paymentCheck();
+        await getbilling();
+        await customerStatus();
+        let newShop = data.replace(".myshopify.com", "");
+        window.open(
+          "https://admin.shopify.com/store/" + newShop + "/apps/email-checkr",
+          "_top"
+        );
+      }else{
+        get_AllSettings();
+      }
+      await get_AllSettings();
+    };
+    fetchData();
+  }, []);
 
   const getLocals = async() =>{
     let formdata = new FormData();
@@ -98,7 +128,7 @@ export default function App() {
     const responseJson = await response.json();
     const content_ = responseJson?.get_account_validation_status;
     const content = JSON.parse(content_);
-    console.log("get_account_validation_status", content);
+    // console.log("get_account_validation_status", content);
     if (content === null) {
       setProgress2(true);
       setTimeout(() => {
@@ -164,16 +194,7 @@ export default function App() {
       setMetafields();
     }
   } 
-//   const graphql_billing = async() =>{
-//     let formdata = new FormData();
-//     formdata.append("_action", "graphql_billing");
-//     const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
-//     const responseJson = await response.json();
-//     console.log("billingJOSN", responseJson);
-//     if(responseJson.status==200) {
-//     //  setPaymentcheck(responseJson?.data)
-//     }
-// }
+
   const getFaq = async() =>{
     let formdata = new FormData();
     formdata.append("_action", "get_installation_faq");
@@ -225,52 +246,19 @@ const getSegment = async() =>{
   formdata.append("_action", "get_customer_segment");
   const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
   const responseJson = await response.json();
-  console.log("get_customer_segment",responseJson);
+  // console.log("get_customer_segment",responseJson);
   return (responseJson.shop);
 }
 
-useEffect(() => {
-  const fetchData = async () => {
-    const queryParameters = new URLSearchParams(window.location.search);
-    const charge_id = queryParameters.get("charge_id");
-    // console.log("charge_id", charge_id);
-    if (charge_id) {
-      // setProgress2(true);
-      const data = await paymentCheck();
-      await getbilling();
-      await customerStatus();
-      let newShop = data.replace(".myshopify.com", "");
-      window.open(
-        "https://admin.shopify.com/store/" + newShop + "/apps/email-checkr",
-        "_top"
-      );
-    }else{
-      get_AllSettings();
-    }
-    await get_AllSettings();
-  };
-  fetchData();
-}, []);
-
-
-useEffect(()=>{
-  // if (count==0) {
-    getLocals();
-    getThemes();
-    Database();
-    // forCheck();
-    customerStatus();
-  //   count=1;
-  // }
-},[])
   
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <ui-nav-menu> 
         <Link to="/app" rel="home">Home</Link>
+        <Link to="/app/translations">Translations</Link>
         <Link to="/app/installation">Installation</Link>
         <Link to="/app/partners">Partners</Link>
-        <Link to="/app/support">Support</Link>
+        <Link to="/app/settings">Settings</Link>
       </ui-nav-menu>
         <Outlet context={{allthemes, defSetting, setDefSetting, progress2}} />
         <Scripts />

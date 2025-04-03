@@ -1,7 +1,8 @@
-import { GetMongoData } from "../server/mongodb";
+import { GetMongoData, MongoDB } from "../server/mongodb";
 import { json } from '@remix-run/node';
 import { authenticate } from "../shopify.server";
-import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings } from "../Modals/Grapql";
+import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData } from "../Modals/Grapql";
+import { CurrentDate } from "../server/apicontroller";
 
 
 export async function action({ request }) {
@@ -28,7 +29,7 @@ export async function action({ request }) {
 
         case "DELETE_METAFIELDS":
           const delete_cd_metafields = await deleteMetafields(admin,shop,accessToken);
-          console.log("deleteAllMetafields---", delete_cd_metafields);
+          // console.log("deleteAllMetafields---", delete_cd_metafields);
           return json({delete_cd_metafields,status})
 
         case "POST_METAFIELD":
@@ -61,3 +62,23 @@ export async function action({ request }) {
 }
 
 
+export const onAppInstall = async (admin,session) => {
+    var data = await getShopData(admin,session);
+    let { shop, accessToken } = session;
+    const CustomerCount = await getCustomersData(shop, accessToken,'count');
+    console.log("CustomerCount",CustomerCount);
+    console.log("data",data.data.shop);
+    data=data.data.shop;
+    const resData = {
+      shop: session.shop,
+      email: data.email,
+      phone: data.billingAddress.phone,
+      shop_owner: data.shopOwnerName,
+      customer: CustomerCount,
+      date: CurrentDate(),
+      status: 1,
+    }
+    const result = await MongoDB(resData,"shop_info");
+    // console.log("result", result);
+    return resData;
+  }

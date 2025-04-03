@@ -174,6 +174,9 @@ console.log("responce 00", resData.message);
           const cav_heading =
             Translations[userLangKey]?.please_adjust_the_following ||
             `Please adjust the following`;
+          // const cav_error =
+          //   Translations[userLangKey]?.this_email_has_already_been_used_for_registration! ||
+          //   `This email has already been used for registration!`;
           
           console.log("Success Message:", successMessage);
 

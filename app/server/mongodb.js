@@ -87,7 +87,7 @@ export const InsertUpdateData = async (shop, data, collectionName) => {
     const options = { upsert: true }; // Insert if doesn't exist, else update
 
     const result = await collection.updateOne(filter, update, options);
-console.log("result", result);
+// console.log("result", result);
     if (result.upsertedCount > 0) {
       return { message: 'Inserted successfully', upsertedId: result.upsertedId };
     } else if (result.modifiedCount > 0) {
@@ -106,7 +106,7 @@ console.log("result", result);
 // Delete data
 export const DeleteSingleData = async (collectionName, find) => {
   const collection = await Connection(collectionName);
-  console.log("Collection Methods:", collection, find);
+  // console.log("Collection Methods:", collection, find);
   await collection.deleteOne(find);
   return { message: "Deleted successfully" };
 };

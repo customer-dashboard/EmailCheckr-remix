@@ -35,7 +35,7 @@ export default function PopoverSetting(props) {
     width: "60px",
     height: "20px",
     backgroundColor: first,
-    borderRadius: "3px",
+    borderRadius: "3px 3px 3px 3px",
     border: "1px solid black"
   };
 

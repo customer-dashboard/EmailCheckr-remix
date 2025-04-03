@@ -97,8 +97,8 @@ export async function setTranslation(admin,formValue,shop,accessToken){
       const response = await translations.json();
       return response;
     } catch (error) {
-      console.error("Error in setTranslation:", error);
-      throw error; 
+      // console.error("Error in setTranslation:", error);
+      // throw error; 
     }
 }
 
@@ -222,8 +222,8 @@ export async function postMetafileds(admin,formValue,shop,accessToken){
       const response = await metafileds.json();
       return response;
     } catch (error) {
-      console.error("Error in setTranslation:", error);
-      throw error; 
+      // console.error("Error in setTranslation:", error);
+      // throw error; 
     }
 }
 
@@ -253,7 +253,7 @@ export async function getSettings(admin){
     const targetMetafield = metafields.find((edge) => edge.node.key === keyName);
     return targetMetafield ? targetMetafield?.node?.value : null;
   } catch (error) {
-    console.error("Error fetching settings:", error);
+    // console.error("Error fetching settings:", error);
     return null; 
   }
 }  
@@ -262,7 +262,7 @@ export async function getbilling(session,billing){
   let plans = Object.keys(billingConfig);
   for (let index = 0; index < plans.length; index++) {
     const element = plans[index];
-    console.log("element", element);
+    // console.log("element", element);
     const hasPayment = await hasBillingCheck(session,billing,element);
     if (hasPayment.hasActivePayment) {
       let array = {};
@@ -454,6 +454,7 @@ export async function getCustomersData(shop,accessToken,state = null){
       headers,
     });
     const data = await response.json();
+    console.log("dataCount", data.count);
     return data.count;
   }
 
@@ -468,7 +469,6 @@ export async function getCustomersData(shop,accessToken,state = null){
   });
 
   const data = await response.json();
-
   return data.customers;
 }
 
@@ -485,3 +485,27 @@ const local = await locals.json();
 data = local.data.shopLocales.filter(element => element.locale==data);
 return data;
 }
+
+export const getShopData = async (admin,session) => {
+  const response = await admin.graphql(
+    `#graphql
+    query {
+      shop {
+        name
+        email
+          billingAddress {
+            phone
+          }
+        shopOwnerName
+      }
+    }`,
+  );
+  
+  const data = await response.json();
+  console.log("shopData", data.data);
+  return data;
+}
+
+
+
+

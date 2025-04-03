@@ -22,6 +22,7 @@ export const loader = async ({ request }) => {
   await authenticate.admin(request);
   const {admin,session} = await authenticate.admin(request);
   const { shop } = session;
+  
   // let myShop = shop.replace(".myshopify.com", "");
   return shop;
 };
@@ -61,7 +62,7 @@ useEffect(() => {
   setpartnerType(defSetting.plan_name);
   setdefaultSetting(defSetting);
   // setProgress(false);
-  console.log("defSetting", defSetting);
+  // console.log("defSetting", defSetting);
 }, [defSetting]);
 
 const closePopup = () => {
@@ -106,7 +107,7 @@ const selectChange2 = (val, name) => {
 const persantage = (invited, count) => {
   return Math.round((invited / count) * 100)
 }
-console.log("settings", setting);
+// console.log("settings", setting);
 
 const cardData = [
   { title: "Invited", color: "primary", content: "View", persantage: persantage(setting?.segment?.invited, setting?.segment?.total), value: setting?.segment?.invited, url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}` },
@@ -141,8 +142,6 @@ const handleColorSetting = (e) => {
 }
 
 const selectChangeColor = (val, name, pername) => {
-  console.log("Color Value:", val);
-  console.log("Color Setting Name:", name);
 
   if (defaultSetting[name] === val) setSave(false);
   else setSave(true);
@@ -152,7 +151,6 @@ const selectChangeColor = (val, name, pername) => {
     return newFormValues;
   })
 };
-console.log("setting", setting);
 
 const selectChange = (val, name, pername) => {
   setSetting((preValue) => {
@@ -259,7 +257,7 @@ const handleToggle = useCallback(
                     </Banner>
                   </Layout.Section>
                 }
-                <Layout.Section >
+                {/* <Layout.Section >
                   <Card>
                       <InlineStack align='space-between'>
                             <Text as="h2" variant='headingMd'>App status</Text>
@@ -285,7 +283,7 @@ const handleToggle = useCallback(
                       <Text>${partnerType=="enterprise"?9.99:2.99} USD/Month{setting?.billing?.status === "active" ? '' : " ( 7-Days free trial )"}</Text>
                     </Box>
                   </Card>
-                </Layout.Section>
+                </Layout.Section> */}
               
                 { 
                setting?.segment?.id?
@@ -349,7 +347,7 @@ const handleToggle = useCallback(
                  </Card>
                 </Layout.Section>
 
-                <Layout.Section>
+                {/* <Layout.Section>
                 <Card>
                 <Box paddingBlockEnd='300'>
                   <Text as="h2" variant='headingMd'>Translations</Text>
@@ -392,9 +390,9 @@ const handleToggle = useCallback(
                   ))
                 } 
                 </Card>
-                </Layout.Section>
+                </Layout.Section> */}
 
-                <Layout.Section>
+                {/* <Layout.Section>
                   <Card>
                   <Box paddingBlockEnd='300'>
                   <Text as="h2" variant='headingMd'>Color</Text>
@@ -436,9 +434,9 @@ const handleToggle = useCallback(
                       />
                     </Box>
                   </Card>
-                </Layout.Section>
+                </Layout.Section> */}
 
-                <Layout.Section>
+                {/* <Layout.Section>
                   <Card>
                   <Box paddingBlockEnd='300'>
                   <Text as="h2" variant='headingMd'>Custom CSS</Text>
@@ -454,7 +452,7 @@ const handleToggle = useCallback(
                       />
                     </Box>
                   </Card>
-                </Layout.Section>
+                </Layout.Section> */}
               </Layout>
               {active}
               <Footer /> 
@@ -465,3 +463,245 @@ const handleToggle = useCallback(
     </Frame>
   );
 }
+
+// import {
+//   Banner,
+//   BlockStack,
+//   Box,
+//   Button,
+//   ButtonGroup,
+//   Card,
+//   Grid,
+//   Icon,
+//   InlineStack,
+//   Layout,
+//   LegacyCard,
+//   Link,
+//   Page,
+//   Text,
+//   Toast,
+// } from "@shopify/polaris";
+// import React, { useState, useCallback, useMemo } from "react";
+// import {
+//   ChatIcon,
+//   DiscountCodeIcon,
+//   EmailFollowUpIcon,
+//   HeartIcon,
+//   HomeIcon,
+//   MenuHorizontalIcon,
+//   QuestionCircleIcon,
+//   StarIcon,
+//   VariantIcon,
+//   XSmallIcon,
+// } from "@shopify/polaris-icons";
+// import customer_dashboard from "../assets/image/customer-dashboard-pro.png"
+// import AnalyticsLegacy from "../universal-components/analytics/index";
+// // import "@shopify/polaris-viz/build/esm/styles.css";
+// import { useOutletContext } from "@remix-run/react";
+
+// export default function Index(props){
+//   const [partnerCollOut, setPartnerCollOut] = useState(() => {
+//     // const storedValue = localStorage.getItem("partnerCollOut");
+//     // return storedValue !== null ? JSON.parse(storedValue) : true;
+//   });
+
+//   const handleCollOutCard = useCallback(() => {
+//     setPartnerCollOut((prevState) => {
+//       const newState = !prevState;
+//       // localStorage.setItem("partnerCollOut", newState);
+//       return newState;
+//     });
+//   }, []);
+
+//   const { defSetting } = useOutletContext();
+// console.log("outLet defSetting", defSetting);
+//   const analyticsComponent = useMemo(() => {
+//     return (
+//       <>
+//         <AnalyticsLegacy defSetting={defSetting} pageType={"home"} />
+//       </>
+//     );
+//   }, [defSetting]);
+
+//   const DeleteMetafields = async () => {
+//     let formdata = new FormData();
+//     formdata.append("_action", "DELETE_METAFIELDS");
+//     if (confirm("are you sure delete all metafields of EmailCheckr") === true) {
+//       try {
+//         const response = await fetch("/app/translation", {
+//           method: "POST",
+//           body: formdata,
+//         });
+//         const responseJson = await response.json();
+//         setLanguageLocal(responseJson);
+        
+//       } catch (error) {
+//         console.error("An error occurred:", error.message);
+//       }
+//     }
+//   }
+
+//   const moreAppsCard = useMemo(() => {
+//     // if (!partnerCollOut) return null;
+//     return (
+//       <Layout.Section variant="fullWidth">
+//         <button style={{ display: "none" }} onClick={DeleteMetafields}>Delete Metafields</button>
+//         <Card>
+//           <div
+//             className="show_hide_collapsed_parant"
+//             style={{ position: "relative" }} // Add position relative to parent
+//             onMouseEnter={(e) => {
+//               e.currentTarget.querySelector(
+//                 ".show_hide_collapsed"
+//               ).style.display = "block";
+//             }}
+//             onMouseLeave={(e) => {
+//               e.currentTarget.querySelector(
+//                 ".show_hide_collapsed"
+//               ).style.display = "none";
+//             }}
+//           >
+//             <InlineStack align="space-between" blockAlign="start">
+//               <Text as="h2" variant="headingMd">
+//                 More apps by Mandasa Technologies
+//               </Text>
+//               <div
+//                 className="show_hide_collapsed gui-GmlnP"
+//                 style={{
+//                   position: "absolute",
+//                   right: "0px",
+//                   display: "none", // Initially hidden
+//                 }}
+//               >
+//                 <Button
+//                   accessibilityLabel="dd"
+//                   icon={XSmallIcon}
+//                   onClick={handleCollOutCard}
+//                 ></Button>
+//               </div>
+//             </InlineStack>
+//             <BlockStack>
+//               <Box paddingBlockStart="400">
+//                 <Grid>
+//                   <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+//                     <Card>
+//                       <InlineStack align="space-between">
+//                         <Link
+//                           removeUnderline
+//                           monochrome
+//                           target="_blank"
+//                           url="https://apps.shopify.com/checkout-extensions-pro?utm_source=customer-dashboard-pro"
+//                         >
+//                           <InlineStack gap="300" blockAlign="center">
+//                             <img
+//                               style={{ width: "50px" }}
+//                               src="https://cdn.shopify.com/app-store/listing_images/f0744aa7ec85f7d412692b264a7613a6/icon/CPuq3peN44EDEAE=.png"
+//                               alt="checkout extension app image"
+//                             />
+//                             <Text as="h3" variant="headingMd">
+//                               MT: Checkout Rules & Blocks
+//                             </Text>
+//                           </InlineStack>
+//                         </Link>
+//                       </InlineStack>
+//                       <BlockStack>
+//                         <Box paddingBlockStart="300">
+//                           <Text>
+//                             Customize checkout page with checkout extensibility
+//                             and blocks
+//                           </Text>
+//                         </Box>
+//                       </BlockStack>
+//                     </Card>
+//                   </Grid.Cell>
+//                   <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+//                     <Card>
+//                       <InlineStack align="space-between">
+//                         <Link
+//                           removeUnderline
+//                           monochrome
+//                           target="_blank"
+//                           url="https://apps.shopify.com/customer-dashboard-pro"
+//                         >
+//                           <InlineStack gap="300" blockAlign="center">
+//                             <img
+//                               style={{ width: "50px" }}
+//                               src={customer_dashboard}
+//                               alt="Customer Account Pro : MT"
+//                             />
+//                             <Text as="h3" variant="headingMd">
+//                             Customer Account Pro : MT
+//                             </Text>
+//                           </InlineStack>
+//                         </Link>
+//                       </InlineStack>
+//                       <BlockStack>
+//                         <Box paddingBlockStart="300">
+//                           <Text>
+//                           Engage with your customers throughout their lifecycle
+//                           </Text>
+//                         </Box>
+//                       </BlockStack>
+//                     </Card>
+//                   </Grid.Cell>
+//                 </Grid>
+//               </Box>
+//             </BlockStack>
+//           </div>
+//         </Card>
+//       </Layout.Section>
+//     );
+//   }, [partnerCollOut, handleCollOutCard]);
+
+//   const helpSupportCard = useMemo(() => {
+//     return (
+//       <Layout.Section>
+//         <Card>
+//           <Text as="h2" variant="headingMd">
+//             Help & Support
+//           </Text>
+//           <Box paddingBlockStart="400">
+//             <ButtonGroup fullWidth>
+//               <Button
+//                 fullWidth
+//                 target="_blank"
+//                 icon={EmailFollowUpIcon}
+//                 size="medium"
+//                 url="mailto:cav.support@mandasadevelopment.com"
+//               >
+//                 Email us
+//               </Button>
+//               <Button
+//                 fullWidth
+//                 size="medium"
+//                 icon={ChatIcon}
+//                 onClick={() => Beacon("open")}
+//               >
+//                 Live chat
+//               </Button>
+//               <Button
+//                 fullWidth
+//                 size="medium"
+//                 url="https://customer-dashboard-pro.helpscoutdocs.com"
+//                 icon={QuestionCircleIcon}
+//               >
+//                 Help
+//               </Button>
+//             </ButtonGroup>
+//           </Box>
+//         </Card>
+//       </Layout.Section>
+//     );
+//   }, []);
+
+//   return (
+//     <Page title="Dashboard">
+//       <Layout>
+//         {/* <ReviewBanner/> */}
+//         {analyticsComponent}
+//         {moreAppsCard}
+//         {helpSupportCard}
+//       </Layout>
+//     </Page>
+//   );
+// }

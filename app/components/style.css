@@ -1,8 +1,16 @@
 .color_picker {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  border: 1px solid black;
+  height: 25px;
+  width: 70px;
+  cursor: pointer;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  border-image: initial;
+  transition: 0.1s ease-in;
+}
+.color_picker:hover {
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px;
 }
 /* .Polaris-Page-Header__RightAlign button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantPrimary,
 .installation .Polaris-Button--variantPrimary.Polaris-Button--sizeMedium.Polaris-Button--textAlignCenter {
@@ -79,3 +87,4 @@
 .Polaris-LegacyCard__Section button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantSecondary.Polaris-Button--sizeMedium.Polaris-Button--textAlignLeft.Polaris-Button--fullWidth.Polaris-Button--removeUnderline {
   box-shadow: none;
 } */
+

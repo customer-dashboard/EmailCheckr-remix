@@ -31,6 +31,7 @@ export const action = async ({ request }) => {
 };
 
 export default function Auth() {
+  console.log("I am in route file");
   const loaderData = useLoaderData();
   const actionData = useActionData();
   const [shop, setShop] = useState("");

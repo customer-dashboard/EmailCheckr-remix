@@ -115,7 +115,7 @@ if (form.length > 0) {
     } else {
       submit_button.disabled = false;
       submit_button.innerHTML = originalText; 
-      returnCall(`This email has already been used for registration!`, "#da2f0c");
+      returnCall(resData?.data?.error_msg, "#da2f0c");
     }
   });
 }

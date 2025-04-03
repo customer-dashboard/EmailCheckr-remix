@@ -41,7 +41,7 @@ export async function action({ request }) {
         returnUrl: `https://admin.shopify.com/store/${myShop}/apps/email-checkr/app`,
       }),
   });
-  console.log("bilingdatabbb", data);
-  console.log("bilingdatabbb", billing);
+  // console.log("bilingdatabbb", data);
+  // console.log("bilingdatabbb", billing);
   return json({ billing, data });
 }
