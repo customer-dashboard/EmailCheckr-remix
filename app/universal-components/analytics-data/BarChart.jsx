@@ -3,55 +3,44 @@ import { Text, Box, InlineStack, Button, Tooltip } from "@shopify/polaris";
 import "@shopify/polaris-viz/build/esm/styles.css";
 import { useNavigate } from "@remix-run/react";
 import { SearchResourceIcon } from "@shopify/polaris-icons";
+import "../../components/style.css"
 
 export default function barChart(props) {
-  const {  title, count, pageType } = props;
-  // console.log("data", data);
-  // console.log("title", title);
-  // console.log("count", count);
-  // console.log("pageType", pageType);
-  const data = [
-    {
-      "name": "Enabled",
-      "data": [
-        { "key": "01-Apr-2025", "value": 5 },
-        { "key": "02-Apr-2025", "value": 3 },
-        { "key": "03-Apr-2025", "value": 3 },
-      ]
-    },
-    {
-      "name": "Disabled",
-      "data": [
-        { "key": "01-Apr-2025", "value": 2 },
-        { "key": "02-Apr-2025", "value": 1 },
-        { "key": "03-Apr-2025", "value": 1 },
-      ]
-    },
-    {
-      "name": "Invited",
-      "data": [
-        { "key": "01-Apr-2025", "value": 1 },
-        { "key": "02-Apr-2025", "value": 0 },
-        { "key": "03-Apr-2025", "value": 5 },
-      ]
-    }
-  ]
+  const { data, title, count, pageType } = props;
+  console.log("data", data);
+  console.log("title", title);
+  console.log("count", count);
+  console.log("pageType", pageType);
+  // const data = [
+  //   {
+  //     "name": "Enabled",
+  //     "data": [
+  //       { "key": "01-Apr-2025", "value": 5 },
+  //       { "key": "02-Apr-2025", "value": 3 },
+  //       { "key": "03-Apr-2025", "value": 3 },
+  //     ]
+  //   },
+  //   {
+  //     "name": "Disabled",
+  //     "data": [
+  //       { "key": "01-Apr-2025", "value": 2 },
+  //       { "key": "02-Apr-2025", "value": 1 },
+  //       { "key": "03-Apr-2025", "value": 1 },
+  //     ]
+  //   },
+  //   {
+  //     "name": "Invited",
+  //     "data": [
+  //       { "key": "01-Apr-2025", "value": 1 },
+  //       { "key": "02-Apr-2025", "value": 0 },
+  //       { "key": "03-Apr-2025", "value": 5 },
+  //     ]
+  //   }
+  // ]
   
   const navigate = useNavigate();
   return (
     <PolarisVizProvider
-      themes={{
-        Light: {
-          tooltip: {
-            backgroundColor: 'MidnightBlue',
-            valueColor: 'yellow',
-            labelColor: 'Fuchsia',
-          },
-          legend: {
-            backgroundColor: "white",
-          },
-        },
-      }}
     >
       <Box paddingBlockEnd="200">
         <InlineStack align="space-between">
@@ -78,14 +67,14 @@ export default function barChart(props) {
               <Button
                 variant="plain"
                 icon={SearchResourceIcon}
-                onClick={() => navigate("/analytics", { replace: true })}
+                onClick={() => navigate("/app/analytics", { replace: true })}
               ></Button>
             </Tooltip>
           )}
          </InlineStack>
         </Box>
       </Box>
-      <BarChart data={data} isAnimated={true} theme="Light" />
+      <BarChart data={data} />
     </PolarisVizProvider>
   );
 }

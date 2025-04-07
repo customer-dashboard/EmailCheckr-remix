@@ -2,10 +2,11 @@ import "@shopify/shopify-app-remix/adapters/node";
 import {
   ApiVersion,
   AppDistribution,
+  DeliveryMethod,
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import {MongoDBSessionStorage} from '@shopify/shopify-app-session-storage-mongodb';
-// import { restResources } from "@shopify/shopify-api/rest/admin/2024-01";
+import { restResources } from "@shopify/shopify-api/rest/admin/2024-01";
 import { billingInformation, webhooksInformation } from "./billing";
 import { onAppInstall } from "./routes/app.translation";
 
@@ -20,10 +21,12 @@ const shopify = shopifyApp({
   sessionStorage: new MongoDBSessionStorage('mongodb+srv://emailCheckr:12345@cluster0.z1pwf.mongodb.net/','sample_mflix'),
   distribution: AppDistribution.AppStore,
   webhooks: webhooksInformation,
+  restResources,
   hooks: {
     afterAuth: async ({ session,admin }) => {
+      await shopify.registerWebhooks({ session });
       const data = await onAppInstall(admin,session);
-      console.log("🚀 ~ afterAuth:", data);
+      // console.log("🚀 ~ afterAuth:", data);
     },
   },
   future: {

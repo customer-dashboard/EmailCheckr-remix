@@ -66,8 +66,8 @@ export const onAppInstall = async (admin,session) => {
     var data = await getShopData(admin,session);
     let { shop, accessToken } = session;
     const CustomerCount = await getCustomersData(shop, accessToken,'count');
-    console.log("CustomerCount",CustomerCount);
-    console.log("data",data.data.shop);
+    // console.log("CustomerCount",CustomerCount);
+    // console.log("data",data.data.shop);
     data=data.data.shop;
     const resData = {
       shop: session.shop,

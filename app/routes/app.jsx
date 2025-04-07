@@ -37,7 +37,7 @@ export default function App() {
     if (count==0) {
     setMetafields();
     // Database();
-    // get_AllSettings();
+    get_AllSettings();
     count=1;
   }
   }, []);
@@ -142,7 +142,7 @@ export default function App() {
       console.error("An error occurred:", error.message);
     } 
   }
-
+  
   // const get_AllSettings = async () => {
   //   console.log("getAll setting")
   //   let data = [];

@@ -454,7 +454,7 @@ export async function getCustomersData(shop,accessToken,state = null){
       headers,
     });
     const data = await response.json();
-    console.log("dataCount", data.count);
+    // console.log("dataCount", data.count);
     return data.count;
   }
 
@@ -502,7 +502,7 @@ export const getShopData = async (admin,session) => {
   );
   
   const data = await response.json();
-  console.log("shopData", data.data);
+  // console.log("shopData", data.data);
   return data;
 }
 

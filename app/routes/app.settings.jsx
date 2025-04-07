@@ -1,4 +1,4 @@
-import { Button, Layout, Page, Toast, TextField, RangeSlider, Text, Box, Modal, ChoiceList, Card, InlineGrid, Divider, Banner, InlineStack, Badge } from '@shopify/polaris'
+import { Button, Layout, Page, Toast, TextField, RangeSlider, Text, Box, Modal, ChoiceList, Card, InlineGrid, Divider, Banner, InlineStack, Badge, Tooltip, Icon, BlockStack, RadioButton } from '@shopify/polaris'
 import React, { useEffect } from "react";
 import { useState, useCallback } from "react";
 import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom'
@@ -8,7 +8,8 @@ import Below_submit from "../assets/image/Below_submit.png"
 import { Footer } from '../components/footer'
 import PopoverSetting from '../components/Popover'
 import SkeletonExample from '../components/SkeletonExample';
-import { SaveBar } from "@shopify/app-bridge-react";
+import { SaveBar, TitleBar } from "@shopify/app-bridge-react";
+import { AlertCircleIcon } from '@shopify/polaris-icons';
 
 export default function settings(props) {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function settings(props) {
   const [progress, setProgress] = useState(true);
   const [save, setSave] = useState(false);
   const [active, setActive] = useState(false);
+  const [modelUrl, setModelUrl] = useState("");
+  const [exitpop, setExitpop] = useState(false);
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const {defSetting, setDefSetting, progress2} = useOutletContext();
 
@@ -130,9 +133,24 @@ const checkIfSettingsChanged = (currentSettings, defaultSettings) => {
   return JSON.stringify(currentSettings) !== JSON.stringify(defaultSettings);
 };
 
+const successMessageDisplayPosition = [
+  { title: "Before Form", image: Above_form, value: "beforebegin", description: "This will make the navigation slide like." },
+  { title: "Before Submit Button", image: Before_submit, value: "middle", description: "This will make the navigation slide like." },
+  { title: "After Submit Button", image: Below_submit, value: "beforeend", description: "This will make the navigation toggle like." },
+]
+
 const settingsList = [
   { key: "app_status", label: "App Status", content: "Enable this for the app functioning on the account page." },
+  { key: "message_position", label: "Success message display position", content: "" },
 ];
+
+const appStatusSettings = settingsList.filter(item => item.key === 'app_status');
+const messagePositionSettings = settingsList.filter(item => item.key === 'message_position');
+
+
+const matchedStyle = successMessageDisplayPosition.find(
+  (style) => style.value === setting?.message_position
+);
 
 const selectChange3 = (name, value) => {
   setSetting((prev) => {
@@ -166,7 +184,7 @@ const closePopup = () => {
         <Page title='Settings'>
           <Layout >
           {
-            settingsList.map((item) => (
+            appStatusSettings.map((item) => (
               <Layout.AnnotatedSection
                 id={item.key}
                 title={item.label}
@@ -190,6 +208,78 @@ const closePopup = () => {
             ))
           }
 
+          {
+            messagePositionSettings.map((item,key) => (
+            <Layout.AnnotatedSection
+              id="message_position"
+              title={item.label}
+              description={item.content}
+            >
+          {/* <Card>
+            <ChoiceList
+              title=""
+              choices={successMessageDisplayPosition.map((style) => ({
+                label: style.title,
+                value: style.value
+              }))}
+              selected={[setting?.[item.key] ?? successMessageDisplayPosition[0].value]} 
+              onChange={(value) => {
+                console.log(`Updating ${setting?.[item.key]} to`, value[0]);
+                selectChange3([item.key], value[0]);
+              }}
+            />
+          </Card> */}
+              <Card>
+              <Box paddingBlockEnd={400} key={key}>
+              <BlockStack>
+  {successMessageDisplayPosition.map((style) => (
+    <InlineStack key={style.value} align="baseline" blockAlign="center">
+      <RadioButton
+        label={style.title}
+        checked={(setting?.[item.key] ?? successMessageDisplayPosition[0].value) === style.value}
+        id={style.value}
+        name="successPosition"
+        onChange={() => selectChange3([item.key], style.value)}
+      />
+      <Tooltip content="Position">
+        <Button
+          onClick={() => {
+            setModelUrl(style?.image || "");
+            setExitpop(true);
+          }}
+          variant="plain"
+        >
+          <Icon source={AlertCircleIcon} tone="base" />
+        </Button>
+      </Tooltip>
+    </InlineStack>
+  ))}
+</BlockStack>
+
+                </Box>
+              </Card>
+
+              <Modal open={exitpop} onClose={() => setExitpop(false)}>
+                <TitleBar title="Preview" />
+                <Box padding="200" display="flex" alignItems="center" justifyContent="center">
+                  <img
+                    className="cus_prew_img"
+                    src={modelUrl}
+                    alt="Preview"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "80vh",
+                      objectFit: "contain",
+                      display: "block",
+                      margin: "0 auto"
+                    }}
+                  />
+                </Box>
+              </Modal>
+            </Layout.AnnotatedSection>
+            ))
+          }
+
             <Layout.AnnotatedSection
               id="coloroptions"
               title="Color options"
@@ -210,24 +300,37 @@ const closePopup = () => {
               ].map((ele, index) => (
                 <Box
                   key={index}
-                  padding="200"
-                  borderColor="border-secondary"
-                  borderStyle="solid"
-                  borderInlineEndWidth="025"
-                  borderInlineStartWidth="025"
-                  borderBlockStartWidth="025"
+                  padding="100"
+                  // borderColor="border-secondary"
+                  // borderStyle="solid"
+                  // borderInlineEndWidth="025"
+                  // borderInlineStartWidth="025"
+                  // borderBlockStartWidth="025"
                 >
-                  <InlineGrid columns={['oneThird', 'oneHalf']} alignItems="end">
+                                      
+                  <InlineGrid  alignItems="end">
                     {/* Color Setting Label */}
-                    <Text as="h2" variant="headingSm">{ele.value}</Text>
-                    <Text as="h2" variant="headingSm">{ele.name}</Text>
-
-                    {/* Popover for Color Selection */}
+                    <Text variant="bodyMd" as="p">{ele.name}</Text>
+                    <Box
+                      padding="100"
+                      borderWidth="025"
+                      borderStyle="solid"
+                      borderColor="black"
+                      borderRadius="100"
+                      paddingBlockStart="100"
+                      // paddingBlockEnd="100"
+                    >
+                    <InlineStack align='' blockAlign='center'>
+                    <Box paddingInlineEnd="100">
                     <PopoverSetting
                       cd_title={ele.key}
                       ColorChange={handleColorSetting}
                       value={ele.value}
                     />
+                    </Box>
+                    <Text variant="bodyMd" as="p">{ele.value}</Text>
+                    </InlineStack>
+                    </Box>
                   </InlineGrid>
                 </Box>
               ))}

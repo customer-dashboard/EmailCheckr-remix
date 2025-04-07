@@ -12,6 +12,11 @@
 .color_picker:hover {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px;
 }
+
+._Container_ijalm_1 {
+  display: flex;
+  gap: 10px;
+}
 /* .Polaris-Page-Header__RightAlign button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantPrimary,
 .installation .Polaris-Button--variantPrimary.Polaris-Button--sizeMedium.Polaris-Button--textAlignCenter {
   background: rgba(0, 122, 92, 1);

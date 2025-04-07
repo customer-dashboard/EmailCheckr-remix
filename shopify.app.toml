@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://symposium-handed-caps-lancaster.trycloudflare.com"
+application_url = "https://analysis-boutique-ross-sensors.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -19,16 +19,16 @@ api_version = "2025-01"
   uri = "/webhooks/app/uninstalled"
 
   [[webhooks.subscriptions]]
-  uri = "/api/webhooks/customers_data_request"
   compliance_topics = [ "customers/data_request" ]
+  uri = "/webhooks/app/customers_data_request"
 
   [[webhooks.subscriptions]]
-  uri = "/api/webhooks/customers_redact"
   compliance_topics = [ "customers/redact" ]
+  uri = "/webhooks/app/customers_redact"
 
   [[webhooks.subscriptions]]
-  uri = "/api/webhooks/shop_redact"
   compliance_topics = [ "shop/redact" ]
+  uri = "/webhooks/app/shop_redact"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -36,13 +36,13 @@ scopes = "read_customers,read_locales,write_customers,write_products,read_themes
 
 [auth]
 redirect_urls = [
-  "https://symposium-handed-caps-lancaster.trycloudflare.com/auth/callback",
-  "https://symposium-handed-caps-lancaster.trycloudflare.com/auth/shopify/callback",
-  "https://symposium-handed-caps-lancaster.trycloudflare.com/api/auth/callback"
+  "https://analysis-boutique-ross-sensors.trycloudflare.com/auth/callback",
+  "https://analysis-boutique-ross-sensors.trycloudflare.com/auth/shopify/callback",
+  "https://analysis-boutique-ross-sensors.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://symposium-handed-caps-lancaster.trycloudflare.com/app/post-api"
+url = "https://analysis-boutique-ross-sensors.trycloudflare.com/app/post-api"
 subpath = "test-api"
 prefix = "apps"
 

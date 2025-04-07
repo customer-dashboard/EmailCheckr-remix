@@ -129,7 +129,7 @@ console.log("responce 00", resData.message);
           }
           
           function cleanTranslationKeys(data) {
-            console.log("data",data); 
+            // console.log("data",data); 
             const cleanedData = {};
             Object.entries(data).forEach(([lang, messages]) => {
               cleanedData[lang] = {};

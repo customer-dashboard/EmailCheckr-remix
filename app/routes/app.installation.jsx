@@ -156,7 +156,7 @@ export default function Installation(props) {
                                                     variant="primary"
                                                     onClick={() =>
                                                       window.open(
-                                                        `https://admin.shopify.com/store/${myShop}/themes/${data?.value}/editor?context=apps`,
+                                                        `https://admin.shopify.com/store/${myShop}/themes/${data?.value}/editor?previewPath=%2Faccount%2Fregister&context=apps`,
                                                         "_blank"
                                                       )
                                                     }
