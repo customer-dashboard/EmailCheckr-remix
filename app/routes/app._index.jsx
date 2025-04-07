@@ -531,7 +531,7 @@ export default function Index(props){
   useEffect(() => {
     setProgress(progress2);
   }, [progress2]);
-  
+
   console.log("defSetting", defSetting);
 
   useEffect(() => {
@@ -800,7 +800,7 @@ const InstallMetafields = async (url, data) => {
                       action={{ loading: loading2, content: 'Start Trial', onAction: () => handleActionPlan(setLoading2,"business") }}
                       tone="warning"
                     >
-                      <p>Start 7 day free trial to activate EmailCheckr</p>
+                      <p>Start 14 day free trial to activate EmailCheckr</p>
                     </Banner>
                   </Layout.Section>
                 }
