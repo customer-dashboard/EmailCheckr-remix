@@ -1,7 +1,7 @@
 # fly.toml app configuration file generated for customer-account-verification on 2023-09-23T14:01:33+05:30
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# https://customer-account-verification.fly.dev/customerdashboard/post-customer-data
 
 app = "customer-account-verification"
 primary_region = "maa"
