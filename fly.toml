@@ -7,13 +7,16 @@ app = "customer-account-verification"
 primary_region = "maa"
 
 [env]
-  PORT = "8080"
-  HOST = "https://customer-account-verification.fly.dev"
+  PORT = "3000"
+  SHOPIFY_APP_URL = "https://customer-account-verification.fly.dev"
   SHOPIFY_API_KEY = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
+  SHOPIFY_API_SECRET="8fae4ac0f7a0e9766af65194b7ca3f03"
   SCOPES = "read_customers,write_customers,read_locales,read_themes"
 
+
+
 [http_service]
-  internal_port = 8080
+  internal_port = 3000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
