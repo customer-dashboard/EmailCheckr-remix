@@ -523,6 +523,8 @@ export default function Index(props){
   const [save, setSave] = useState(false);
   const [active, setActive] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
+  const [partnerType, setpartnerType] = useState("");
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [setting, setSetting] = useState({});
   const [defaultSetting, setdefaultSetting] = useState({});
@@ -536,6 +538,7 @@ export default function Index(props){
 
   useEffect(() => {
     setSetting(defSetting);
+    setpartnerType(defSetting.plan_name);
     setdefaultSetting(defSetting);
   }, [defSetting]);
 
@@ -587,7 +590,7 @@ const persantage = (invited, count) => {
 ]
 
   const customerStatus = useMemo(() => {
-    return (               
+    return (     
       <Layout.Section>
       { setting?.segment?.id?
                   <Grid>
@@ -804,6 +807,23 @@ const InstallMetafields = async (url, data) => {
                     </Banner>
                   </Layout.Section>
                 }
+                 <Layout.Section fullWidth >
+                   <Card>
+                       <InlineStack align='space-between' className='cd_flex_container'>
+                         <Text as='h2' variant='headingMd'>Plan</Text>
+                        {
+                          setting?.billing?.status === "active" ? <Badge tone="success">Active</Badge> : <Button
+                            size='slim'
+                            loading={loading3}
+                            onClick={() => handleActionPlan(setLoading3,partnerType=="enterprise"?"business+":"business")}
+                          >Upgrade plan</Button>
+                        }
+                      </InlineStack>
+                    <Box paddingBlockStart="200">
+                      <Text>${partnerType=="enterprise"?9.99:2.99} USD/Month{setting?.billing?.status === "active" ? '' : " ( 7-Days free trial )"}</Text>
+                    </Box>
+                  </Card>
+                 </Layout.Section> 
         {/* {analyticsComponent} */}
         {customerStatus}
         {moreAppsCard}
