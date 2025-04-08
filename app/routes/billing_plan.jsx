@@ -27,7 +27,7 @@ export async function action({ request }) {
       billing.request({
         plan: planName,
         isTest: testMode,
-        returnUrl: `https://admin.shopify.com/store/${myShop}/apps/email-checkr/app`,
+        returnUrl: `https://admin.shopify.com/store/${myShop}/apps/customer-account-verification/app`,
       }),
   }) : await billing.require({
     plans: [planName],
@@ -38,7 +38,7 @@ export async function action({ request }) {
         // isTest: testMode,
         // returnUrl:`https://admin.shopify.com/store/${myShop}/apps/testnew-customer-dashboard/app`
         isTest: testMode,
-        returnUrl: `https://admin.shopify.com/store/${myShop}/apps/email-checkr/app`,
+        returnUrl: `https://admin.shopify.com/store/${myShop}/apps/customer-account-verification/app`,
       }),
   });
   // console.log("bilingdatabbb", data);

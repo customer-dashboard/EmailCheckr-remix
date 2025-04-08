@@ -65,7 +65,7 @@ export default function App() {
         await customerStatus();
         let newShop = data.replace(".myshopify.com", "");
         window.open(
-          "https://admin.shopify.com/store/" + newShop + "/apps/email-checkr",
+          "https://admin.shopify.com/store/" + newShop + "/apps/customer-account-verification",
           "_top"
         );
       }else{

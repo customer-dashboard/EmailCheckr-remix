@@ -78,7 +78,7 @@ const AdminDashboard = (props) => {
         console.log('dataShop', data.shop);
         const shop = data.shop.replace(".myshopify.com", "");
         window.open(
-          "https://admin.shopify.com/store/" + shop + "/apps/email-checkr",
+          "https://admin.shopify.com/store/" + shop + "/apps/customer-account-verification",
           "_top"
         );
       }

@@ -400,41 +400,43 @@ export async function createSegment(name, status, shop, accessToken) {
 }
     
 export async function hasBillingCheck(session,billing,name){
-  // let isTest = false;
-  // if (session.shop === "silver-heritage-heaven.myshopify.com"||session.shop === "my-public-app.myshopify.com") {
-  //   isTest=true;
-  // }
+  let isTest = false;
+  if (session.shop === "silver-heritage-heaven.myshopify.com"||session.shop === "my-public-app.myshopify.com") {
+    isTest=true;
+  }
   // console.log("session", session);
   // console.log("billing", billing);
+
   var newShop = session.shop;
   var shop = newShop.replace(".myshopify.com", "");
+  
   return await billing.require({
     plans: Object.keys(billingConfig),
-    isTest: true,
+    isTest: isTest,
     returnObject: true,
     onFailure: async () => billing.request({
       plan: name,
-      isTest: true,
-        returnUrl:`https://admin.shopify.com/store/${shop}/apps/email-checkr/app`,
+      isTest: isTest,
+        returnUrl:`https://admin.shopify.com/store/${shop}/apps/customer-account-verification/app`,
     }),
   });
 }
 
 export async function hasBillingRequest(session,billing,name){
-// let isTest = false;
-// if (session.shop === "silver-heritage-heaven.myshopify.com"||session.shop === "my-public-app.myshopify.com") {
-//   isTest=true;
-// }
+let isTest = false;
+if (session.shop === "silver-heritage-heaven.myshopify.com"||session.shop === "my-public-app.myshopify.com") {
+  isTest=true;
+}
 var newShop = session.shop;
 var shop = newShop.replace(".myshopify.com", "");
 return await billing.require({
   plans: Object.keys(billingConfig),
-  isTest: true,
+  isTest: isTest,
   returnObject: true,
   onFailure: async () => billing.request({
     plan: name,
-    isTest: true,
-      returnUrl:`https://admin.shopify.com/store/${shop}/apps/email-checkr/app`,
+    isTest: isTest,
+      returnUrl:`https://admin.shopify.com/store/${shop}/apps/customer-account-verification/app`,
   }),
 });
 }
