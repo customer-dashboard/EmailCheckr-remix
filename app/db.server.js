@@ -1,6 +1,6 @@
 import { InsertUpdateData } from "./server/mongodb";
 
-export const UninstallEvent = (session)=>{
+ const UninstallEvent = (session)=>{
   
       const resData = {
         status: 0,
@@ -9,3 +9,4 @@ export const UninstallEvent = (session)=>{
       return result;
 }
 
+export default UninstallEvent

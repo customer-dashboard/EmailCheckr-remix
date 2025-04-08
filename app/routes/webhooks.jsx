@@ -1,6 +1,6 @@
 
 import { authenticate } from "../shopify.server";
-import { UninstallEvent } from "../db.server";
+import  UninstallEvent  from "../db.server";
 export const action = async ({ request }) => {
   const { topic, shop, session, admin } = await authenticate.webhook(request);
   if (!admin && topic !== 'SHOP_REDACT') {
