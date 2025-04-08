@@ -1,10 +1,10 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://analysis-boutique-ross-sensors.trycloudflare.com"
+client_id = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
+application_url = "https://customer-account-verification.fly.dev"
 embedded = true
-name = "EmailCheckr: Activation<REMIX>"
-handle = "email-checkr"
+name = "EmailCheckr: Activation Link"
+handle = "customer-account-verification"
 
 [build]
 automatically_update_urls_on_dev = true
@@ -32,18 +32,18 @@ api_version = "2025-01"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_customers,read_locales,write_customers,write_products,read_themes"
+scopes = "read_customers,read_locales,write_customers,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://analysis-boutique-ross-sensors.trycloudflare.com/auth/callback",
-  "https://analysis-boutique-ross-sensors.trycloudflare.com/auth/shopify/callback",
-  "https://analysis-boutique-ross-sensors.trycloudflare.com/api/auth/callback"
+  "https://customer-account-verification.fly.dev/auth/callback",
+  "https://customer-account-verification.fly.dev/auth/shopify/callback",
+  "https://customer-account-verification.fly.dev/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://analysis-boutique-ross-sensors.trycloudflare.com/app/post-api"
-subpath = "test-api"
+url = "https://customer-account-verification.fly.dev/customerdashboard/post-customer-data"
+subpath = "verification"
 prefix = "apps"
 
 [pos]

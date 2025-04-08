@@ -1,15 +1,15 @@
 import { Page, LegacyCard, LegacyStack, Text, Thumbnail } from '@shopify/polaris';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Footer } from '../components/footer';
+import { Footer } from './footer';
 import  activation_logo  from '../assets/image/customer-dashboard-pro.png';
 import  checkout_logo  from '../assets/image/checkout_logo.webp';
 
-export default function partners(props) {
+export default function Partners() {
     const navigate = useNavigate();
 
     return (
-        <Page title='Partners'>
+        <Page title='Partners' backAction={{ content: 'Products', onAction: () => navigate(-1) }}>
             <LegacyCard title={ <LegacyStack>
                         <LegacyStack.Item>
                         <Thumbnail

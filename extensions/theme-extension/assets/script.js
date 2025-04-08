@@ -1,11 +1,11 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
 
-console.log("pathname", pathname);
-console.log("hostDomain", hostDomain);
+// console.log("pathname", pathname);
+// console.log("hostDomain", hostDomain);
 
-// proxy = "verification";
-proxy = "test-api";
+proxy = "verification";
+// proxy = "test-api";
 
 var theme_form = document.querySelector(".customer.register");
 if (theme_form) {
@@ -53,8 +53,8 @@ if (form.length > 0) {
   
     const metafileds = window.shopMetafields.metafileds;
     let Translations = metafileds.translation;
-    console.log("metafileds1", metafileds);
-    console.log("Translations",Translations);
+    // console.log("metafileds1", metafileds);
+    // console.log("Translations",Translations);
     const custom_css = metafileds.custom_css;     
     if (custom_css) {
       const style = document.createElement("style");
@@ -114,7 +114,7 @@ if (form.length > 0) {
           body: JSON.stringify(requestData),
         });
         const resData = await response.json();
-console.log("responce 00", resData.message);
+// console.log("responce 00", resData.message);
         if (resData.message === "successfully_get") {
 
           submitButton.disabled = false;
@@ -137,7 +137,7 @@ console.log("responce 00", resData.message);
                 const newKey = key.replace(/\[EMAIL\]/g, ""); // Remove [EMAIL] from key
                 const newValue = value.replace(/\[EMAIL\]/g, `${email}`); // Replace [EMAIL] in value
                 cleanedData[lang][newKey] = newValue;
-                console.log("cleanedData",cleanedData);
+                // console.log("cleanedData",cleanedData);
               });
             });
             return cleanedData;
@@ -145,7 +145,7 @@ console.log("responce 00", resData.message);
           
           if (typeof Translations === "object" && !Array.isArray(Translations)) {
             Translations = cleanTranslationKeys(Translations);
-            console.log("Cleaned Translations:", Translations);
+            // console.log("Cleaned Translations:", Translations);
           } else {
             console.error("Invalid translations format:", Translations);
           }
@@ -166,7 +166,7 @@ console.log("responce 00", resData.message);
           };
           
           const userLangKey = langMap[pathLang] || "english";
-          console.log("Detected User Language:", userLangKey);
+          // console.log("Detected User Language:", userLangKey);
           
           const successMessage =
             Translations[userLangKey]?.we_have_sent_an_email_to__please_click_the_link_included_to_verify_your_email_address ||
@@ -178,7 +178,7 @@ console.log("responce 00", resData.message);
           //   Translations[userLangKey]?.this_email_has_already_been_used_for_registration! ||
           //   `This email has already been used for registration!`;
           
-          console.log("Success Message:", successMessage);
+          // console.log("Success Message:", successMessage);
 
             if (message_position === "middle") {
               submitButton.insertAdjacentHTML("beforebegin", `<p style="color: ${main_heading_color}; font-size: 18px;">${cav_heading}</p>`);

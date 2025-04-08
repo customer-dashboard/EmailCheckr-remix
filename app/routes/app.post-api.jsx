@@ -1,10 +1,12 @@
 
 import { json } from "@remix-run/node";
-import { authenticate, graphQLRequest } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 import { GetCollectionMongoDB } from "../server/mongodb";
 // import { getSubscriptionsFrontEnd } from "../models/actions.server";
 // import { restRequest } from "../shopify.server";
-import { getBilling_, checkBillingWithCustomerCount, postProfileData, checkCustomerEmailAdmin, updateCustomerMetafieldFrontend, updateCustomerMetafieldFrontendVariables, getSettings, getbilling, postMetafileds, getStoreLanguages, checkLocal } from "../Modals/Grapql";
+import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal } from "../Modals/Grapql";
+
+
 export const loader = async ({ request }) => {
   let { searchParams } = new URL(request.url);
   let shop = searchParams.get("shop");

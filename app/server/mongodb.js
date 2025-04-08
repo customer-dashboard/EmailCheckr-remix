@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const uri = "mongodb+srv://emailCheckr:12345@cluster0.z1pwf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://customerdashboardpro:aaPo77bxI4OvaHB8@cluster0.f619pih.mongodb.net/?retryWrites=true&w=majority";
 const mongoclient = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -11,7 +11,7 @@ const mongoclient = new MongoClient(uri, {
 
 const Connection = async (collectionName)=>{
   await mongoclient.connect();
-  const dbName = "sample_mflix";
+  const dbName = "email_checker";
   const database = mongoclient.db(dbName);
   return database.collection(collectionName);
 }
@@ -115,7 +115,7 @@ export async function MongoDB(data,Collection,stt) {
   const alldata = data;
   const shop = {shop:alldata.shop};
     await mongoclient.connect();
-    const dbName = "sample_mflix";
+    const dbName = "email_checker";
     var collectionName = Collection;
     const database = mongoclient.db(dbName);
     const collection = database.collection(collectionName);

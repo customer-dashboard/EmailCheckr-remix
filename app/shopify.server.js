@@ -2,7 +2,6 @@ import "@shopify/shopify-app-remix/adapters/node";
 import {
   ApiVersion,
   AppDistribution,
-  DeliveryMethod,
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import {MongoDBSessionStorage} from '@shopify/shopify-app-session-storage-mongodb';
@@ -18,7 +17,7 @@ const shopify = shopifyApp({
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
-  sessionStorage: new MongoDBSessionStorage('mongodb+srv://emailCheckr:12345@cluster0.z1pwf.mongodb.net/','sample_mflix'),
+  sessionStorage: new MongoDBSessionStorage('mongodb+srv://customerdashboardpro:aaPo77bxI4OvaHB8@cluster0.f619pih.mongodb.net/','email_checker'),
   distribution: AppDistribution.AppStore,
   webhooks: webhooksInformation,
   restResources,
@@ -26,7 +25,6 @@ const shopify = shopifyApp({
     afterAuth: async ({ session,admin }) => {
       await shopify.registerWebhooks({ session });
       const data = await onAppInstall(admin,session);
-      // console.log("🚀 ~ afterAuth:", data);
     },
   },
   future: {
@@ -41,11 +39,6 @@ const shopify = shopifyApp({
     
 });
 
-// console.log("SHOPIFY_API_KEY:", process.env.SHOPIFY_API_KEY);
-// console.log("SHOPIFY_API_SECRET:", process.env.SHOPIFY_API_SECRET);
-// console.log("SCOPES:", process.env.SCOPES);
-// console.log("SHOPIFY_APP_URL:", process.env.SHOPIFY_APP_URL);
-
 
 export default shopify;
 export const apiVersion = ApiVersion.October24;
@@ -58,60 +51,3 @@ export const sessionStorage = shopify.sessionStorage;
 
 
 
-
-
-// export async function registerWebhooks(session) {
-//   const response = await shopify.registerWebhooks({
-//     session,
-//     path: '/app-uninstalled',
-//     topic: 'APP_UNINSTALLED',
-//   });
-
-//   if (response.success) {
-//     console.log('Webhook registered successfully');
-//   } else {
-//     console.error('Failed to register webhook', response.result);
-//   }
-// }
-
-
-// export async function graphQLRequest({ shop, accessToken, query, variables }) {
-//   try {
-//     const url = `https://${shop}/admin/api/${LATEST_API_VERSION}/graphql.json`;
-//     const requestHeaders = {
-//       'X-Shopify-Access-Token': accessToken,
-//       'Content-Type': 'application/json',
-//     };
-
-//     const response = await axios.post(
-//       url,
-//       {
-//         query,        // The GraphQL query string
-//         variables,    // The variables for the query
-//       },
-//       {
-//         headers: requestHeaders, // Pass headers here
-//       }
-//     );
-
-//     return response.data; 
-//   } catch (error) {
-//     console.log('error', error);
-//     throw error; // Re-throw the error if you want it to be handled by the calling function
-//   }
-// }
-// export async function restRequest({ shop, accessToken, path }) {
-//   try {
-
-//     const url = `https://${shop}/admin/api/${ LATEST_API_VERSION }/${path}`;
-//     const requestHeaders = {
-//       'X-Shopify-Access-Token': accessToken,
-//     }
-    
-//     const data = await fetch(url, {headers:requestHeaders});
-//     return data.json();
-
-//   } catch (error) {
-//     console.log('error', error)
-//   }
-// }

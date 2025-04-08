@@ -532,7 +532,7 @@ export default function Index(props){
     setProgress(progress2);
   }, [progress2]);
 
-  console.log("defSetting", defSetting);
+  // console.log("defSetting", defSetting);
 
   useEffect(() => {
     setSetting(defSetting);

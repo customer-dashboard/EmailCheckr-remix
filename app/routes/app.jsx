@@ -194,7 +194,6 @@ export default function App() {
       setMetafields();
     }
   } 
-
   const getFaq = async() =>{
     let formdata = new FormData();
     formdata.append("_action", "get_installation_faq");

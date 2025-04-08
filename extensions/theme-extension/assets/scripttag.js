@@ -1,9 +1,10 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "test-api";
-console.log("In scriptTag file.");      
-console.log("pathname--", pathname);
-console.log("hostDomain--", hostDomain);
+proxy = "verification";
+// proxy = "test-api";
+// console.log("In scriptTag file.");      
+// console.log("pathname--", pathname);
+// console.log("hostDomain--", hostDomain);
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // proxy = "verification";
 var form = document.querySelectorAll("input[value=create_customer]");
 
-console.log("form",form.length);
+// console.log("form",form.length);
 if (form.length > 0) {
   async function InstallMetafields(path, data) {
     const response = await fetch(path, {
@@ -99,7 +100,7 @@ if (form.length > 0) {
       else if (pair[0] == "customer[tags]") array["tags"] = pair[1];
     }
     const resData = await InstallMetafields(`https://${hostDomain}/apps/${proxy}`, array);
-    console.log("resData", resData);
+    // console.log("resData", resData);
     if (resData.status == 200) {
       submit_button.disabled = false;
       submit_button.innerHTML = originalText; 
@@ -107,7 +108,7 @@ if (form.length > 0) {
       // style.type = "text/css";
       style.innerHTML = resData?.data?.css;
       document.getElementsByTagName("head")[0].appendChild(style);
-      console.log("resData.message", resData.message);
+      // console.log("resData.message", resData.message);
       if (resData?.data?.position == "middle")
         submit_button.insertAdjacentHTML("beforebegin", resData.data.getemail);
       else
