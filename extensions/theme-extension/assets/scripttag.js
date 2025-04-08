@@ -1,6 +1,7 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "test-api";
+proxy = "verification";
+// proxy = "test-api";
 console.log("In scriptTag file.");      
 console.log("pathname--", pathname);
 console.log("hostDomain--", hostDomain);
@@ -115,7 +116,7 @@ if (form.length > 0) {
     } else {
       submit_button.disabled = false;
       submit_button.innerHTML = originalText; 
-      returnCall(`This email has already been used for registration!`, "#da2f0c");
+      returnCall(resData?.data?.error_msg, "#da2f0c");
     }
   });
 }

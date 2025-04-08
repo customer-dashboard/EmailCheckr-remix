@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const uri = "mongodb+srv://emailCheckr:12345@cluster0.z1pwf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://customerdashboardpro:aaPo77bxI4OvaHB8@cluster0.z1pwf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const mongoclient = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -11,7 +11,7 @@ const mongoclient = new MongoClient(uri, {
 
 const Connection = async (collectionName)=>{
   await mongoclient.connect();
-  const dbName = "sample_mflix";
+  const dbName = "email_checker";
   const database = mongoclient.db(dbName);
   return database.collection(collectionName);
 }
@@ -87,7 +87,7 @@ export const InsertUpdateData = async (shop, data, collectionName) => {
     const options = { upsert: true }; // Insert if doesn't exist, else update
 
     const result = await collection.updateOne(filter, update, options);
-console.log("result", result);
+// console.log("result", result);
     if (result.upsertedCount > 0) {
       return { message: 'Inserted successfully', upsertedId: result.upsertedId };
     } else if (result.modifiedCount > 0) {
@@ -106,7 +106,7 @@ console.log("result", result);
 // Delete data
 export const DeleteSingleData = async (collectionName, find) => {
   const collection = await Connection(collectionName);
-  console.log("Collection Methods:", collection, find);
+  // console.log("Collection Methods:", collection, find);
   await collection.deleteOne(find);
   return { message: "Deleted successfully" };
 };
@@ -115,7 +115,7 @@ export async function MongoDB(data,Collection,stt) {
   const alldata = data;
   const shop = {shop:alldata.shop};
     await mongoclient.connect();
-    const dbName = "sample_mflix";
+    const dbName = "email_checker";
     var collectionName = Collection;
     const database = mongoclient.db(dbName);
     const collection = database.collection(collectionName);

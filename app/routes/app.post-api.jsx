@@ -1,10 +1,12 @@
 
 import { json } from "@remix-run/node";
-import { authenticate, graphQLRequest } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 import { GetCollectionMongoDB } from "../server/mongodb";
 // import { getSubscriptionsFrontEnd } from "../models/actions.server";
 // import { restRequest } from "../shopify.server";
-import { getBilling_, checkBillingWithCustomerCount, postProfileData, checkCustomerEmailAdmin, updateCustomerMetafieldFrontend, updateCustomerMetafieldFrontendVariables, getSettings, getbilling, postMetafileds, getStoreLanguages, checkLocal } from "../Modals/Grapql";
+import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal } from "../Modals/Grapql";
+
+
 export const loader = async ({ request }) => {
   let { searchParams } = new URL(request.url);
   let shop = searchParams.get("shop");
@@ -79,7 +81,7 @@ export const action = async ({ request }) => {
     check.forEach(
       (check_locale) => (language = check_locale.name.toLowerCase())
     );
-    console.log(setting.translation[language],"language in profile");
+    // console.log(setting.translation[language],"language in profile");
     setting.translation[language][
       "we_have_sent_an_email_to_[EMAIL]_please_click_the_link_included_to_verify_your_email_address"
     ] = setting.translation[language][
@@ -87,11 +89,19 @@ export const action = async ({ request }) => {
     ].replace("[EMAIL]", reqbody.email);
     var main_heading = `
     <div class="cav_main_content" style="margin-bottom:10px">
-    <h4 class="cav_heading" style="color:${setting.main_heading_color}; font-size: 18px; text-align: left; padding-left: 58px;">${setting.translation[language].please_adjust_the_following}</h4>
-    <ul class="cav_content" style="margin:15px"><li style="color:${setting.success_message_color}">${setting.translation[language]["we_have_sent_an_email_to_[EMAIL]_please_click_the_link_included_to_verify_your_email_address"]}</li></ul>
+      <h4 class="cav_heading" style="color:${setting.main_heading_color}; font-size: ${setting.typography.main_heading_font_size}px; text-align: left; padding-left: 58px;">
+        ${setting.translation[language].please_adjust_the_following}
+      </h4>
+      <ul class="cav_content" style="margin:15px">
+        <li style="color:${setting.success_message_color}; font-size: ${setting.typography.success_message_font_size}px;">
+          ${setting.translation[language]["we_have_sent_an_email_to_[EMAIL]_please_click_the_link_included_to_verify_your_email_address"]}
+        </li>
+      </ul>
     </div>`;
+    var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
      return {
       getemail: main_heading,
+      error_msg: error_message,
       position: setting.message_position,
       css: setting.custom_css,
     };
@@ -124,7 +134,7 @@ export const action = async ({ request }) => {
       }
     
       // If the email does not exist, post the profile data
-      console.log("Email not found");
+      // console.log("Email not found");
       await postProfileData(shop, reqbody, accessToken);
       let data = await ReturnProfileSection(session,setting,reqbody);
       const profile_data = { shop: shop, data: data, message: "successfully_get", status: 200 };

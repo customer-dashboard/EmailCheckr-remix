@@ -1,26 +1,19 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
-import { createSegment, getbilling, getCustomersData, getSettings, getStoreLanguages, hasBillingCheck, hasBillingRequest, postLocal, postMetafileds } from "../Modals/Grapql"; 
+import { createSegment, getCustomersData, getSettings, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
 import { GetCollectionMongoDB, GetMongoData, InsertUpdateData, MongoDB } from "../server/mongodb";
 import { CurrentDate } from "../server/apicontroller";
 import setting_json from "../server/setting";
 import { billingConfig } from "./billing";
 
-// export function dateDiffInDays(a, b) {
-//     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-//     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-//     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-  
-//     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-//   }
 
 export async function get__segment(admin,session,accessToken){
-      // console.log("get_customer_segment");
       if (!admin) {
         throw new Error("Admin API is not initialized.");
       }
     
       let data = [];
+      let formattedData = [];
       let invited = 0;
       let enabled = 0;
       let disabled = 0;
@@ -37,35 +30,78 @@ export async function get__segment(admin,session,accessToken){
         do {
           const state = null;
           let response = await getCustomersData(session.shop,accessToken,state);
-    // console.log("responce", response);
           data = data.concat(response);
-          // console.log("data", data);
           pageInfo = response.pageInfo;
         } while (pageInfo?.nextPage);
+        // for (const element of data) {
+        //   // console.log("element", element);
+        //   if (element.tags?.includes("EmailCheckrSubscriber")) {
+        //     switch (element.state) {
+        //       case "enabled":
+        //         enabled++;
+        //         break;
+        //       case "disabled":
+        //         disabled++;
+        //         break;
+        //       case "invited":
+        //         invited++;
+        //         break;
+        //     }
+        //   }
+        // }
+        let dateWiseData = {}; 
+        let totalCustomers = 0; 
+        
         for (const element of data) {
-          // console.log("element", element);
           if (element.tags?.includes("EmailCheckrSubscriber")) {
+            totalCustomers++; 
+            const createdAt = new Date(element.created_at).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            });
+        
+            if (!dateWiseData[createdAt]) {
+              dateWiseData[createdAt] = { enabled: 0, disabled: 0, invited: 0 };
+            }
+        
             switch (element.state) {
               case "enabled":
-                enabled++;
+                dateWiseData[createdAt].enabled++;
                 break;
               case "disabled":
-                disabled++;
+                dateWiseData[createdAt].disabled++;
                 break;
               case "invited":
-                invited++;
+                dateWiseData[createdAt].invited++;
                 break;
             }
           }
         }
-    
-        data = {id,invited,enabled,disabled,total:data.length}
+        
+        const sortedDateWiseData = Object.keys(dateWiseData)
+          .sort((a, b) => new Date(a) - new Date(b))
+          .map((date) => ({
+            key: date,
+            enabled: dateWiseData[date].enabled,
+            disabled: dateWiseData[date].disabled,
+            invited: dateWiseData[date].invited,
+          }));
+        
+        formattedData = {
+          id: id || null, 
+          invited: sortedDateWiseData.reduce((sum, obj) => sum + obj.invited, 0),
+          enabled: sortedDateWiseData.reduce((sum, obj) => sum + obj.enabled, 0),
+          disabled: sortedDateWiseData.reduce((sum, obj) => sum + obj.disabled, 0),
+          total: totalCustomers, 
+          dateWiseData: sortedDateWiseData, 
+        };
+        
       } catch (error) {
-        data = error.message;
+        formattedData = error.message;
       }
-      return data;
+      return formattedData;
 }
-
 
 export async function action({ request }) {
     const { admin, session, billing } = await authenticate.admin(request);
@@ -117,47 +153,12 @@ export async function action({ request }) {
         if (!new_data)new_data = setting_json;
         newArray = Object.keys(setting_json).filter((key) => !Object.keys(new_data).some((key2) => key === key2));
         newArray.map(key => new_data[key] = setting_json[key]);
-        new_data = await postLocal(admin.graphql,new_data);
+        // new_data = await postLocal(admin.graphql,new_data);
         // console.log("new_data", new_data);
         let formdata = new FormData();
         formdata.append("_postMetafileds", JSON.stringify(new_data));
         const postData = await postMetafileds(admin,formdata,shop,accessToken);
     }
-    // else if (_action === "graphql_billing"){
-    //     let data = [];
-    //     // console.log("reqbody",request);
-    //    const { name } = {name:"business"};
-    //    console.log("name", name);
-    //     data = await GetCollectionMongoDB("trialdays",shop);
-    //     console.log("datafromMongo", data);
-    //     if (data == null) {
-    //       billingConfig[name].trialDays = 7;
-    //     } else {
-    //       if (data.plan_subscription != "" && data.cancel_subscription == "1") {
-    //         const a = new Date(data.plan_subscription);
-    //         const b = new Date();
-    //         let countDays = dateDiffInDays(a, b);
-    //         billingConfig[name].trialDays = countDays < 7 ? 7 - countDays : 0;
-    //       } else {
-    //         const a = new Date(data.plan_subscription);
-    //         const b = new Date(data.cancel_subscription);
-    //         let countDays = dateDiffInDays(a, b);
-    //         billingConfig[name].trialDays = countDays < 7 ? 7 - countDays : 0;
-    //       }
-    //     }
-    //     console.log("In billing");
-    //     const hasPayment = await hasBillingCheck(session,billing,name);
-    //     console.log("billing_hasPayment", hasPayment);
-    //     const billing_data = await hasBillingRequest(session,billing,name);
-    //     console.log("billing_data", billing_data);
-    //     if (hasPayment.hasActivePayment) {
-    //       next();
-    //     } else {
-    //       return({
-    //         data: await hasBillingRequest(session,billing,name)
-    //       });
-    //     }
-    // }
     else if (_action === "get_installation_faq"){
         let data = [];
         let status = 200;
@@ -211,8 +212,8 @@ export async function action({ request }) {
             var new_data = await getSettings(admin);
             let parse_data = JSON.parse(new_data);
             // parse_data.segment = data;
-            parse_data.segment = await get__segment(admin,session,accessToken,);;
-            console.log("THIS IS THE FINAL DATA", parse_data);
+            parse_data.segment = await get__segment(admin,session,accessToken);
+            // console.log("THIS IS THE FINAL DATA", parse_data);
             let formdata = new FormData();
             formdata.append("_postMetafileds", JSON.stringify(parse_data));
             let postDa = await postMetafileds(admin, formdata, shop, accessToken);
@@ -228,65 +229,9 @@ export async function action({ request }) {
       // console.log("get_account_validation_status", get_account_validation_status);
       return json({get_account_validation_status,status:200})
     }
-    // else if (_action === "get_customer_segment"){
-    //   const state = null;
-    //   const customers = await getCustomersData(shop,accessToken,state);
-    //   console.log("customers", customers);
-    // }
-    // else if (_action === "get_customer_segment"){
-    //   // console.log("get_customer_segment");
-    //   if (!admin) {
-    //     throw new Error("Admin API is not initialized.");
-    //   }
-    
-    //   let data = [];
-    //   let invited = 0;
-    //   let enabled = 0;
-    //   let disabled = 0;
-    //   let id = null;
-    
-    //   try {
-    //     id = await GetCollectionMongoDB("customer_invited",session.shop);
-    //     if (id == null) {
-    //       return false;
-    //     }
-    
-    //     let pageInfo;
-    //     do {
-    //       const state = null;
-    //       let response = await getCustomersData(shop,accessToken,state);
-    // // console.log("responce", response);
-    //       data = data.concat(response);
-    //       // console.log("data", data);
-    //       pageInfo = response.pageInfo;
-    //     } while (pageInfo?.nextPage);
-    //     for (const element of data) {
-    //       // console.log("element", element);
-    //       if (element.tags?.includes("EmailCheckrSubscriber")) {
-    //         switch (element.state) {
-    //           case "enabled":
-    //             enabled++;
-    //             break;
-    //           case "disabled":
-    //             disabled++;
-    //             break;
-    //           case "invited":
-    //             invited++;
-    //             break;
-    //         }
-    //       }
-    //     }
-    
-    //     data = {id,invited,enabled,disabled,total:data.length}
-    //   } catch (error) {
-    //     data = error.message;
-    //   }
-    //   return data;
-    // }
-
     else if (_action === "for_check"){
       console.log("for check");
-      const responce = await get__segment(admin,session,accessToken,);
+      const responce = await get__segment(admin,session,accessToken);
       console.log("responceForcheck", responce);
     }
 
@@ -297,8 +242,6 @@ export async function action({ request }) {
       status: 500, 
     };
   }
-
-
   return json(response);
 }
 

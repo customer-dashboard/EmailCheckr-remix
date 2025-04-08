@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { InsertUpdateData } from "./server/mongodb";
 
-if (process.env.NODE_ENV !== "production") {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
+export const UninstallEvent = (session)=>{
+  
+      const resData = {
+        status: 0,
+      }
+      const result = InsertUpdateData(session.shop, resData, 'shop_info');
+      return result;
 }
 
-const prisma = global.prisma || new PrismaClient();
-
-export default prisma;

@@ -4,8 +4,8 @@ hostDomain = window.location.hostname;
 console.log("pathname", pathname);
 console.log("hostDomain", hostDomain);
 
-// proxy = "verification";
-proxy = "test-api";
+proxy = "verification";
+// proxy = "test-api";
 
 var theme_form = document.querySelector(".customer.register");
 if (theme_form) {
@@ -129,7 +129,7 @@ console.log("responce 00", resData.message);
           }
           
           function cleanTranslationKeys(data) {
-            console.log("data",data); 
+            // console.log("data",data); 
             const cleanedData = {};
             Object.entries(data).forEach(([lang, messages]) => {
               cleanedData[lang] = {};
@@ -174,6 +174,9 @@ console.log("responce 00", resData.message);
           const cav_heading =
             Translations[userLangKey]?.please_adjust_the_following ||
             `Please adjust the following`;
+          // const cav_error =
+          //   Translations[userLangKey]?.this_email_has_already_been_used_for_registration! ||
+          //   `This email has already been used for registration!`;
           
           console.log("Success Message:", successMessage);
 

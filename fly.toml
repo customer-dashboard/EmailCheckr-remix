@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for customer-account-verification on 2023-09-23T14:01:33+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "customer-account-verification"
+primary_region = "maa"
+
+[env]
+  PORT = "8080"
+  HOST = "https://customer-account-verification.fly.dev"
+  SHOPIFY_API_KEY = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
+  SCOPES = "read_customers,write_customers,read_locales,read_themes"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]

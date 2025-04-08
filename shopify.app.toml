@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://holdem-brothers-commitment-miniature.trycloudflare.com"
+application_url = "https://blog-counter-von-wendy.trycloudflare.com"
 embedded = true
-name = "EmailCheckr: Activation<REMIX>"
+name = "EmailCheckr: Activation Link"
 handle = "email-checkr"
 
 [build]
@@ -15,27 +15,35 @@ include_config_on_deploy = true
 api_version = "2025-01"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
-
-  [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
 
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/data_request" ]
+  uri = "/webhooks/app/customers_data_request"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/redact" ]
+  uri = "/webhooks/app/customers_redact"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "shop/redact" ]
+  uri = "/webhooks/app/shop_redact"
+
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_customers,read_locales,write_customers,write_products,read_themes"
+scopes = "read_customers,read_locales,write_customers,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/auth/callback",
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/auth/shopify/callback",
-  "https://holdem-brothers-commitment-miniature.trycloudflare.com/api/auth/callback"
+  "https://blog-counter-von-wendy.trycloudflare.com/auth/callback",
+  "https://blog-counter-von-wendy.trycloudflare.com/auth/shopify/callback",
+  "https://blog-counter-von-wendy.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://holdem-brothers-commitment-miniature.trycloudflare.com/app/post-api"
-subpath = "test-api"
+url = "https://blog-counter-von-wendy.trycloudflare.com/customerdashboard/post-customer-data"
+subpath = "verification"
 prefix = "apps"
 
 [pos]
