@@ -98,7 +98,12 @@ export const action = async ({ request }) => {
         </li>
       </ul>
     </div>`;
-    var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
+    if (setting.translation[language] && setting.translation[language].hasOwnProperty("this_email_has_already_been_used_for_registration!")) {
+      var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
+    } else {
+      var error_message = `<p>This email has already been used for registration!</p>`;
+    }
+    // var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
      return {
       getemail: main_heading,
       error_msg: error_message,

@@ -1,11 +1,6 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
 proxy = "verification";
-// proxy = "test-api";
-// console.log("In scriptTag file.");      
-// console.log("pathname--", pathname);
-// console.log("hostDomain--", hostDomain);
-
 
 document.addEventListener("DOMContentLoaded", function () {
   var formInputs = document.querySelectorAll("input[value=create_customer]");
@@ -58,7 +53,7 @@ if (form.length > 0) {
   elemDiv1.classList.add("ev_parent_return_message");
   elemDiv1.style.cssText = `display: flex; justify-content: center;`;
   elemDiv2.classList.add("ev_return_message");
-  elemDiv2.style.cssText = `background: #000;z-index: 999;text-align: center;padding: 15px;border-radius: 5px;position: fixed;transition: bottom 0.4s ease-out;color: white;font-weight: 600;bottom: -100px;`;
+  elemDiv2.style.cssText = `background: #000;z-index: 999;text-align: center;padding: 15px;border-radius: 5px;position: fixed;transition: bottom 0.4s ease-out;color: white;font-weight: 600;bottom: -120px;`;
   elemDiv1.appendChild(elemDiv2);
   document.body.appendChild(elemDiv1);
   submit_button.type = "button";
