@@ -27,7 +27,7 @@ export const action = async ({ request }) => {
   const reqbody = await request.json();
   // console.log("reqbody", reqbody);
   let { searchParams } = new URL(request.url);
-  let _actions = reqbody._action;
+  let _actions = reqbody.target;
   let shop = searchParams.get("shop");
   // console.log("query", typeof(shop));
   // let customerID = reqbody.localCustomerID;
@@ -98,7 +98,14 @@ export const action = async ({ request }) => {
         </li>
       </ul>
     </div>`;
-    var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
+    // console.log("trans", setting.translation[language]["this_email_has_already_been_used_for_registration!"]);
+    if (setting.translation[language] && setting.translation[language].hasOwnProperty("this_email_has_already_been_used_for_registration!")) {
+      var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
+    } else {
+      var error_message = `<p>This email has already been used for registration!</p>`;
+    }
+    
+    
      return {
       getemail: main_heading,
       error_msg: error_message,
@@ -111,7 +118,7 @@ export const action = async ({ request }) => {
     
   case "check_billing":
     const check_billing = await postCheckBilling(session,setting);
-    // console.log("check_billing", check_billing);
+    console.log("check_billing", check_billing);
     return json(check_billing);
 
   case "get_customer_metafield":
@@ -120,7 +127,7 @@ export const action = async ({ request }) => {
     const metafieldsData = { shop: shop, data: metafield, message: "successfully_get", status: 200 };
     return json(metafieldsData);
 
-  case "profile_data":
+  case "profile-data":
     try {
       const checkMail = await checkCustomerEmailAdmin(shop, reqbody, accessToken);
       // console.log("checkMail", checkMail);
@@ -133,7 +140,6 @@ export const action = async ({ request }) => {
         return json(profile_data);
       }
     
-      // If the email does not exist, post the profile data
       // console.log("Email not found");
       await postProfileData(shop, reqbody, accessToken);
       let data = await ReturnProfileSection(session,setting,reqbody);

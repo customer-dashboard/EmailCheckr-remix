@@ -21,20 +21,20 @@ export async function action({ request }) {
   const { name } = reqData;
   // console.log("name", name);
   data = await GetCollectionMongoDB("trialdays",shop);
-  console.log("datafromMongo", data);
+  // console.log("datafromMongo", data);
   if (data == null) {
-    billingConfig[name].trialDays = 7;
+    billingConfig[name].trialDays = 14;
   } else {
     if (data.plan_subscription != "" && data.cancel_subscription == "1") {
       const a = new Date(data.plan_subscription);
       const b = new Date();
       let countDays = dateDiffInDays(a, b);
-      billingConfig[name].trialDays = countDays < 7 ? 7 - countDays : 0;
+      billingConfig[name].trialDays = countDays < 14 ? 14 - countDays : 0;
     } else {
       const a = new Date(data.plan_subscription);
       const b = new Date(data.cancel_subscription);
       let countDays = dateDiffInDays(a, b);
-      billingConfig[name].trialDays = countDays < 7 ? 7 - countDays : 0;
+      billingConfig[name].trialDays = countDays < 14 ? 14 - countDays : 0;
     }
   }
 

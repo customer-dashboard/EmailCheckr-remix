@@ -51,7 +51,7 @@ useEffect(() => {
 }, [defSetting]);
 
 const closePopup = () => {
-  console.log("defaultSetting",defaultSetting);
+  // console.log("defaultSetting",defaultSetting);
   setSetting(prev => ({ ...defaultSetting })); 
   setSave(false);
 };

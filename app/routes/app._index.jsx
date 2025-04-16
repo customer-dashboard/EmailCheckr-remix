@@ -499,22 +499,29 @@ import {
 import customer_dashboard from "../assets/image/customer-dashboard-pro.png"
 import AnalyticsLegacy from "../universal-components/analytics/index";
 // import "@shopify/polaris-viz/build/esm/styles.css";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
+import { Navigate, useLoaderData, useOutletContext } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import SkeletonExample from "../components/SkeletonExample";
+import { getShopData } from "../Modals/Grapql";
+import IndexOnBoarding from "../universal-components/on-boarding/indexOnBoarding";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
+  // await authenticate.admin(request);
   const {admin,session} = await authenticate.admin(request);
   const { shop } = session;
   
+  var shopData = await getShopData(admin,session);
+  const customerAccountsVersion = shopData.data.shop.customerAccountsV2;
+
+
   // let myShop = shop.replace(".myshopify.com", "");
-  return shop;
+  return {shop,customerAccountsVersion};
 };
 
 export default function Index(props){
-  const shop = useLoaderData();
-  let myShop = shop.replace(".myshopify.com", "");
+  // const shop = useLoaderData();
+  const data = useLoaderData();
+  let myShop = data.shop.replace(".myshopify.com", "");
   const [partnerCollOut, setPartnerCollOut] = useState(() => {
     // const storedValue = localStorage.getItem("partnerCollOut");
     // return storedValue !== null ? JSON.parse(storedValue) : true;
@@ -528,13 +535,15 @@ export default function Index(props){
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [setting, setSetting] = useState({});
   const [defaultSetting, setdefaultSetting] = useState({});
-  const {defSetting, setDefSetting, progress2} = useOutletContext();
-
+  const {defSetting, setDefSetting, progress2, allthemes, enableTheme, appStatus, classic, onBoarding, setOnBoarding, isShopifyPlus} = useOutletContext();
+  
   useEffect(() => {
     setProgress(progress2);
   }, [progress2]);
-
-  // console.log("defSetting", defSetting);
+  
+  const billing = setting?.billing;
+  const themes = allthemes;
+  // const classic = data.customerAccountsVersion;
 
   useEffect(() => {
     setSetting(defSetting);
@@ -550,14 +559,24 @@ export default function Index(props){
     });
   }, []);
 
-// console.log("outLet defSetting", defSetting);
+
+console.log("classic", classic);
   const analyticsComponent = useMemo(() => {
-    return (
-      <>
-        <AnalyticsLegacy defSetting={defSetting} pageType={"home"} />
+    if (classic?.customerAccountsVersion === "CLASSIC") {
+      return (
+        <>
+          <AnalyticsLegacy {...props} pageType={"home"} />
+        </>
+      );
+    } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
+
+      return <>
+      {/* <BillingAlert billing={billing} pageType={"other"} /> */}
+      {/* <AnalyticsView {...props} pageType={"home"} /> */}
       </>
-    );
-  }, [defSetting]);
+    }
+    return null;
+  }, [onBoarding, defSetting]);
 
   const DeleteMetafields = async () => {
     let formdata = new FormData();
@@ -582,6 +601,8 @@ const persantage = (invited, count) => {
   return Math.round((invited / count) * 100)
 }
 }
+
+
 
   const cardData = [
   { title: "Invited", color: "primary", content: "View", persantage: persantage(setting?.segment?.invited, setting?.segment?.total), value: setting?.segment?.invited, url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}` },
@@ -609,8 +630,7 @@ const persantage = (invited, count) => {
                         </Grid.Cell>
                       ))}    
                       </Grid>
-                      :null
-  }
+                      :null }
                </Layout.Section>
               );
   })
@@ -789,47 +809,73 @@ const InstallMetafields = async (url, data) => {
   return await response.json();
 }
 
-  return (
-    <Page title="Dashboard">
-    {
-     progress ?
-       <SkeletonExample /> :
-      <Layout>
-               {setting?.billing?.status === "active" ?
-                  null :
-                  <Layout.Section fullWidth>
-                    <Banner
-                      title="EmailCheckr is currently inactive"
-                      action={{ loading: loading2, content: 'Start Trial', onAction: () => handleActionPlan(setLoading2,"business") }}
-                      tone="warning"
+
+return (
+  <>
+    {onBoarding ? (
+      <IndexOnBoarding {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, myShop, isShopifyPlus }} />
+    ) : classic?.customerAccountsVersion === "CLASSIC" ? (
+      <Page title="Dashboard">
+        {progress ? (
+          <SkeletonExample />
+        ) : (
+          <Layout>
+            {setting?.billing?.status !== "active" && (
+              <Layout.Section fullWidth>
+                <Banner
+                  title="EmailCheckr is currently inactive"
+                  action={{
+                    loading: loading2,
+                    content: "Start Trial",
+                    onAction: () => handleActionPlan(setLoading2, "business"),
+                  }}
+                  tone="warning"
+                >
+                  <p>Start 14 day free trial to activate EmailCheckr</p>
+                </Banner>
+              </Layout.Section>
+            )}
+
+            <Layout.Section fullWidth>
+              <Card>
+                <InlineStack align="space-between" className="cd_flex_container">
+                  <Text as="h2" variant="headingMd">Plan</Text>
+                  {setting?.billing?.status === "active" ? (
+                    <Badge tone="success">Active</Badge>
+                  ) : (
+                    <Button
+                      size="slim"
+                      loading={loading3}
+                      onClick={() =>
+                        handleActionPlan(
+                          setLoading3,
+                          isShopifyPlus ? "business+" : "business"
+                        )
+                      }
                     >
-                      <p>Start 14 day free trial to activate EmailCheckr</p>
-                    </Banner>
-                  </Layout.Section>
-                }
-                 <Layout.Section fullWidth >
-                   <Card>
-                       <InlineStack align='space-between' className='cd_flex_container'>
-                         <Text as='h2' variant='headingMd'>Plan</Text>
-                        {
-                          setting?.billing?.status === "active" ? <Badge tone="success">Active</Badge> : <Button
-                            size='slim'
-                            loading={loading3}
-                            onClick={() => handleActionPlan(setLoading3,partnerType=="enterprise"?"business+":"business")}
-                          >Upgrade plan</Button>
-                        }
-                      </InlineStack>
-                    <Box paddingBlockStart="200">
-                      <Text>${partnerType=="enterprise"?9.99:2.99} USD/Month{setting?.billing?.status === "active" ? '' : " ( 7-Days free trial )"}</Text>
-                    </Box>
-                  </Card>
-                 </Layout.Section> 
-        {/* {analyticsComponent} */}
-        {customerStatus}
-        {moreAppsCard}
-        {helpSupportCard}
-      </Layout>
-    }
-    </Page>
-  );
+                      Upgrade plan
+                    </Button>
+                  )}
+                </InlineStack>
+
+                <Box paddingBlockStart="200">
+                  <Text>
+                    ${isShopifyPlus === true ? 9.99 : 2.99} USD/Month
+                    {setting?.billing?.status === "active"
+                      ? ""
+                      : " (14-Days free trial)"}
+                  </Text>
+                </Box>
+              </Card>
+            </Layout.Section>
+
+            {customerStatus}
+            {moreAppsCard}
+            {helpSupportCard}
+          </Layout>
+        )}
+      </Page>
+    ) : null}
+  </>
+);
 }

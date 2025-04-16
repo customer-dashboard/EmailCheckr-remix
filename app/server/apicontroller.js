@@ -29,17 +29,3 @@ export const CurrentDate = () => {
       seconds
     );
   };
-
-
-
-                  {/* {
-                 setting.translation &&
-                  Object.keys(setting.translation)?.map((lang1, key1) => {
-                    console.log("key1--", key1);
-                    console.log("lang1--", lang1);
-                    Object.keys(setting.translation[lang1]).map((lang2, key2) => {
-                      console.log("key2--", key2);
-                      console.log("lang2value--", setting.translation[lang1][lang2]);
-                    })
-                  })
-                  } */}

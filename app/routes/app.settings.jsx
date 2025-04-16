@@ -166,7 +166,7 @@ const suffixStyles = {
 };
 
 const closePopup = () => {
-  console.log("defaultSetting",defaultSetting);
+  // console.log("defaultSetting",defaultSetting);
   setSetting(prev => ({ ...defaultSetting })); 
   setSave(false);
 };
@@ -183,7 +183,7 @@ const closePopup = () => {
         <div>
         <Page title='Settings'>
           <Layout >
-          {
+          {/* {
             appStatusSettings.map((item) => (
               <Layout.AnnotatedSection
                 id={item.key}
@@ -206,7 +206,7 @@ const closePopup = () => {
                 </Card>
               </Layout.AnnotatedSection>
             ))
-          }
+          } */}
 
           {
             messagePositionSettings.map((item,key) => (

@@ -36,11 +36,11 @@ export const loader = async ({ request }) => {
   const {admin,session} = await authenticate.admin(request);
   const { shop } = session;
   let myShop = shop.replace(".myshopify.com", "");
-  return myShop;
+  return {myShop,shop};
 };
 
 export default function Installation(props) {
-    const myShop = useLoaderData();
+    const {myShop,shop} = useLoaderData();
     const [modelFirst, setModelFirst] = useState(false);
     const [active, setActive] = useState(false);
     const [faq, setFaq] = useState([]);
@@ -48,20 +48,24 @@ export default function Installation(props) {
     const [state, setState] = useState([]);
     const [progress, setProgress] = useState(true);
     const [information, setInformation] = useState(true);
-    const { allthemes } = useOutletContext();
+    const { allthemes, onBoarding, enableTheme, livetheme } = useOutletContext();
 
     useEffect(() => {
         getThemes();
         getFaq();
     }, [allthemes]);
 
+    useEffect(() => {
+        setData(enableTheme);
+      }, [enableTheme, livetheme]);
+
     const getThemes = async () => {
         setState(allthemes);
-        allthemes.forEach(ele => {
-                if (ele.node.role === "MAIN") {
-                    setData({ name: ele.node.name, value: (ele.node.id).replace(/^.*\//, ""), role: ele.node.role });
-                }
-            });
+        // allthemes.forEach(ele => {
+        //         if (ele.node.role === "MAIN") {
+        //             setData({ name: ele.node.name, value: (ele.node.id).replace(/^.*\//, ""), role: ele.node.role });
+        //         }
+        //     });
 
         setProgress(false);
     };
@@ -118,13 +122,19 @@ export default function Installation(props) {
         onAction: () => handleImportedAction(ele.node.name, (ele.node.id).replace(/^.*\//, ""), ele.node.role),
     }));
 
+    const ClickEvent = () => {
+        window.open("shopify://admin/apps/email-checkr/app", "_self");
+      };
 
     return (
         <Frame>
             {
                 progress ?
                     <SkeletonExample /> :
-                    <Page title='Installation'>
+                    <Page
+                    {...(onBoarding ? { backAction: { onAction: ClickEvent } } : {})}
+                    title="Installation"
+                  >
                 <Layout>
 
                 <Layout.Section fullWidth>
@@ -155,8 +165,12 @@ export default function Installation(props) {
                                                     size="slim"
                                                     variant="primary"
                                                     onClick={() =>
+                                                    //   window.open(
+                                                    //     `https://admin.shopify.com/store/${myShop}/themes/${data?.value}/editor?previewPath=%2Faccount%2Fregister&context=apps`,
+                                                    //     "_blank"
+                                                    //   )
                                                       window.open(
-                                                        `https://admin.shopify.com/store/${myShop}/themes/${data?.value}/editor?previewPath=%2Faccount%2Fregister&context=apps`,
+                                                        `https://${shop}/admin/themes/${data?.value}/editor?context=apps&activateAppId=20384d45f5b73f1e1a6c806428ab773d/app-embed`,
                                                         "_blank"
                                                       )
                                                     }

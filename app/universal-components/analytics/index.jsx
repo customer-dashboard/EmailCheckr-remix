@@ -6,6 +6,7 @@ import { useNavigate } from "@remix-run/react";
 // import "@shopify/polaris-viz/build/esm/styles.css";
 
 export default function AnalyticsLegacy(props){
+    // console.log("Props", props);
     const { defSetting, pageType } = props;
     const getStoreMetafields  = defSetting;
     const [selectedRange, setSelectedRange] = useState("last7days");

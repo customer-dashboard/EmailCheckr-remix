@@ -34,7 +34,7 @@ if (form.length > 0) {
     return await response.json();
   }
   let billing = {};
-  billing._action = "check_billing";
+  billing.target = "check_billing";
   InstallMetafields(`https://${hostDomain}/apps/${proxy}`, billing);
   form = form[0].form;
   var password = form.querySelectorAll("input[type=password]");
@@ -58,7 +58,7 @@ if (form.length > 0) {
   elemDiv1.classList.add("ev_parent_return_message");
   elemDiv1.style.cssText = `display: flex; justify-content: center;`;
   elemDiv2.classList.add("ev_return_message");
-  elemDiv2.style.cssText = `background: #000;z-index: 999;text-align: center;padding: 15px;border-radius: 5px;position: fixed;transition: bottom 0.4s ease-out;color: white;font-weight: 600;bottom: -100px;`;
+  elemDiv2.style.cssText = `background: #000;z-index: 999;text-align: center;padding: 15px;border-radius: 5px;position: fixed;transition: bottom 0.4s ease-out;color: white;font-weight: 600;bottom: -120px;`;
   elemDiv1.appendChild(elemDiv2);
   document.body.appendChild(elemDiv1);
   submit_button.type = "button";
@@ -89,7 +89,7 @@ if (form.length > 0) {
     document.head.appendChild(style_);
     var formData = new FormData(form);
     var array = {};
-    array._action = "profile_data";
+    array.target = "profile-data";
     array.local = Shopify.locale;
     for (var pair of formData.entries()) {
       if (pair[0] == "customer[first_name]") array["first_name"] = pair[1];
