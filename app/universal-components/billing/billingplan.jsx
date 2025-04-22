@@ -17,7 +17,7 @@ import {
   
   export const BillingPlan = (props) => {
     const { billing, isShopifyPlus } = props;
-    // console.log("billing", billing);
+    console.log("billing", billing);
     // const [billing] = useState({count:53334});
     const [loading, setLoading] = useState(-1);
     // const queryParameters = new URLSearchParams(window.location.search);
@@ -145,7 +145,7 @@ import {
         id: "",
         name: "business",
         price: "$2.99 USD / month",
-        disable: true,
+        disable: billing?.status === undefined ? false : true,
         button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
       }
     : {
@@ -153,7 +153,7 @@ import {
         id: "",
         name: "business+",
         price: "$9.99 USD / month",
-        disable: true,
+        disable: billing?.status === undefined ? false : true,
         button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
       };
   
@@ -190,7 +190,6 @@ import {
           loading={name == loading}
           primary
           onClick={() => handleActionPlan(name,price)}
-          fullWidth
         >
           {button_name}
         </Button>
