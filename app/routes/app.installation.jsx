@@ -123,7 +123,7 @@ export default function Installation(props) {
     }));
 
     const ClickEvent = () => {
-        window.open("shopify://admin/apps/email-checkr/app", "_self");
+        window.open("shopify://admin/apps/customer-account-verification/app", "_self");
       };
 
     return (

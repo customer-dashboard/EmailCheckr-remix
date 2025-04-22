@@ -20,7 +20,7 @@ export default function Plan(props) {
     const { onBoarding, defSetting, isShopifyPlus } = useOutletContext();
     const billing = defSetting?.billing;
     const ClickEvent = () => {
-        window.open("shopify://admin/apps/email-checkr/app", "_self");
+        window.open("shopify://admin/apps/customer-account-verification/app", "_self");
       };
 
     return (
