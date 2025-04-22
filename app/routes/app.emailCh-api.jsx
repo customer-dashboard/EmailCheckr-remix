@@ -1,11 +1,10 @@
 import { json } from "@remix-run/node";
-import { authenticate } from "../shopify.server";
-import { app_Status, createSegment, getAppStatus, getCustomersData, getSettings, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
+import { apiKey, authenticate } from "../shopify.server";
+import { app_Status, createSegment, enableAppEmbed, getAppStatus, getCustomersData, getSettings, getSettingsData, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
 import { GetCollectionMongoDB, GetMongoData, InsertUpdateData, MongoDB } from "../server/mongodb";
 import { CurrentDate } from "../server/apicontroller";
 import setting_json from "../server/setting";
 import { billingConfig } from "./billing";
-
 
 export async function get__segment(admin,session,accessToken){
       if (!admin) {
@@ -246,6 +245,13 @@ export async function action({ request }) {
       const responce = await getShopData(admin,session);
       // console.log("get_shop_data", responce);
       return json({responce,status:200});
+    }
+    else if (_action === "app_embed"){
+      // console.log("for check");
+      const theme_id = data.get("theme_id");
+
+      const responce = await enableAppEmbed(shop, accessToken, theme_id);
+      console.log("enableAppEmbed", responce);
     }
     else if (_action === "for_check"){
       // console.log("for check");

@@ -6,7 +6,6 @@ import { authenticate } from "../shopify.server";
 import { Links, LiveReload, Meta, Scripts } from '@remix-run/react';
 import { useEffect, useState } from "react";
 import { json } from '@remix-run/node';
-import { getSettings, getShopData } from "../Modals/Grapql";
 // import "@shopify/polaris-viz/build/esm/styles.css";
 
 //https://my-public-app.myshopify.com/apps/test-app
@@ -219,14 +218,14 @@ export default function App() {
       setMetafields();
     }
   } 
-  const getFaq = async() =>{
-    let formdata = new FormData();
-    formdata.append("_action", "get_installation_faq");
-    const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
-    const responseJson = await response.json();
-    if(responseJson.status==200) {
-    //  setPaymentcheck(responseJson?.data)
-    }
+const getFaq = async() =>{
+  let formdata = new FormData();
+  formdata.append("_action", "get_installation_faq");
+  const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
+  const responseJson = await response.json();
+  if(responseJson.status==200) {
+  //  setPaymentcheck(responseJson?.data)
+  }
 }
 
 const getbilling = async() =>{
@@ -273,6 +272,7 @@ const getSegment = async() =>{
   // console.log("get_customer_segment",responseJson);
   return (responseJson.shop);
 }
+
 const shopData = async() =>{
   let formdata = new FormData();
   formdata.append("_action", "get_shop_data");
@@ -283,43 +283,37 @@ const shopData = async() =>{
   // console.log("get_shop_data",responseJson?.responce?.data?.shop?.customerAccountsV2);
   return (responseJson);
 }
+
 const app_Status = async() =>{
   let formdata = new FormData();
   formdata.append("_action", "app_status");
   formdata.append("allthemes", JSON.stringify(allthemes));
   const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
   const responseJson = await response.json();
+  const enabledThemes = [];
 
-  // responseJson?.app_status.forEach(ele => {
-    // if (ele.node.embed_status_disabled === false) {
-    //   setAppStatus({ name: ele.node.name, value: (ele.node.id).replace(/^.*\//, ""), role: ele.node.role });
-    //   setEnableTheme({ name: ele.node.name, value: (ele.node.id).replace(/^.*\//, ""), role: ele.node.role });
-    // }
-    const enabledThemes = [];
+  responseJson?.app_status.forEach(ele => {
+    if (ele.node.embed_status_disabled === false) {
+      const themeData = {
+        name: ele.node.name,
+        value: ele.node.id.replace(/^.*\//, ""),
+        role: ele.node.role,
+      };
+      enabledThemes.push(themeData);
+    }
+  });
 
-responseJson?.app_status.forEach(ele => {
-  if (ele.node.embed_status_disabled === false) {
-    const themeData = {
-      name: ele.node.name,
-      value: ele.node.id.replace(/^.*\//, ""),
-      role: ele.node.role,
-    };
-    enabledThemes.push(themeData);
+  if (enabledThemes.length > 0) {
+    setAppStatus(true);      
+    setEnableTheme(enabledThemes[0]);       
   }
-});
-
-if (enabledThemes.length > 0) {
-  setAppStatus(true);      // or whatever logic you want for primary theme
-  setEnableTheme(enabledThemes[0]);       // set all enabled themes as an array
-}
-// });
-  return (responseJson?.app_status);
+    return (responseJson?.app_status);
 }
 
 
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
-      { onBoarding ? null : 
+      {/* { onBoarding ? null :  */}
       <ui-nav-menu> 
         <Link to="/app" rel="home">Home</Link>
         <Link to="/app/translations">Translations</Link>
@@ -328,7 +322,7 @@ if (enabledThemes.length > 0) {
         <Link to="/app/settings">Settings</Link>
         <Link to="/app/plans">Plans</Link>
       </ui-nav-menu>
-      }
+      {/* } */}
         <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus}} />
         <Scripts />
     </AppProvider>

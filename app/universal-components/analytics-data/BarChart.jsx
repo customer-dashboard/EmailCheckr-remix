@@ -6,11 +6,11 @@ import { SearchResourceIcon } from "@shopify/polaris-icons";
 import "../../components/style.css"
 
 export default function barChart(props) {
-  const { data, title, count, pageType } = props;
-  console.log("data", data);
-  console.log("title", title);
-  console.log("count", count);
-  console.log("pageType", pageType);
+  const { data, title, count, pageType, defSetting, selectedRange } = props;
+  console.log("selectedRange", selectedRange);
+  // console.log("title", title);
+  // console.log("count", count);
+  // console.log("pageType", pageType);
   // const data = [
   //   {
   //     "name": "Enabled",
@@ -48,7 +48,7 @@ export default function barChart(props) {
             {title}
           </Text>
           <Text as="h5">
-          Last 7 days
+          {/* Last 7 days */} {selectedRange}
           </Text>
         </InlineStack>
         <Box paddingBlockStart="200" paddingBlockEnd="200">
@@ -67,7 +67,12 @@ export default function barChart(props) {
               <Button
                 variant="plain"
                 icon={SearchResourceIcon}
-                onClick={() => navigate("/app/analytics", { replace: true })}
+                onClick={() => navigate("/app/analytics", {
+                  replace: true,
+                  state: {
+                    defSetting: defSetting
+                  }
+                })}
               ></Button>
             </Tooltip>
           )}

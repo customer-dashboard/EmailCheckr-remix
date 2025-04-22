@@ -48,7 +48,7 @@ export default function Installation(props) {
     const [state, setState] = useState([]);
     const [progress, setProgress] = useState(true);
     const [information, setInformation] = useState(true);
-    const { allthemes, onBoarding, enableTheme, livetheme } = useOutletContext();
+    const { allthemes, onBoarding, enableTheme, livetheme, classic } = useOutletContext();
 
     useEffect(() => {
         getThemes();
@@ -236,10 +236,8 @@ export default function Installation(props) {
                         </Layout.Section>
                     )}
 
-                    {alert7 && <Layout.Section>{alert7}</Layout.Section>}
-                    <Layout.Section>
+                    {alert7 && <Layout.Section>{classic?.customerAccountsVersion == "CLASSIC" ? null : alert7}</Layout.Section>}
 
-                    </Layout.Section> 
                     {/* <Layout.Section fullWidth>
                             <AccountConnection
                                 action={{

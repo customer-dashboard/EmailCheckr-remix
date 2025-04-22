@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://expects-substantial-each-contributions.trycloudflare.com"
+application_url = "https://organised-distributed-dude-singer.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -32,17 +32,17 @@ api_version = "2025-01"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_customers,read_locales,write_customers,read_themes"
+scopes = "read_customers,read_locales,write_customers,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://expects-substantial-each-contributions.trycloudflare.com/auth/callback",
-  "https://expects-substantial-each-contributions.trycloudflare.com/auth/shopify/callback",
-  "https://expects-substantial-each-contributions.trycloudflare.com/api/auth/callback"
+  "https://organised-distributed-dude-singer.trycloudflare.com/auth/callback",
+  "https://organised-distributed-dude-singer.trycloudflare.com/auth/shopify/callback",
+  "https://organised-distributed-dude-singer.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://expects-substantial-each-contributions.trycloudflare.com/app/post-api"
+url = "https://organised-distributed-dude-singer.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 

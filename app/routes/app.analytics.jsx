@@ -1,26 +1,35 @@
 import { Layout, Page } from "@shopify/polaris";
 import React, { useMemo } from "react";
-// import {AnalyticsLegacy} from "../components-app-old/analytics";
-import { useNavigate } from "react-router-dom";
-// import AnalyticsView from "../universal-components/analytics/AnalyticsAll";
+import { useLocation, useNavigate } from "react-router-dom";
+import AnalyticsView from "../universal-components/analytics/index";
+import AnalyticsLegacy from "../universal-components/analytics/index";
 
 function analytics(props) {
-  const { classic } = props;
+  const location = useLocation();
+  const { defSetting } = location.state || {};
+  // const { classic } = props;
   const navigate = useNavigate();
 
   const analyticsComponent = useMemo(() => {
-    if (classic?.customerAccountsVersion === "CLASSIC") {
-      return <AnalyticsLegacy {...props} pageType={"analytics"} />;
-    } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
-      return <AnalyticsView {...props} pageType={"analytics"} />;
-    }
-    return null;
-  }, [classic, props]);
+    return (
+      <AnalyticsLegacy defSetting={defSetting} pageType={"analytics"} />
+    );
+    // <AnalyticsLegacy defSetting={defSetting} pageType={"analytics"} />
+    // if (classic?.customerAccountsVersion === "CLASSIC") {
+    //     console.log("here");
+    //   // return <AnalyticsView classic={classic} pageType={"analytics"} />;
+    // } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
+    //   // return <AnalyticsView {...props} pageType={"analytics"} />;
+    // }
+    
+  }, [defSetting, props]);
 
   return (
     <>
-      <Page title="Analytics" backAction={{ content: "", onAction: () => navigate("/", {replace:true}) }}>
-        <Layout>{analyticsComponent}</Layout>
+      <Page title="Analytics" backAction={{ content: "", onAction: () => navigate("/app", {replace:true}) }}>
+        <Layout>
+          {analyticsComponent}
+          </Layout>
       </Page>
     </>
   );

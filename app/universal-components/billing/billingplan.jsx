@@ -9,6 +9,7 @@ import {
     SkeletonDisplayText,
     Badge,
     Card,
+    InlineStack,
   } from "@shopify/polaris";
   import { CheckIcon } from "@shopify/polaris-icons";
   import { useState } from "react";
@@ -137,35 +138,39 @@ import {
     //       billing?.count > 25000 && billing?.id === undefined ? true : false,
     //   },
     // ];
-  
-    const billinPlanArray = [
-       {
-        key: 0,
-        name: (
-          <Text variant="headingSm" as="span">
-            Features
-          </Text>
-        ),
-        price: 2.99,
-        currencyCode: "USD"
-      },
-       {
+
+    const plan = !isShopifyPlus
+    ? {
         key: 1,
         id: "",
         name: "business",
         price: "$2.99 USD / month",
-        disable: isShopifyPlus ? true : false,
-        button_status: billing?.status == "active" ? "Upgrade" : "Upgrade"
-      },
-       {
-        key: 2,
+        disable: true,
+        button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
+      }
+    : {
+        key: 1,
         id: "",
         name: "business+",
         price: "$9.99 USD / month",
-        disable: !isShopifyPlus ? true : false,
-        button_status: billing?.status == "active" ? "Upgrade" : "Upgrade"
-      }
-      ];
+        disable: true,
+        button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
+      };
+  
+  const billinPlanArray  = [
+    {
+      key: 0,
+      name: (
+        <Text variant="headingSm" as="span">
+          Features
+        </Text>
+      ),
+      price: 2.99,
+      currencyCode: "USD",
+    },
+    plan,
+  ];
+  
       
     const checkIcon = <Icon source={CheckIcon} tone="base" />;
     const selectPlan = (name, button_name, disable, skeleton, price) => {
@@ -174,10 +179,11 @@ import {
           <SkeletonDisplayText size="small" />
         </div>
       ) : billing?.name == name ? (
-        <BlockStack>
-          <Button disabled>Current plan</Button>
-        </BlockStack>
+        <InlineStack align="center">
+          <Button size="slim" disabled>Current plan</Button>
+        </InlineStack>
       ) : (
+        <InlineStack align="center">
         <Button
           size="slim"
           disabled={disable}
@@ -188,6 +194,7 @@ import {
         >
           {button_name}
         </Button>
+        </InlineStack>
       );
     };
   
@@ -242,11 +249,11 @@ import {
         }
       }),
     //   ["Custom Fields", checkIcon, checkIcon, checkIcon, checkIcon],
-      ["Multi language", checkIcon, checkIcon],
-    //   ["Text Banners", checkIcon, checkIcon, checkIcon, checkIcon],
-    //   ["Image Banner", checkIcon, checkIcon, checkIcon, checkIcon],
-    //   ["Customer Support Widget", checkIcon, checkIcon, checkIcon, checkIcon],
-      ["Theme support ( unlimited )", checkIcon, checkIcon],
+    ["Real-time email validation", checkIcon],
+    ["Prevent fake signups", checkIcon],
+    ["Multi language", checkIcon],
+    ["Theme support ( unlimited )", checkIcon],
+
     ];
   
     const postPayment = async (name, price) => {

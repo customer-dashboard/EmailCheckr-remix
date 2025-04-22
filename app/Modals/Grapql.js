@@ -533,6 +533,7 @@ export const getShopData = async (admin, session) => {
   return data;
 };
 
+
 export const getAppStatus = async (session, data) => {
   const { accessToken, shop } = session;
   const blog_id = "9545152174720515545";
@@ -592,6 +593,8 @@ export const getAppStatus = async (session, data) => {
     return error.message;
   }
 };
+
+
 
 
 // export const app_Status = async (admin, session, block_id, allthemesEC) => {
@@ -665,3 +668,100 @@ export const getAppStatus = async (session, data) => {
 //     // return { theme: { disabled: true, error: error.message } };
 //   }
 // };
+
+const getSettingsData = async (shop, accessToken, themeId) => {
+  const res = await fetch(
+    `https://${shop}/admin/api/2024-01/themes/${themeId}/assets.json?asset[key]=config/settings_data.json`,
+    {
+      method: "GET",
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const json = await res.json();
+  return JSON.parse(json.asset.value);
+};
+
+const uploadSettingsData = async (shop, accessToken, themeId, data) => {
+  // console.log("data", data);
+  // console.log("accessToken", accessToken);
+  const body = {
+    asset: {
+      key: "config/settings_data.json",
+      value: JSON.stringify(data, null, 2),
+    },
+  };
+    // console.log("BODY", JSON.stringify(body));
+
+    const res = await fetch(
+      `https://${shop}/admin/api/2024-01/themes/${themeId}/assets.json`,
+      {
+        method: "PUT",
+        headers: {
+          "X-Shopify-Access-Token": accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+  console.log("res", res);
+  return await res.json();
+};
+
+
+
+export const enableAppEmbed = async (shop, accessToken, themeId) => {
+  const blockId = '9545152174720515545';
+  try {
+    const settingsData = await getSettingsData(shop, accessToken, themeId);
+
+    let updated = false;
+    for (const key in settingsData?.current?.blocks) {
+      const block = settingsData.current.blocks[key];
+      console.log("block",block);
+      console.log("block.disabled",block.disabled);
+      if (block.type.includes('emailcheckr-activation-remix') && block.disabled) {
+        block.disabled = false;
+        updated = true;
+      }
+    }
+
+    if (!updated) {
+      return {
+        status: false,
+        message: "No matching block found or already enabled",
+        response: JSON.stringify({ status: false, status_code: 404 }),
+      };
+    }
+
+    const uploadResponse = await uploadSettingsData(
+      shop,
+      accessToken,
+      themeId,
+      { data: settingsData }
+    );
+
+    return {
+      status: true,
+      message: "emailcheckr embed block enabled",
+      response: JSON.stringify({
+        status: true,
+        status_code: 200,
+        data: uploadResponse,
+      }),
+    };
+  } catch (err) {
+    return {
+      status: false,
+      message: "Failed to enable embed block",
+      response: JSON.stringify({
+        status: false,
+        status_code: 500,
+        error: err.message,
+      }),
+    };
+  }
+};
