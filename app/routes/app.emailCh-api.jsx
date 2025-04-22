@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { apiKey, authenticate } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 import { app_Status, createSegment, enableAppEmbed, getAppStatus, getCustomersData, getSettings, getSettingsData, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
 import { GetCollectionMongoDB, GetMongoData, InsertUpdateData, MongoDB } from "../server/mongodb";
 import { CurrentDate } from "../server/apicontroller";
@@ -246,13 +246,13 @@ export async function action({ request }) {
       // console.log("get_shop_data", responce);
       return json({responce,status:200});
     }
-    else if (_action === "app_embed"){
-      // console.log("for check");
-      const theme_id = data.get("theme_id");
+    // else if (_action === "app_embed"){
+    //   // console.log("for check");
+    //   const theme_id = data.get("theme_id");
 
-      const responce = await enableAppEmbed(shop, accessToken, theme_id);
-      console.log("enableAppEmbed", responce);
-    }
+    //   const responce = await enableAppEmbed(shop, accessToken, theme_id);
+    //   console.log("enableAppEmbed", responce);
+    // }
     else if (_action === "for_check"){
       // console.log("for check");
       const responce = await get__segment(admin,session,accessToken);

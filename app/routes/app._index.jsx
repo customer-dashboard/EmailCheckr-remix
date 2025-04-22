@@ -972,6 +972,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                <Button
                 fullWidth
                 size="medium"
+                disabled
                 icon={ChatIcon}
                 // onClick={() => Beacon("open")}
               >
@@ -980,6 +981,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
              <Button
                 fullWidth
                 size="medium"
+                disabled
                 // url="https://customer-dashboard-pro.helpscoutdocs.com"
                 icon={QuestionCircleIcon}
               >
