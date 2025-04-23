@@ -8,7 +8,7 @@ import { useNavigate } from "@remix-run/react";
 export default function AnalyticsLegacy(props){
     const { defSetting, pageType } = props;
     const getStoreMetafields  = defSetting;
-    const [selectedRange, setSelectedRange] = useState("last7days");
+    const [selectedRange, setSelectedRange] = useState("all");
     const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
 
     const [salesData, setSalesData] = useState([
@@ -106,9 +106,8 @@ export default function AnalyticsLegacy(props){
       }, [getStoreMetafields, selectedRange]);
       
 
-console.log("salesData", salesData);
     return (
-        <Layout.Section >
+        <Layout.Section variant={pageType === "home" ? "oneHalf" : undefined}>
             <Box as="div">
                 {
                     pageType == "analytics" ?
@@ -145,6 +144,6 @@ console.log("salesData", salesData);
                     {/* ))} */}
                 </Grid>
             </Box>
-        </Layout.Section>
+         </Layout.Section>
     );
 }

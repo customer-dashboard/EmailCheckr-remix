@@ -40,7 +40,7 @@ function onBoardingNew(props) {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(true);
   const [open2, setOpen2] = useState(true);
-  const [openTab, setOpenTab] = useState('tab1');
+  const [openTab, setOpenTab] = useState('tab2');
   const [hoveredBox, setHoveredBox] = useState(null);
   const isNewCustomerAccounts = type === "NEW_CUSTOMER_ACCOUNTS";
 
@@ -57,7 +57,7 @@ function onBoardingNew(props) {
   
   useEffect(() => {
     const onboarded = localStorage.getItem(`dp_onboard${myShop}`);
-    console.log("onboarded", onboarded);
+    // console.log("onboarded", onboarded);
 
     if (onboarded !== null) {
       setOnBoarding(JSON.parse(onboarded));
@@ -78,7 +78,6 @@ useEffect(() => {
 const getThemes = async () => {
   setState(allthemes);
 };
-console.log("state", state);
 
 useEffect(() => {
   setData(enableTheme);
@@ -95,7 +94,6 @@ const options = state.map(ele => ({
   ),
   onAction: () => handleImportedAction(ele.node.name, (ele.node.id).replace(/^.*\//, ""), ele.node.role),
 }));
-
 
   const themeSelection= useMemo(() => {
 
@@ -131,7 +129,7 @@ const options = state.map(ele => ({
                             )
                           }
                         >
-                          Set up
+                          Embed
                         </Button>
                     </ButtonGroup> :
                     null
@@ -148,7 +146,7 @@ const options = state.map(ele => ({
     
       
     const CircleIcon = () => (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"><circle cx="10" cy="10" r="8.75" stroke="#BABEC3" stroke-width="2.5" strokeDasharray="3.5 3.5"></circle></svg>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"><circle cx="10" cy="10" r="8.75" stroke="#BABEC3" strokeWidth="2.5" strokeDasharray="3.5 3.5"></circle></svg>
           );
     const CheckCircleIconb = () => (
       <svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path fill-rule="evenodd" d="M0 10a10 10 0 1 0 20 0 10 10 0 0 0-20 0zm15.2-1.8a1 1 0 0 0-1.4-1.4l-4.8 4.8-2.3-2.3a1 1 0 0 0-1.4 1.4l3 3c.4.4 1 .4 1.4 0l5.5-5.5z"></path></svg>
@@ -166,7 +164,7 @@ const options = state.map(ele => ({
   );
 
   const title = useMemo(
-    () => (isNewCustomerAccounts ? "App status" : "Enable app embed"),
+    () => (isNewCustomerAccounts ? "App embed" : "Enable app embed"),
     [isNewCustomerAccounts]
   );
 
@@ -193,14 +191,22 @@ const options = state.map(ele => ({
     // return null;
   }, [appStatus, isNewCustomerAccounts]);
 
-  const totalSteps = 3;
+  const totalSteps = 2;
   let completedSteps = 0;
   
   if (appStatus === true) completedSteps += 1;
-  if (!isNewCustomerAccounts === true) completedSteps += 1;
+  // if (!isNewCustomerAccounts === true) completedSteps += 1;
   if (billing?.status !== undefined) completedSteps += 1;
   
   const progress = (completedSteps / totalSteps) * 100;
+  // const totalSteps = 3;
+  // let completedSteps = 0;
+  
+  // if (appStatus === true) completedSteps += 1;
+  // if (!isNewCustomerAccounts === true) completedSteps += 1;
+  // if (billing?.status !== undefined) completedSteps += 1;
+  
+  // const progress = (completedSteps / totalSteps) * 100;
   
 
     return (
@@ -274,7 +280,7 @@ const options = state.map(ele => ({
               <Box>
                 <BlockStack gap="2">
                   {/* step:1 Check account type */}
-                  <Box paddingBlockEnd={200} paddingBlockStart={400} paddingInlineStart={500} paddingInlineEnd={500} 
+                  {/* <Box paddingBlockEnd={200} paddingBlockStart={400} paddingInlineStart={500} paddingInlineEnd={500} 
                           style={boxStyle(1)}
                           onMouseEnter={() => setHoveredBox(1)}
                           onMouseLeave={() => setHoveredBox(null)}>
@@ -333,7 +339,7 @@ const options = state.map(ele => ({
                         </div>
                       </InlineStack>
                     </div>
-                  </Box>
+                  </Box> */}
 
                   {/* step:2 Check App Embed */}
                   <Box paddingBlockEnd={200} paddingBlockStart={200} paddingInlineStart={500} paddingInlineEnd={500} 
@@ -384,7 +390,7 @@ const options = state.map(ele => ({
                             ) : (
                               <>
                                 <Text variant="bodyMd" as="p">
-                                App Embed is required for app to work & function properly.
+                                App embed is required for app to work & function properly.
                                 </Text>
                                 <Box paddingBlockStart={400}>
                                 {themeSelection}
@@ -447,7 +453,7 @@ const options = state.map(ele => ({
                                 >
                             <InlineStack align="left" gap={200}>
                             <Text as="h3" variant="headingMd">
-                              Set up Plan
+                              Set up plan
                             </Text>
                             {/* <Badge tone="success">Active</Badge> */}
                             </InlineStack>
@@ -465,7 +471,7 @@ const options = state.map(ele => ({
                               {billing?.status === undefined ? (
                             <Box paddingBlockEnd={200} paddingInlineStart={100} paddingBlockStart={400}>
                             <Text as="p" variant="bodyMd">
-                            Start 14 day free trial to activate EmailCheckr
+                            Start 14 days free trial to activate EmailCheckr
                             </Text>
                             </Box>
                             ) : null }

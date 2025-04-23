@@ -588,6 +588,16 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
       ),
   }));
 
+  const managePage = () => {
+    navigate("/app/manage", {
+      replace: true,
+      state: {
+        defSetting,
+        progress2
+      }
+    });
+  };
+
   const handleImportedAction = (name, value, role) => {
     setData({ name, value, role });
     setActive2(false);
@@ -616,21 +626,38 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
   }, []);
 
   const analyticsComponent = useMemo(() => {
-    if (classic?.customerAccountsVersion === "CLASSIC") {
+    // if (classic?.customerAccountsVersion === "CLASSIC") {
       return (
         <>
-          <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  />
-          {/* <AnalyticsLegacy defSetting={defSetting} pageType={"analytics"} /> */}
+        <Layout.Section variant="oneHalf">
+          <Card>
+            <Box paddingBlockEnd={100}>
+            <Text as="h2" variant="headingMd">
+            You're validating emails on your registration page
+            </Text>
+          <Box paddingBlockStart={400} paddingBlockEnd={400}>
+            <Text as="h2" variant="bodyMd">
+            Review and refine your current validation to reduce fake signups.
+            </Text>
+          </Box>
+            <Button onClick={managePage}>Prevent fake signups</Button>
+            </Box>
+          </Card>
+        </Layout.Section>
+        {/* <Layout.Section> */}
+        <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  />
+        {/* </Layout.Section> */}
+          {/* <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  /> */}
         </>
       );
-    } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
-      return (
-        <>
-          {/* <BillingAlert billing={billing} pageType={"other"} /> */}
-          {/* <AnalyticsView {...props} pageType={"home"} /> */}
-        </>
-      );
-    }
+    // } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
+    //   return (
+    //     <>
+    //       {/* <BillingAlert billing={billing} pageType={"other"} /> */}
+    //       {/* <AnalyticsView {...props} pageType={"home"} /> */}
+    //     </>
+    //   );
+    // }
     return null;
   }, [onBoarding, defSetting]);
 
@@ -682,6 +709,8 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
     setLoading3(true);
     navigate("/app/installation", { replace: true });
   };
+
+
 
   const appEmbedBanner = useMemo(() => {
     return (
@@ -760,6 +789,25 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
           </Modal.Section>
         </Modal>
 
+      </Layout.Section>
+    );
+  });
+
+  const accountLegacyBanner = useMemo(() => {
+    return (
+      <Layout.Section>
+            <div className='cstm_banner'>
+            <Banner
+                title='Select the "Legacy" option in your customer accounts settings to ensure compatibility with our app.'
+                action={{
+                    content: 'Check customer account settings',
+                    url: `https://admin.shopify.com/store/${myShop}/settings/customer_accounts`,
+                    target: "_blank"
+                }}
+                // onDismiss={() => setInformation(false)}
+                tone="warning"
+            />
+            </div>
       </Layout.Section>
     );
   });
@@ -959,9 +1007,8 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
             Help & Support
           </Text>
           <Box paddingBlockStart="400">
-              <InlineStack wrap={false} gap={400}>
+              <InlineStack>
               <Button
-                fullWidth
                 target="_blank"
                 icon={EmailFollowUpIcon}
                 size="medium"
@@ -969,7 +1016,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
               >
                 Email us
               </Button>
-               <Button
+               {/* <Button
                 fullWidth
                 size="medium"
                 disabled
@@ -986,7 +1033,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                 icon={QuestionCircleIcon}
               >
                 Help
-              </Button>
+              </Button> */}
               </InlineStack>
           </Box>
         </Card>
@@ -1075,17 +1122,21 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                 </Box>
               </Card>
             </Layout.Section> */}
-            {appStatus ? 
+            {/* {appStatus ? 
             null :
             appEmbedBanner
+            } */}
+            {classic?.customerAccountsVersion == "CLASSIC" ? 
+            null :
+            accountLegacyBanner
             }
             {onBoarding ?  (
               <OnBoardingNew 
                 {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }} 
               />
             ) : null }
-            {analyticsComponent}
             {/* {customerStatus} */}
+            {analyticsComponent}
             {moreAppsCard}
             {helpSupportCard}
             {/* <MyModal {...{enableTheme, livetheme, allthemes}} /> */}

@@ -144,6 +144,7 @@ import {
         key: 1,
         id: "",
         name: "business",
+        label: "Basic",
         price: "$2.99 USD / month",
         disable: billing?.status === undefined ? false : true,
         button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
@@ -152,6 +153,7 @@ import {
         key: 1,
         id: "",
         name: "business+",
+        label: "Shopify Plus",
         price: "$9.99 USD / month",
         disable: billing?.status === undefined ? false : true,
         button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
@@ -209,7 +211,7 @@ import {
                   {plan.id}
                 </Text>
                 <Text variant="headingSm" as="h6" alignment="center">
-                  {plan.name}
+                  {plan.label}
                 </Text>
                 <Box paddingBlockStart="1">
                   {plan.recommended ? (
@@ -248,7 +250,7 @@ import {
         }
       }),
     //   ["Custom Fields", checkIcon, checkIcon, checkIcon, checkIcon],
-    ["Real-time email validation", checkIcon],
+    ["Real-time email activation", checkIcon],
     ["Prevent fake signups", checkIcon],
     ["Multi language", checkIcon],
     ["Theme support ( unlimited )", checkIcon],

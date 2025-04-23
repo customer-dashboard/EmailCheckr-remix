@@ -102,7 +102,7 @@ export default function Installation(props) {
         information && (
             <div className='cstm_banner'>
             <Banner
-                title='Select the "Classic customer accounts" option in your settings to ensure compatibility with our app.'
+                title='Select the "Legacy" option in your customer accounts settings to ensure compatibility with our app.'
                 action={{
                     content: 'Check customer account settings',
                     url: `https://admin.shopify.com/store/${myShop}/settings/customer_accounts`,

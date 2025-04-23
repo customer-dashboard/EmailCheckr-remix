@@ -536,7 +536,8 @@ export const getShopData = async (admin, session) => {
 
 export const getAppStatus = async (session, data) => {
   const { accessToken, shop } = session;
-  const blog_id = "2433038045295417455";
+  // const blog_id = "2433038045295417455"; //Live
+  const blog_id = "9545152174720515545";  //Development
 
   try {
     let array = [];

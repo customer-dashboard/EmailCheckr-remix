@@ -27,8 +27,8 @@ export default function Plan(props) {
         <>
         {/* <Alert billing={billing} /> */}
         <Page
-        {...(onBoarding ? { backAction: { onAction: ClickEvent } } : {})}
-        title="Plan"
+        {...(onBoarding && billing.status == undefined ? { backAction: { onAction: ClickEvent } } : {})}
+        title={billing?.status == 'active' ? "Plan" : "Plan(14 days free trial)" }
         >
         <BillingPlan billing={billing} isShopifyPlus={isShopifyPlus} />
         </Page>
