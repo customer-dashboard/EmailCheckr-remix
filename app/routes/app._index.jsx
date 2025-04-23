@@ -564,9 +564,9 @@ export default function Index(props) {
   } = useOutletContext();
   const navigate = useNavigate();
   console.log("OnBoarding", onBoarding);
-const type = classic?.customerAccountsVersion === "CLASSIC"
-  ? "CLASSIC"
-  : "NEW_CUSTOMER_ACCOUNTS";
+  const type = classic?.customerAccountsVersion === "CLASSIC"
+    ? "CLASSIC"
+    : "NEW_CUSTOMER_ACCOUNTS";
 
   useEffect(() => {
     setState(allthemes);
@@ -619,7 +619,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
     if (classic?.customerAccountsVersion === "CLASSIC") {
       return (
         <>
-          <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  />
+          <AnalyticsLegacy defSetting={defSetting} pageType={"home"} />
           {/* <AnalyticsLegacy defSetting={defSetting} pageType={"analytics"} /> */}
         </>
       );
@@ -656,18 +656,18 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
       return Math.round((invited / count) * 100);
     }
   };
-  
-  
 
-  const appEmbedOnLiveTheme = async(setLoading2, theme_id) => {
+
+
+  const appEmbedOnLiveTheme = async (setLoading2, theme_id) => {
     setLoading2(true);
     let formdata = new FormData();
     formdata.append("_action", "app_embed");
     formdata.append("theme_id", theme_id);
-    const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
+    const response = await fetch("/app/emailCh-api", { method: "POST", body: formdata });
     const responseJson = await response.json();
     console.log("responseJson", responseJson);
-    if(responseJson.status==200) {
+    if (responseJson.status == 200) {
       setLoading2(false);
     }
   };
@@ -697,11 +697,11 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                 "_blank"
               );
             },
-          }}          
+          }}
           secondaryAction={{
             loading: loading3,
             content: "Try EmailCheckr in other themes",
-            onAction: () => {nextButtonHandler()}
+            onAction: () => { nextButtonHandler() }
           }}
           tone="warning"
         >
@@ -955,11 +955,11 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
     return (
       <Layout.Section>
         <Card>
-          <Text as="h2" variant="headingMd">
-            Help & Support
-          </Text>
           <Box paddingBlockStart="400">
-              <InlineStack wrap={false} gap={400}>
+            <InlineStack align="space-between">
+              <Text as="h2" variant="headingMd">
+                Help & Support
+              </Text>
               <Button
                 fullWidth
                 target="_blank"
@@ -969,7 +969,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
               >
                 Email us
               </Button>
-               <Button
+              {/* <Button
                 fullWidth
                 size="medium"
                 disabled
@@ -986,8 +986,8 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                 icon={QuestionCircleIcon}
               >
                 Help
-              </Button>
-              </InlineStack>
+              </Button> */}
+            </InlineStack>
           </Box>
         </Card>
       </Layout.Section>
@@ -1075,15 +1075,15 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
                 </Box>
               </Card>
             </Layout.Section> */}
-            {appStatus ? 
+            {/* {appStatus ? 
             null :
             appEmbedBanner
-            }
-            {onBoarding ?  (
-              <OnBoardingNew 
-                {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }} 
+            } */}
+            {onBoarding ? (
+              <OnBoardingNew
+                {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }}
               />
-            ) : null }
+            ) : null}
             {analyticsComponent}
             {/* {customerStatus} */}
             {moreAppsCard}
@@ -1091,7 +1091,7 @@ const type = classic?.customerAccountsVersion === "CLASSIC"
             {/* <MyModal {...{enableTheme, livetheme, allthemes}} /> */}
           </Layout>
         )}
-            <Footer />
+        <Footer />
       </Page>
       {/* // ) : null} */}
     </>

@@ -320,7 +320,7 @@ const app_Status = async() =>{
         <Link to="/app/installation">Installation</Link>
         <Link to="/app/partners">Partners</Link>
         <Link to="/app/settings">Settings</Link>
-        <Link to="/app/plans">Plans</Link>
+        <Link to="/app/plans">Plan</Link>
       </ui-nav-menu>
       {/* } */}
         <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus}} />
