@@ -1004,10 +1004,13 @@ export default function Index(props) {
     return (
       <Layout.Section>
         <Card>
+          <Text as="h2" variant="headingMd">
+            Help & Support
+          </Text>
           <Box paddingBlockStart="400">
-              <InlineStack>
-            
+            <ButtonGroup>
               <Button
+                fullWidth
                 target="_blank"
                 icon={EmailFollowUpIcon}
                 size="medium"
@@ -1015,26 +1018,23 @@ export default function Index(props) {
               >
                 Email us
               </Button>
-
               {/* <Button
                 fullWidth
                 size="medium"
-                disabled
                 icon={ChatIcon}
-                // onClick={() => Beacon("open")}
+                onClick={() => Beacon("open")}
               >
                 Live chat
               </Button>
-             <Button
+              <Button
                 fullWidth
                 size="medium"
-                disabled
-                // url="https://customer-dashboard-pro.helpscoutdocs.com"
+                url="https://customer-dashboard-pro.helpscoutdocs.com"
                 icon={QuestionCircleIcon}
               >
                 Help
               </Button> */}
-            </InlineStack>
+            </ButtonGroup>
           </Box>
         </Card>
       </Layout.Section>
@@ -1126,6 +1126,10 @@ export default function Index(props) {
             null :
             appEmbedBanner
             } */}
+            {classic?.customerAccountsVersion === "CLASSIC" ? 
+            null :
+            accountLegacyBanner
+            }
             {onBoarding ? (
               <OnBoardingNew
                 {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }}
@@ -1133,7 +1137,6 @@ export default function Index(props) {
             ) : null}
             {analyticsComponent}
             {/* {customerStatus} */}
-            {analyticsComponent}
             {moreAppsCard}
             {helpSupportCard}
             {/* <MyModal {...{enableTheme, livetheme, allthemes}} /> */}

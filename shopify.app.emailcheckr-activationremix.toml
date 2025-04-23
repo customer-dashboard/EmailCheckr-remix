@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
-application_url = "https://suit-ho-az-del.trycloudflare.com"
+client_id = "20384d45f5b73f1e1a6c806428ab773d"
+application_url = "https://adapter-resolved-sticky-volunteer.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -10,15 +10,15 @@ handle = "email-checkr"
 api_version = "2025-01"
 
   [[webhooks.subscriptions]]
-  uri = "/app/webhooks/customers_data_request"
+  uri = "/webhooks/app/customers_data_request"
   compliance_topics = [ "customers/data_request" ]
 
   [[webhooks.subscriptions]]
-  uri = "/app/webhooks/customers_redact"
+  uri = "/webhooks/app/customers_redact"
   compliance_topics = [ "customers/redact" ]
 
   [[webhooks.subscriptions]]
-  uri = "/app/webhooks/shop_redact"
+  uri = "/webhooks/app/shop_redact"
   compliance_topics = [ "shop/redact" ]
 
   [[webhooks.subscriptions]]
@@ -27,17 +27,17 @@ api_version = "2025-01"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_customers,read_locales,write_customers,read_themes,write_themes"
+scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://suit-ho-az-del.trycloudflare.com/auth/callback",
-  "https://suit-ho-az-del.trycloudflare.com/auth/shopify/callback",
-  "https://suit-ho-az-del.trycloudflare.com/api/auth/callback"
+  "https://adapter-resolved-sticky-volunteer.trycloudflare.com/auth/callback",
+  "https://adapter-resolved-sticky-volunteer.trycloudflare.com/auth/shopify/callback",
+  "https://adapter-resolved-sticky-volunteer.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://suit-ho-az-del.trycloudflare.com/app/post-api"
+url = "https://adapter-resolved-sticky-volunteer.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 
@@ -45,6 +45,5 @@ prefix = "apps"
 embedded = false
 
 [build]
-include_config_on_deploy = true
 dev_store_url = "silver-heritage-heaven.myshopify.com"
 automatically_update_urls_on_dev = true
