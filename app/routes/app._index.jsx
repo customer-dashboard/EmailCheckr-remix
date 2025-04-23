@@ -22,7 +22,7 @@
 //   await authenticate.admin(request);
 //   const {admin,session} = await authenticate.admin(request);
 //   const { shop } = session;
-  
+
 //   // let myShop = shop.replace(".myshopify.com", "");
 //   return shop;
 // };
@@ -50,9 +50,6 @@
 //   const toggleActive = useCallback(() => setActive((active) => !active), []);
 //   const {defSetting, setDefSetting, progress2} = useOutletContext();
 
-
-
-
 // useEffect(() => {
 //   setProgress(progress2);
 // }, [progress2]);
@@ -67,7 +64,7 @@
 
 // const closePopup = () => {
 //   console.log("defaultSetting",defaultSetting);
-//   setSetting(prev => ({ ...defaultSetting })); 
+//   setSetting(prev => ({ ...defaultSetting }));
 //   setSave(false);
 // };
 
@@ -75,8 +72,8 @@
 //   let formdata = new FormData();
 //   formdata.append("_action", "POST_METAFIELD");
 //   formdata.append("_postMetafileds", JSON.stringify(setting));
-//   // console.log("postMetafileds", formdata.get("postMetafileds"));  
-//   setLoading(true);   
+//   // console.log("postMetafileds", formdata.get("postMetafileds"));
+//   setLoading(true);
 //   try {
 //     const response = await fetch("/app/translation", {
 //       method: "POST",
@@ -169,12 +166,12 @@
 //     }
 
 //     const hasChanges = checkIfSettingsChanged(newFormValues, defaultSetting);
-//     setSave(hasChanges); 
+//     setSave(hasChanges);
 
 //     return newFormValues;
 //   });
 // };
-  
+
 // const checkIfSettingsChanged = (currentSettings, defaultSettings) => {
 //   return JSON.stringify(currentSettings) !== JSON.stringify(defaultSettings);
 // };
@@ -210,7 +207,7 @@
 //       });
 //       const responseJson = await response.json();
 //       setLanguageLocal(responseJson);
-      
+
 //     } catch (error) {
 //       console.error("An error occurred:", error.message);
 //     }
@@ -221,7 +218,7 @@
 //   (locale) => {
 //     setOpenStates((prevState) => ({
 //       ...prevState,
-//       [locale]: !prevState[locale], 
+//       [locale]: !prevState[locale],
 //     }));
 //   },
 //   [setOpenStates]
@@ -262,7 +259,7 @@
 //                       <InlineStack align='space-between'>
 //                             <Text as="h2" variant='headingMd'>App status</Text>
 //                         {setting?.billing?.status === "active" ?<Button  variant={setting?.app_status ? "secondary" : "primary"} onClick={() => selectChange(!setting.app_status, "app_status")}>{setting?.app_status ? "Deactive" : "Active"}</Button>:null}
-                     
+
 //                       </InlineStack>
 //                       {<p>EmailCheckr app currently is set to <Badge tone={setting?.app_status ? "success" : "critical"}>{setting?.app_status ? "Active" : "Deactive"}</Badge></p>}
 //                   </Card>
@@ -284,8 +281,8 @@
 //                     </Box>
 //                   </Card>
 //                 </Layout.Section> */}
-              
-//                 { 
+
+//                 {
 //                setting?.segment?.id?
 //                 <Layout.Section>
 //                   <Grid>
@@ -302,13 +299,13 @@
 //                             <ProgressBar tone={ele.color} progress={ele.persantage} />
 //                             </Card>
 //                         </Grid.Cell>
-//                       ))}    
+//                       ))}
 //                       </Grid>
 //                </Layout.Section>
 //               :null
 //                }
 //                 {/* <Layout.Section>
-//                 <Card> 
+//                 <Card>
 //                <Box paddingBlockEnd='300'>
 //                <Text as="h2" variant='headingMd'>Success message display position</Text>
 //                </Box>
@@ -328,11 +325,11 @@
 //                                   }}
 //                                   src={style.image}
 //                                 />
-                             
+
 //                               <Box  paddingBlockStart={setting?.message_position !== style.value ? "400" : "500"}>
 //                                <InlineStack align='center'>
 //                                 {
-//                                   setting.message_position === style.value ? <Badge size='large' tone='success'>Active</Badge> :  
+//                                   setting.message_position === style.value ? <Badge size='large' tone='success'>Active</Badge> :
 //                                   <Button size='medium' onClick={()=>selectChange(style.value, 'message_position')}>
 //                                   {style.title}
 //                                  </Button>
@@ -388,7 +385,7 @@
 //                       }
 //                     </Box>
 //                   ))
-//                 } 
+//                 }
 //                 </Card>
 //                 </Layout.Section> */}
 
@@ -396,7 +393,7 @@
 //                   <Card>
 //                   <Box paddingBlockEnd='300'>
 //                   <Text as="h2" variant='headingMd'>Color</Text>
-//                  </Box> 
+//                  </Box>
 //                     <Box paddingBlockEnd={300}>
 //                     <ResourceList
 //                         resourceName={{ singular: 'product', plural: 'products' }}
@@ -440,7 +437,7 @@
 //                   <Card>
 //                   <Box paddingBlockEnd='300'>
 //                   <Text as="h2" variant='headingMd'>Custom CSS</Text>
-//                  </Box> 
+//                  </Box>
 //                     <Box>
 //                       <TextField
 //                         placeholder='.style{...}'
@@ -455,7 +452,7 @@
 //                 </Layout.Section> */}
 //               </Layout>
 //               {active}
-//               <Footer /> 
+//               <Footer />
 //               {/* </Layout> */}
 //             </Page>
 //             </div>
@@ -466,55 +463,70 @@
 
 import "@shopify/polaris-viz/build/esm/styles.css";
 import {
+  ActionList,
   Badge,
   Banner,
   BlockStack,
   Box,
   Button,
   ButtonGroup,
+  CalloutCard,
   Card,
+  Collapsible,
+  Divider,
   Grid,
   Icon,
   InlineStack,
   Layout,
   Link,
+  Modal,
   Page,
+  Popover,
   ProgressBar,
+  Select,
   Text,
+  TextContainer,
+  Thumbnail,
   Toast,
 } from "@shopify/polaris";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
   ChatIcon,
-  DiscountCodeIcon,
   EmailFollowUpIcon,
-  HeartIcon,
-  HomeIcon,
-  MenuHorizontalIcon,
   QuestionCircleIcon,
-  StarIcon,
-  VariantIcon,
   XSmallIcon,
 } from "@shopify/polaris-icons";
-import customer_dashboard from "../assets/image/customer-dashboard-pro.png"
+import customer_dashboard from "../assets/image/customer-dashboard-pro.png";
 import AnalyticsLegacy from "../universal-components/analytics/index";
 // import "@shopify/polaris-viz/build/esm/styles.css";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
+import { useLoaderData, useNavigate, useOutletContext } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import SkeletonExample from "../components/SkeletonExample";
+import { getShopData } from "../Modals/Grapql";
+import IndexOnBoarding from "../universal-components/on-boarding/indexOnBoarding";
+import OnBoardingNew from "../universal-components/on-boarding/onBoardingNew";
+import MyModal from "../components/MyModal";
+import { Footer } from "../components/footer";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-  const {admin,session} = await authenticate.admin(request);
+  // await authenticate.admin(request);
+  const { admin, session } = await authenticate.admin(request);
   const { shop } = session;
-  
+
+  var shopData = await getShopData(admin, session);
+  const customerAccountsVersion = shopData.data.shop.customerAccountsV2;
+
   // let myShop = shop.replace(".myshopify.com", "");
-  return shop;
+  return { shop, customerAccountsVersion };
 };
 
-export default function Index(props){
-  const shop = useLoaderData();
-  let myShop = shop.replace(".myshopify.com", "");
+
+
+export default function Index(props) {
+  // const shop = useLoaderData();
+  const loaderData = useLoaderData();
+  const shop = loaderData.shop;
+  let myShop = loaderData.shop.replace(".myshopify.com", "");
   const [partnerCollOut, setPartnerCollOut] = useState(() => {
     // const storedValue = localStorage.getItem("partnerCollOut");
     // return storedValue !== null ? JSON.parse(storedValue) : true;
@@ -522,19 +534,82 @@ export default function Index(props){
   const [progress, setProgress] = useState(true);
   const [save, setSave] = useState(false);
   const [active, setActive] = useState(false);
+  const [active2, setActive2] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [loading3, setLoading3] = useState(false);
   const [partnerType, setpartnerType] = useState("");
   const toggleActive = useCallback(() => setActive((active) => !active), []);
+  const toggleActive2 = useCallback(
+    () => setActive2((active2) => !active2),
+    [],
+  );
   const [setting, setSetting] = useState({});
   const [defaultSetting, setdefaultSetting] = useState({});
-  const {defSetting, setDefSetting, progress2} = useOutletContext();
+  const [data, setData] = useState({});
+  const [state, setState] = useState([]);
+
+
+  const {
+    defSetting,
+    setDefSetting,
+    progress2,
+    allthemes,
+    enableTheme,
+    appStatus,
+    classic,
+    onBoarding,
+    setOnBoarding,
+    isShopifyPlus,
+    livetheme,
+  } = useOutletContext();
+  const navigate = useNavigate();
+  console.log("OnBoarding", onBoarding);
+  const type = classic?.customerAccountsVersion === "CLASSIC"
+    ? "CLASSIC"
+    : "NEW_CUSTOMER_ACCOUNTS";
+
+  useEffect(() => {
+    setState(allthemes);
+    setData(enableTheme);
+  }, [enableTheme, livetheme]);
+
+  const options = state?.map((ele) => ({
+    content: (
+      <Text>
+        {ele.node.name}{" "}
+        {ele.node.role === "MAIN" && <Badge tone="success">Live</Badge>}
+      </Text>
+    ),
+    onAction: () =>
+      handleImportedAction(
+        ele.node.name,
+        ele.node.id.replace(/^.*\//, ""),
+        ele.node.role,
+      ),
+  }));
+
+  const managePage = () => {
+    navigate("/app/manage", {
+      replace: true,
+      state: {
+        defSetting,
+        progress2
+      }
+    });
+  };
+
+  const handleImportedAction = (name, value, role) => {
+    setData({ name, value, role });
+    setActive2(false);
+  };
 
   useEffect(() => {
     setProgress(progress2);
   }, [progress2]);
 
-  // console.log("defSetting", defSetting);
+  const billing = setting?.billing;
+  const themes = allthemes;
+  // const classic = data.customerAccountsVersion;
 
   useEffect(() => {
     setSetting(defSetting);
@@ -545,19 +620,47 @@ export default function Index(props){
   const handleCollOutCard = useCallback(() => {
     setPartnerCollOut((prevState) => {
       const newState = !prevState;
-      // localStorage.setItem("partnerCollOut", newState);
+      localStorage.setItem("partnerCollOut", newState);
       return newState;
     });
   }, []);
 
-// console.log("outLet defSetting", defSetting);
   const analyticsComponent = useMemo(() => {
-    return (
-      <>
-        <AnalyticsLegacy defSetting={defSetting} pageType={"home"} />
-      </>
-    );
-  }, [defSetting]);
+    // if (classic?.customerAccountsVersion === "CLASSIC") {
+      return (
+        <>
+        <Layout.Section variant="oneHalf">
+          <Card>
+            <Box paddingBlockEnd={100}>
+            <Text as="h2" variant="headingMd">
+            Validating emails on registration page
+            </Text>
+          <Box paddingBlockStart={400} paddingBlockEnd={400}>
+            <Text as="h2" variant="bodyMd">
+            Review and refine your current validation to reduce fake signups.
+            </Text>
+          </Box>
+            <Button onClick={managePage}>Prevent fake signups</Button>
+            </Box>
+          </Card>
+        </Layout.Section>
+        {/* <Layout.Section> */}
+        <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  />
+        {/* </Layout.Section> */}
+          {/* <AnalyticsLegacy defSetting={defSetting} pageType={"home"}  /> */}
+
+        </>
+      );
+    // } else if (classic?.customerAccountsVersion === "NEW_CUSTOMER_ACCOUNTS") {
+    //   return (
+    //     <>
+    //       {/* <BillingAlert billing={billing} pageType={"other"} /> */}
+    //       {/* <AnalyticsView {...props} pageType={"home"} /> */}
+    //     </>
+    //   );
+    // }
+    return null;
+  }, [onBoarding, defSetting]);
 
   const DeleteMetafields = async () => {
     let formdata = new FormData();
@@ -570,68 +673,237 @@ export default function Index(props){
         });
         const responseJson = await response.json();
         setLanguageLocal(responseJson);
-        
       } catch (error) {
         console.error("An error occurred:", error.message);
       }
     }
-  }
+  };
 
-const persantage = (invited, count) => {
-  if(invited && count){
-  return Math.round((invited / count) * 100)
-}
-}
+  const persantage = (invited, count) => {
+    if (invited && count) {
+      return Math.round((invited / count) * 100);
+    }
+  };
+
+
+
+  const appEmbedOnLiveTheme = async (setLoading2, theme_id) => {
+    setLoading2(true);
+    let formdata = new FormData();
+    formdata.append("_action", "app_embed");
+    formdata.append("theme_id", theme_id);
+    const response = await fetch("/app/emailCh-api", { method: "POST", body: formdata });
+    const responseJson = await response.json();
+    console.log("responseJson", responseJson);
+    if (responseJson.status == 200) {
+      setLoading2(false);
+    }
+  };
+
+  const appEmbedOnSelectedTheme = (setLoading2, theme) => {
+    console.log(setLoading2);
+    console.log(theme);
+    console.log(active);
+  };
+
+  const nextButtonHandler = () => {
+    setLoading3(true);
+    navigate("/app/installation", { replace: true });
+  };
+
+
+
+  const appEmbedBanner = useMemo(() => {
+    return (
+      <Layout.Section>
+        <Banner
+          title="Add EmailCheckr to theme"
+          action={{
+            loading: loading2,
+            content: "Add EmailCheckr to live theme",
+            onAction: () => {
+              window.open(
+                `https://${shop}/admin/themes/${livetheme?.value}/editor?context=apps&activateAppId=20384d45f5b73f1e1a6c806428ab773d/app-embed`,
+                "_blank"
+              );
+            },
+          }}
+          secondaryAction={{
+            loading: loading3,
+            content: "Try EmailCheckr in other themes",
+            onAction: () => { nextButtonHandler() }
+          }}
+          tone="warning"
+        >
+          <p>
+            Click on “Add EmailCheckr to live theme” to display EmailCheckr
+            features on your storefront. You can try EmailCheckr in other themes
+            as well. If you close this popup, you can access this option later
+            from Settings &gt; Add to Theme.
+          </p>
+        </Banner>
+        <Modal
+          open={active}
+          onClose={toggleActive}
+          title="Try EmailCheckr in other themes"
+          primaryAction={{
+            content: "Add EmailCheckr to selected theme",
+            onAction: "",
+          }}
+          secondaryActions={[
+            {
+              content: "Cancel",
+              onAction: toggleActive,
+            },
+          ]}
+        >
+          <Modal.Section>
+            <Box padding={200}>
+              <Box paddingBlockEnd={100}>
+                <Text as="p" variant="bodyMd">
+                  Choose a theme where you want to enable 'EmailCheckr' to
+                  display its features on the storefront
+                </Text>
+              </Box>
+              {/* {data.role === "MAIN" ? <Badge tone="success">Live</Badge> : null} */}
+              <div className="cdp_popover">
+                <Popover
+                  fullWidth
+                  active={active2}
+                  activator={
+                    <Button
+                      size="medium"
+                      fullWidth
+                      textAlign="left"
+                      onClick={() => setActive2(!active2)}
+                      disclosure
+                    >
+                      <Text> {data?.name} </Text>
+                    </Button>
+                  }
+                  onClose={() => setActive2(false)}
+                >
+                  <ActionList actionRole="menuitem" items={options} />
+                </Popover>
+              </div>
+            </Box>
+          </Modal.Section>
+        </Modal>
+
+      </Layout.Section>
+    );
+  });
+
+  const accountLegacyBanner = useMemo(() => {
+    return (
+      <Layout.Section>
+            <div className='cstm_banner'>
+            <Banner
+                title='Select the "Legacy" option in your customer accounts settings to ensure compatibility with our app.'
+                action={{
+                    content: 'Check customer account settings',
+                    url: `https://admin.shopify.com/store/${myShop}/settings/customer_accounts`,
+                    target: "_blank"
+                }}
+                // onDismiss={() => setInformation(false)}
+                tone="warning"
+            />
+            </div>
+      </Layout.Section>
+    );
+  });
 
   const cardData = [
-  { title: "Invited", color: "primary", content: "View", persantage: persantage(setting?.segment?.invited, setting?.segment?.total), value: setting?.segment?.invited, url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}` },
-  { title: "Enabled", color: "success", content: "View", persantage: persantage(setting?.segment?.enabled, setting?.segment?.total), value: setting?.segment?.enabled, url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.enabled?.replace("gid://shopify/Segment/", "")}` },
-  { title: "Disabled", color: "critical", content: "View", persantage: persantage(setting?.segment?.disabled, setting?.segment?.total), value: setting?.segment?.disabled, url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.disabled?.replace("gid://shopify/Segment/", "")}` },
-]
+    {
+      title: "Invited",
+      color: "primary",
+      content: "View",
+      persantage: persantage(
+        setting?.segment?.invited,
+        setting?.segment?.total,
+      ),
+      value: setting?.segment?.invited,
+      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}`,
+    },
+    {
+      title: "Enabled",
+      color: "success",
+      content: "View",
+      persantage: persantage(
+        setting?.segment?.enabled,
+        setting?.segment?.total,
+      ),
+      value: setting?.segment?.enabled,
+      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.enabled?.replace("gid://shopify/Segment/", "")}`,
+    },
+    {
+      title: "Disabled",
+      color: "critical",
+      content: "View",
+      persantage: persantage(
+        setting?.segment?.disabled,
+        setting?.segment?.total,
+      ),
+      value: setting?.segment?.disabled,
+      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.disabled?.replace("gid://shopify/Segment/", "")}`,
+    },
+  ];
+
 
   const customerStatus = useMemo(() => {
-    return (     
+    return (
       <Layout.Section>
-      { setting?.segment?.id?
-                  <Grid>
-                      {cardData?.map((ele, index) => (
-                          <Grid.Cell key={index} columnSpan={{xs: 6, sm: 3, md: 3, lg: 4, xl: 4}}>
-                              <Card>
-                            <Text as='h2' variant='headingMd'>{ele.title}</Text>
-                            <Box paddingBlockEnd='300' paddingBlockStart='300'>
-                            <InlineStack align='space-between' blockAlign='center'>
-                            <Text as='h2' variant='headingMd'>{`${ele?.value} ${ele?.value > 1 ? "Customers" : "Customer"}`}</Text>
-                            <Button url={ele.url} target="_blank">View</Button>
-                            </InlineStack>
-                            </Box>
-                            <ProgressBar tone={ele.color} progress={ele.persantage} />
-                            </Card>
-                        </Grid.Cell>
-                      ))}    
-                      </Grid>
-                      :null
-  }
-               </Layout.Section>
-              );
-  })
+        {setting?.segment?.id ? (
+          <Grid>
+            {cardData?.map((ele, index) => (
+              <Grid.Cell
+                key={index}
+                columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}
+              >
+                <Card>
+                  <Text as="h2" variant="headingMd">
+                    {ele.title}
+                  </Text>
+                  <Box paddingBlockEnd="300" paddingBlockStart="300">
+                    <InlineStack align="space-between" blockAlign="center">
+                      <Text
+                        as="h2"
+                        variant="headingMd"
+                      >{`${ele?.value} ${ele?.value > 1 ? "Customers" : "Customer"}`}</Text>
+                      <Button url={ele.url} target="_blank">
+                        View
+                      </Button>
+                    </InlineStack>
+                  </Box>
+                  <ProgressBar tone={ele.color} progress={ele.persantage} />
+                </Card>
+              </Grid.Cell>
+            ))}
+          </Grid>
+        ) : null}
+      </Layout.Section>
+    );
+  });
 
   const moreAppsCard = useMemo(() => {
-    // if (!partnerCollOut) return null;
+    if (!partnerCollOut) return null;
     return (
       <Layout.Section variant="fullWidth">
-        <button style={{ display: "none" }} onClick={DeleteMetafields}>Delete Metafields</button>
+        <button style={{ display: "none" }} onClick={DeleteMetafields}>
+          Delete Metafields
+        </button>
         <Card>
           <div
             className="show_hide_collapsed_parant"
             style={{ position: "relative" }} // Add position relative to parent
             onMouseEnter={(e) => {
               e.currentTarget.querySelector(
-                ".show_hide_collapsed"
+                ".show_hide_collapsed",
               ).style.display = "block";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.querySelector(
-                ".show_hide_collapsed"
+                ".show_hide_collapsed",
               ).style.display = "none";
             }}
           >
@@ -643,15 +915,15 @@ const persantage = (invited, count) => {
                 className="show_hide_collapsed gui-GmlnP"
                 style={{
                   position: "absolute",
-                  right: "0px",
+                  right: "16px",
                   display: "none", // Initially hidden
                 }}
               >
-                {/* <Button
+                <Button
                   accessibilityLabel="dd"
                   icon={XSmallIcon}
                   onClick={handleCollOutCard}
-                ></Button> */}
+                ></Button>
               </div>
             </InlineStack>
             <BlockStack>
@@ -704,7 +976,7 @@ const persantage = (invited, count) => {
                               alt="Customer Account Pro : MT"
                             />
                             <Text as="h3" variant="headingMd">
-                            Customer Account Pro : MT
+                              Customer Account Pro : MT
                             </Text>
                           </InlineStack>
                         </Link>
@@ -712,7 +984,8 @@ const persantage = (invited, count) => {
                       <BlockStack>
                         <Box paddingBlockStart="300">
                           <Text>
-                          Engage with your customers throughout their lifecycle
+                            Engage with your customers throughout their
+                            lifecycle
                           </Text>
                         </Box>
                       </BlockStack>
@@ -768,68 +1041,110 @@ const persantage = (invited, count) => {
     );
   }, []);
 
-  const handleActionPlan = async (setloading,name) => {
-  setloading(true);
-  const data = {name:name}
-  const content = await InstallMetafields('/app/plan', data);
-  // const content = await graphql_billing({data});
-  // console.log("contentPlan", content);
-  window.open(content.data, '_top');
-}
+  const handleActionPlan = async (setloading, name) => {
+    setloading(true);
+    const data = { name: name };
+    const content = await InstallMetafields("/app/plan", data);
+    // const content = await graphql_billing({data});
+    // console.log("contentPlan", content);
+    window.open(content.data, "_top");
+  };
 
-const InstallMetafields = async (url, data) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-  return await response.json();
-}
+  const InstallMetafields = async (url, data) => {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  };
+
+
 
   return (
-    <Page title="Dashboard">
-    {
-     progress ?
-       <SkeletonExample /> :
-      <Layout>
-               {setting?.billing?.status === "active" ?
-                  null :
-                  <Layout.Section fullWidth>
-                    <Banner
-                      title="EmailCheckr is currently inactive"
-                      action={{ loading: loading2, content: 'Start Trial', onAction: () => handleActionPlan(setLoading2,"business") }}
-                      tone="warning"
+    <>
+      {/* {onBoarding ? (
+      <IndexOnBoarding {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, myShop, isShopifyPlus }} />
+    ) : classic?.customerAccountsVersion === "CLASSIC" ? ( */}
+      <Page title="Dashboard">
+        {progress ? (
+          <SkeletonExample />
+        ) : (
+          <Layout>
+            {/* {setting?.billing?.status !== "active" && (
+              <Layout.Section fullWidth>
+                <Banner
+                  title="EmailCheckr is currently inactive"
+                  action={{
+                    loading: loading2,
+                    content: "Start Trial",
+                    onAction: () => handleActionPlan(setLoading2, "business"),
+                  }}
+                  tone="warning"
+                >
+                  <p>Start 14 day free trial to activate EmailCheckr</p>
+                </Banner>
+              </Layout.Section>
+            )} */}
+
+            {/* <Layout.Section fullWidth>
+              <Card>
+                <InlineStack align="space-between" className="cd_flex_container">
+                  <Text as="h2" variant="headingMd">Plan</Text>
+                  {setting?.billing?.status === "active" ? (
+                    <Badge tone="success">Active</Badge>
+                  ) : (
+                    <Button
+                      size="slim"
+                      loading={loading3}
+                      onClick={() =>
+                        handleActionPlan(
+                          setLoading3,
+                          isShopifyPlus ? "business+" : "business"
+                        )
+                      }
                     >
-                      <p>Start 14 day free trial to activate EmailCheckr</p>
-                    </Banner>
-                  </Layout.Section>
-                }
-                 <Layout.Section fullWidth >
-                   <Card>
-                       <InlineStack align='space-between' className='cd_flex_container'>
-                         <Text as='h2' variant='headingMd'>Plan</Text>
-                        {
-                          setting?.billing?.status === "active" ? <Badge tone="success">Active</Badge> : <Button
-                            size='slim'
-                            loading={loading3}
-                            onClick={() => handleActionPlan(setLoading3,partnerType=="enterprise"?"business+":"business")}
-                          >Upgrade plan</Button>
-                        }
-                      </InlineStack>
-                    <Box paddingBlockStart="200">
-                      <Text>${partnerType=="enterprise"?9.99:2.99} USD/Month{setting?.billing?.status === "active" ? '' : " ( 7-Days free trial )"}</Text>
-                    </Box>
-                  </Card>
-                 </Layout.Section> 
-        {/* {analyticsComponent} */}
-        {customerStatus}
-        {moreAppsCard}
-        {helpSupportCard}
-      </Layout>
-    }
-    </Page>
+                      Upgrade plan
+                    </Button>
+                  )}
+                </InlineStack>
+
+                <Box paddingBlockStart="200">
+                  <Text>
+                    ${isShopifyPlus === true ? 9.99 : 2.99} USD/Month
+                    {setting?.billing?.status === "active"
+                      ? ""
+                      : " (14-Days free trial)"}
+                  </Text>
+                </Box>
+              </Card>
+            </Layout.Section> */}
+            {/* {appStatus ? 
+            null :
+            appEmbedBanner
+            } */}
+            {classic?.customerAccountsVersion === "CLASSIC" ? 
+            null :
+            accountLegacyBanner
+            }
+            {onBoarding ? (
+              <OnBoardingNew
+                {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }}
+              />
+            ) : null}
+            {analyticsComponent}
+            {/* {customerStatus} */}
+            {moreAppsCard}
+            {helpSupportCard}
+            {/* <MyModal {...{enableTheme, livetheme, allthemes}} /> */}
+          </Layout>
+        )}
+        <Footer />
+      </Page>
+      {/* // ) : null} */}
+    </>
   );
 }

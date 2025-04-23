@@ -1,11 +1,10 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
-import { createSegment, getCustomersData, getSettings, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
+import { app_Status, createSegment, enableAppEmbed, getAppStatus, getCustomersData, getSettings, getSettingsData, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
 import { GetCollectionMongoDB, GetMongoData, InsertUpdateData, MongoDB } from "../server/mongodb";
 import { CurrentDate } from "../server/apicontroller";
 import setting_json from "../server/setting";
 import { billingConfig } from "./billing";
-
 
 export async function get__segment(admin,session,accessToken){
       if (!admin) {
@@ -229,10 +228,35 @@ export async function action({ request }) {
       // console.log("get_account_validation_status", get_account_validation_status);
       return json({get_account_validation_status,status:200})
     }
+    else if (_action === "app_status"){
+      const allthemesStr = data.get("allthemes");
+      let allthemesEC = [];
+      try {
+        allthemesEC = JSON.parse(allthemesStr); 
+      } catch (e) {
+        console.error("Invalid JSON in allthemes:", e);
+      }
+      const app_status = await getAppStatus(session,allthemesEC);
+      // console.log("App status", app_status);
+      return json({app_status,status:200})
+    }
+    else if (_action === "get_shop_data"){
+      // console.log("for check");
+      const responce = await getShopData(admin,session);
+      // console.log("get_shop_data", responce);
+      return json({responce,status:200});
+    }
+    // else if (_action === "app_embed"){
+    //   // console.log("for check");
+    //   const theme_id = data.get("theme_id");
+
+    //   const responce = await enableAppEmbed(shop, accessToken, theme_id);
+    //   console.log("enableAppEmbed", responce);
+    // }
     else if (_action === "for_check"){
-      console.log("for check");
+      // console.log("for check");
       const responce = await get__segment(admin,session,accessToken);
-      console.log("responceForcheck", responce);
+      // console.log("responceForcheck", responce);
     }
 
   } catch (error) {

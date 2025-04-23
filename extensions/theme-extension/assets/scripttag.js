@@ -29,7 +29,7 @@ if (form.length > 0) {
     return await response.json();
   }
   let billing = {};
-  billing._action = "check_billing";
+  billing.target = "check_billing";
   InstallMetafields(`https://${hostDomain}/apps/${proxy}`, billing);
   form = form[0].form;
   var password = form.querySelectorAll("input[type=password]");
@@ -84,7 +84,7 @@ if (form.length > 0) {
     document.head.appendChild(style_);
     var formData = new FormData(form);
     var array = {};
-    array._action = "profile_data";
+    array.target = "profile-data";
     array.local = Shopify.locale;
     for (var pair of formData.entries()) {
       if (pair[0] == "customer[first_name]") array["first_name"] = pair[1];

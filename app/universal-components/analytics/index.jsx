@@ -8,7 +8,7 @@ import { useNavigate } from "@remix-run/react";
 export default function AnalyticsLegacy(props){
     const { defSetting, pageType } = props;
     const getStoreMetafields  = defSetting;
-    const [selectedRange, setSelectedRange] = useState("last7days");
+    const [selectedRange, setSelectedRange] = useState("all");
     const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
 
     const [salesData, setSalesData] = useState([
@@ -20,60 +20,94 @@ export default function AnalyticsLegacy(props){
 
     const timeRanges = [
         { key: "today", label: "Today" },
-        { key: "yesterday", label: "Yesterday" },
+        { key: "yesterday", label: "Yesterday" },   
         { key: "last7days", label: "Last 7 Days" },
         { key: "last30days", label: "Last 30 Days" },
         { key: "all", label: "All Time" },
     ];
 
+    // useEffect(() => {
+    //     if (Object.keys(getStoreMetafields).length > 0 && getStoreMetafields?.segment) {
+    //         const customerData = getStoreMetafields?.segment?.dateWiseData;
+    //         // console.log("customerData", customerData);
+    //         const chartData = [
+    //             {
+    //               name: "Enabled",
+    //               data: customerData.map((item) => ({
+    //                 key: item.key,  
+    //                 value: item.enabled,
+    //               })),
+    //             },
+    //             {
+    //               name: "Disabled",
+    //               data: customerData.map((item) => ({
+    //                 key: item.key,
+    //                 value: item.disabled,
+    //               })),
+    //             },
+    //             {
+    //               name: "Invited",
+    //               data: customerData.map((item) => ({
+    //                 key: item.key,
+    //                 value: item.invited,
+    //               })),
+    //             },
+    //           ];
+    //           setSalesData(chartData);
+    //         //   console.log("salesData", salesData);
+    //     }
+    // }, [getStoreMetafields]);
+
+    // useEffect(() => {
+    //     if (Object.keys(getStoreMetafields).length > 0 && getStoreMetafields?.segment) {
+    //         const updatedData = salesData.map((item, index) => ({
+    //             ...item,
+    //             data: selectedRange === "all" ? getStoreMetafields?.segment?.dateWiseData : FilterByDate(getStoreMetafields?.segment?.dateWiseData, selectedRange)
+    //         }));
+    //         setSalesData(updatedData);
+    //     }
+    // }, [selectedRange]);
+
     useEffect(() => {
-        if (Object.keys(getStoreMetafields).length > 0 && getStoreMetafields?.segment) {
-            const customerData = getStoreMetafields?.segment?.dateWiseData;
-            // console.log("customerData", customerData);
-            const chartData = [
-                {
-                  name: "Enabled",
-                  data: customerData.map((item) => ({
-                    key: item.key,  
-                    value: item.enabled,
-                  })),
-                },
-                {
-                  name: "Disabled",
-                  data: customerData.map((item) => ({
-                    key: item.key,
-                    value: item.disabled,
-                  })),
-                },
-                {
-                  name: "Invited",
-                  data: customerData.map((item) => ({
-                    key: item.key,
-                    value: item.invited,
-                  })),
-                },
-              ];
-              setSalesData(chartData);
-            //   console.log("salesData", salesData);
+        if (getStoreMetafields?.segment?.dateWiseData?.length > 0) {
+          const customerData = selectedRange === "all"
+            ? getStoreMetafields.segment.dateWiseData
+            : FilterByDate(getStoreMetafields.segment.dateWiseData, selectedRange);
+      
+          const chartData = [
+            {
+              name: "Enabled",
+              data: customerData.map((item) => ({
+                key: item.key,
+                value: item.enabled,
+              })),
+            //   color: "lightseagreen",
+            },
+            {
+              name: "Disabled",
+              data: customerData.map((item) => ({
+                key: item.key,
+                value: item.disabled,
+              })),
+            //   color: "orange",
+            },
+            {
+              name: "Invited",
+              data: customerData.map((item) => ({
+                key: item.key,
+                value: item.invited,
+              })),
+            //   color: "purple",
+            },
+          ];
+      
+          setSalesData(chartData);
         }
-    }, [getStoreMetafields]);
-
-
-    useEffect(() => {
-        if (Object.keys(getStoreMetafields).length > 0 && getStoreMetafields?.segment) {
-            const updatedData = salesData.map((item, index) => ({
-                ...item,
-                data: selectedRange === "all" ? getStoreMetafields?.segment[index].data : FilterByDate(getStoreMetafields?.segment[index].data, selectedRange)
-            }));
-            setSalesData(updatedData);
-        }
-    }, [selectedRange]);
-
-
-
+      }, [getStoreMetafields, selectedRange]);
+      
 
     return (
-        <Layout.Section >
+        <Layout.Section variant={pageType === "home" ? "oneHalf" : undefined}>
             <Box as="div">
                 {
                     pageType == "analytics" ?
@@ -102,12 +136,14 @@ export default function AnalyticsLegacy(props){
                                     data={salesData}
                                     title={"Customers"}
                                     count={`${getStoreMetafields?.segment?.total} `}
+                                    defSetting={defSetting}
+                                    selectedRange={selectedRange}
                                 />
                             </Card>
                         </Grid.Cell>
                     {/* ))} */}
                 </Grid>
             </Box>
-        </Layout.Section>
+         </Layout.Section>
     );
 }
