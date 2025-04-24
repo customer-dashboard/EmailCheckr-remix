@@ -30,7 +30,7 @@ import account_status_img from "../../assets/image/Email marketing01.png"
 import customer_acc_img from "../../assets/image/Email marketing02.png"
 
 function onBoardingNew(props) {
-    const { classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes } = props;
+    const { classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes, billingNew } = props;
   const navigate = useNavigate();
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -57,7 +57,6 @@ function onBoardingNew(props) {
   
   useEffect(() => {
     const onboarded = localStorage.getItem(`dp_onboard${myShop}`);
-    // console.log("onboarded", onboarded);
 
     if (onboarded !== null) {
       setOnBoarding(JSON.parse(onboarded));
@@ -196,7 +195,7 @@ const options = state.map(ele => ({
   
   if (appStatus === true) completedSteps += 1;
   // if (!isNewCustomerAccounts === true) completedSteps += 1;
-  if (billing?.status !== undefined) completedSteps += 1;
+  if (billingNew[0]?.status === "ACTIVE") completedSteps += 1;
   
   const progress = (completedSteps / totalSteps) * 100;
   // const totalSteps = 3;
@@ -437,7 +436,7 @@ const options = state.map(ele => ({
                         <div style={{ flex: 1 }}>
                           <BlockStack gap="100">
                             <InlineStack align="space-between" blockAlign="center" wrap={false} gap={200}>
-                            {billing?.status === undefined ?
+                            {billingNew === false ?
                             <div className="icon_ec">
                             <Icon source={CircleIcon} />
                             </div> :
@@ -468,7 +467,7 @@ const options = state.map(ele => ({
                             >
 
                           <Box paddingInlineStart={600}>
-                              {billing?.status === undefined ? (
+                              {billingNew === false ? (
                             <Box paddingBlockEnd={200} paddingInlineStart={100} paddingBlockStart={400}>
                             <Text as="p" variant="bodyMd">
                             Start 14 days free trial to activate EmailCheckr
@@ -477,7 +476,7 @@ const options = state.map(ele => ({
                             ) : null }
                             <Box paddingBlockStart={400}>
                             <InlineStack align="left" gap="2">
-                              <Button size="slim" variant="primary" onClick={planPage} loading={loading2} disabled={isNewCustomerAccounts || billing?.status === "active"}>
+                              <Button size="slim" variant="primary" onClick={planPage} loading={loading2} disabled={isNewCustomerAccounts || billingNew[0]?.status === "ACTIVE"}>
                                 Set up
                               </Button>
                             </InlineStack>

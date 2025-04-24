@@ -35,6 +35,7 @@ export default function App() {
   const [progress2, setProgress2] = useState(true);
   const [onBoarding, setOnBoarding] = useState(true);
   const [classic, setClassic] = useState();
+  const [billingNew, setBillingNew] = useState([]);
   const [isShopifyPlus, setIsShopifyPlus] = useState("");
   
   var count = 0;
@@ -87,7 +88,7 @@ export default function App() {
         await customerStatus();
         let newShop = data.replace(".myshopify.com", "");
         window.open(
-          "https://admin.shopify.com/store/" + newShop + "/apps/customer-account-verification",
+          "https://admin.shopify.com/store/" + newShop + "/apps/email-checkr",
           "_top"
         );
       }else{
@@ -198,6 +199,7 @@ export default function App() {
     try {
       // const data = await paymentCheck();
       // await getbilling();
+      await getCheckBilling();
       // await customerStatus();
       await getFaq();
       
@@ -238,6 +240,22 @@ const getbilling = async() =>{
   }
 }
 
+const getCheckBilling = async() =>{
+  let formdata = new FormData();
+  formdata.append("_action", "get_check_billing");
+  const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
+  const responseJson = await response.json();
+  console.log("responseJson", responseJson);
+  if (responseJson?.hasActivePayment === true) {
+    setBillingNew(responseJson?.appSubscriptions);
+  }else{
+      setBillingNew(responseJson?.hasActivePayment);
+  }
+  if(responseJson.status==200) {
+  //  setPaymentcheck(responseJson?.data)
+  }
+}
+console.log("BillingNewState", billingNew);
 const customerStatus = async() =>{
   let formdata = new FormData();
   formdata.append("_action", "get_customer_status");
@@ -310,6 +328,7 @@ const app_Status = async() =>{
     return (responseJson?.app_status);
 }
 
+console.log("billingDef", defSetting);
 
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
@@ -323,7 +342,7 @@ const app_Status = async() =>{
         <Link to="/app/plans">Plan</Link>
       </ui-nav-menu>
       {/* } */}
-        <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus}} />
+        <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus, billingNew}} />
         <Scripts />
     </AppProvider>
   );

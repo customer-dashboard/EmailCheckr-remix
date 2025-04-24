@@ -164,7 +164,7 @@ function OnboardingEligibility(props) {
                 }
               </Box>
               <Box paddingBlockStart="200">
-                <Button onClick={nextButtonHandler} disabled={isNewCustomerAccounts || billing === undefined} size="slim">
+                <Button onClick={nextButtonHandler} disabled={isNewCustomerAccounts || billingNew === false} size="slim">
                   Next
                 </Button>
               </Box>

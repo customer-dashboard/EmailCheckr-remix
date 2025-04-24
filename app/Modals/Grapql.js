@@ -434,7 +434,35 @@ export async function hasBillingCheck(session, billing, name) {
       billing.request({
         plan: name,
         isTest: isTest,
-        returnUrl: `https://admin.shopify.com/store/${shop}/apps/customer-account-verification/app`,
+        returnUrl: `https://admin.shopify.com/store/${shop}/apps/email-checkr/app`,
+      }),
+  });
+}
+
+
+export async function getCheckbillingNew(session, billing, name) {
+  let isTest = false;
+  if (
+    session.shop === "silver-heritage-heaven.myshopify.com" ||
+    session.shop === "my-public-app.myshopify.com"
+  ) {
+    isTest = true;
+  }
+  console.log("session", session);
+  console.log("billing", billing);
+
+  var newShop = session.shop;
+  var shop = newShop.replace(".myshopify.com", "");
+
+  return await billing.check({
+    plans: Object.keys(billingConfig),
+    isTest: isTest,
+    returnObject: true,
+    onFailure: async () =>
+      billing.request({
+        plan: name,
+        isTest: isTest,
+        returnUrl: `https://admin.shopify.com/store/${shop}/apps/email-checkr/app`,
       }),
   });
 }
@@ -457,7 +485,7 @@ export async function hasBillingRequest(session, billing, name) {
       billing.request({
         plan: name,
         isTest: isTest,
-        returnUrl: `https://admin.shopify.com/store/${shop}/apps/customer-account-verification/app`,
+        returnUrl: `https://admin.shopify.com/store/${shop}/apps/email-checkr/app`,
       }),
   });
 }

@@ -16,8 +16,8 @@ import {
 //   import BillingAlert from "../../universal-components/BillingAlert";
   
   export const BillingPlan = (props) => {
-    const { billing, isShopifyPlus } = props;
-    console.log("billing", billing);
+    const { billing, isShopifyPlus, billingNew } = props;
+    // console.log("billingNew", billingNew[0]?.name);
     // const [billing] = useState({count:53334});
     const [loading, setLoading] = useState(-1);
     // const queryParameters = new URLSearchParams(window.location.search);
@@ -146,8 +146,8 @@ import {
         name: "business",
         label: "Basic",
         price: "$2.99 USD / month",
-        disable: billing?.status === undefined ? false : true,
-        button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
+        disable: billingNew === false ? false : true,
+        button_status: billingNew[0]?.status === "ACTIVE" ? "Upgrade" : "Upgrade",
       }
     : {
         key: 1,
@@ -155,8 +155,8 @@ import {
         name: "business+",
         label: "Shopify Plus",
         price: "$9.99 USD / month",
-        disable: billing?.status === undefined ? false : true,
-        button_status: billing?.status === "active" ? "Upgrade" : "Upgrade",
+        disable: billingNew === false ? false : true,
+        button_status: billingNew[0]?.status === "ACTIVE" ? "Upgrade" : "Upgrade",
       };
   
   const billinPlanArray  = [
@@ -180,7 +180,7 @@ import {
         <div className="plan-button-skeleton">
           <SkeletonDisplayText size="small" />
         </div>
-      ) : billing?.name == name ? (
+      ) : billingNew[0]?.name == name ? (
         <InlineStack align="center">
           <Button size="slim" disabled>Current plan</Button>
         </InlineStack>

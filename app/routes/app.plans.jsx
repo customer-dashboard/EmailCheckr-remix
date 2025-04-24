@@ -17,7 +17,7 @@ export const loader = async ({ request }) => {
 
 export default function Plan(props) {
     const [progress, setProgress] = useState(false);
-    const { onBoarding, defSetting, isShopifyPlus } = useOutletContext();
+    const { onBoarding, defSetting, isShopifyPlus, billingNew } = useOutletContext();
     const billing = defSetting?.billing;
     const ClickEvent = () => {
         window.open("shopify://admin/apps/customer-account-verification/app", "_self");
@@ -27,10 +27,10 @@ export default function Plan(props) {
         <>
         {/* <Alert billing={billing} /> */}
         <Page
-        {...(onBoarding && billing.status == undefined ? { backAction: { onAction: ClickEvent } } : {})}
-        title={billing?.status == 'active' ? "Plan" : "Plan(14 days free trial)" }
+        {...(onBoarding && billingNew === false ? { backAction: { onAction: ClickEvent } } : {})}
+        title={billingNew === false ? "Plan(14 days free trial)" : "Plan" }
         >
-        <BillingPlan billing={billing} isShopifyPlus={isShopifyPlus} />
+        <BillingPlan billingNew={billingNew} isShopifyPlus={isShopifyPlus} />
         </Page>
         </>
     );
