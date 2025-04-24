@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
-import { app_Status, createSegment, enableAppEmbed, getAppStatus, getCustomersData, getSettings, getSettingsData, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
+import { app_Status, createSegment, enableAppEmbed, getAppStatus, getCheckbillingNew, getCustomersData, getSettings, getSettingsData, getShopData, hasBillingCheck, postMetafileds } from "../Modals/Grapql"; 
 import { GetCollectionMongoDB, GetMongoData, InsertUpdateData, MongoDB } from "../server/mongodb";
 import { CurrentDate } from "../server/apicontroller";
 import setting_json from "../server/setting";
@@ -169,12 +169,24 @@ export async function action({ request }) {
         }
         return json({ data, status });
     }
+    else if (_action === "get_check_billing"){
+        let plans = Object.keys(billingConfig);
+        for (let index = 0; index < plans.length; index++) {
+          const element = plans[index];
+          // console.log("element", element);
+          const getCheckbilling = await getCheckbillingNew(session, billing, element);
+          // console.log("getCheckbilling", getCheckbilling);
+          return(getCheckbilling);
+        }
+        return { check: 200 };
+    }
     else if (_action === "get_billing"){
         let plans = Object.keys(billingConfig);
         for (let index = 0; index < plans.length; index++) {
           const element = plans[index];
           // console.log("element", element);
           const hasPayment = await hasBillingCheck(session, billing, element);
+          // console.log("hasPayment", hasPayment);
           if (hasPayment.hasActivePayment) {
           var new_data = await getSettings(admin);
           let data = JSON.parse(new_data);

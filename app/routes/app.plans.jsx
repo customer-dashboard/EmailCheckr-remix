@@ -4,7 +4,6 @@ import {
 import { useOutletContext } from '@remix-run/react';
 import { authenticate } from '../shopify.server';
 import { useState } from 'react';
-import Alert from '../universal-components/billing/Alert';
 import { BillingPlan } from '../universal-components/billing/billingplan';
 
 export const loader = async ({ request }) => {
@@ -17,7 +16,7 @@ export const loader = async ({ request }) => {
 
 export default function Plan(props) {
     const [progress, setProgress] = useState(false);
-    const { onBoarding, defSetting, isShopifyPlus } = useOutletContext();
+    const { onBoarding, defSetting, isShopifyPlus, billingNew } = useOutletContext();
     const billing = defSetting?.billing;
     console.log(defSetting);
     
@@ -29,10 +28,10 @@ export default function Plan(props) {
         <>
         {/* <Alert billing={billing} /> */}
         <Page
-        {...(onBoarding && billing?.status == undefined ? { backAction: { onAction: ClickEvent } } : {})}
-        title={billing?.status == undefined ? "Plan(14 days free trial)" : "Plan" }
+        {...(onBoarding && billingNew === false ? { backAction: { onAction: ClickEvent } } : {})}
+        title={billingNew === false ? "Plan(14 days free trial)" : "Plan" }
         >
-        <BillingPlan billing={billing} isShopifyPlus={isShopifyPlus} />
+        <BillingPlan billingNew={billingNew} isShopifyPlus={isShopifyPlus} />
         </Page>
         </>
     );

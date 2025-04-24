@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "236dfd633725b2ee62281ac3388814ce"
-name = "customer-dashboard-lite"
-handle = "customer-dashboard-lite"
-application_url = "https://naples-antibodies-harrison-smilies.trycloudflare.com"
+client_id = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
+name = "EmailCheckr: Activation Link"
+handle = "customer-account-verification"
+application_url = "https://customer-account-verification.fly.dev/"
 embedded = true
 
 [webhooks]
@@ -23,18 +23,18 @@ api_version = "2024-04"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "customer_read_customers,customer_read_orders,read_content,read_customers,read_locales,read_metaobject_definitions,read_online_store_navigation,read_products,read_returns,read_store_credit_account_transactions,read_store_credit_accounts,read_themes,unauthenticated_read_metaobjects,unauthenticated_read_product_listings,write_customers,write_files,write_metaobject_definitions,write_metaobjects,write_orders,write_returns,write_store_credit_account_transactions"
+scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://naples-antibodies-harrison-smilies.trycloudflare.com/auth/callback",
-  "https://naples-antibodies-harrison-smilies.trycloudflare.com/auth/shopify/callback",
-  "https://naples-antibodies-harrison-smilies.trycloudflare.com/api/auth/callback"
+  "https://customer-account-verification.fly.dev/auth/callback",
+  "https://customer-account-verification.fly.dev/auth/shopify/callback",
+  "https://customer-account-verification.fly.dev/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://naples-antibodies-harrison-smilies.trycloudflare.com/customerdashboard/post-customer-data"
-subpath = "customerdashboardlite"
+url = "https://customer-account-verification.fly.dev/app/post-api"
+subpath = "verification"
 prefix = "apps"
 
 [pos]

@@ -561,9 +561,10 @@ export default function Index(props) {
     setOnBoarding,
     isShopifyPlus,
     livetheme,
+    billingNew,
   } = useOutletContext();
   const navigate = useNavigate();
-  console.log("OnBoarding", onBoarding);
+  // console.log("OnBoarding", onBoarding);
   const type = classic?.customerAccountsVersion === "CLASSIC"
     ? "CLASSIC"
     : "NEW_CUSTOMER_ACCOUNTS";
@@ -812,42 +813,42 @@ export default function Index(props) {
       </Layout.Section>
     );
   });
-
-  const cardData = [
-    {
-      title: "Invited",
-      color: "primary",
-      content: "View",
-      persantage: persantage(
-        setting?.segment?.invited,
-        setting?.segment?.total,
-      ),
-      value: setting?.segment?.invited,
-      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}`,
-    },
-    {
-      title: "Enabled",
-      color: "success",
-      content: "View",
-      persantage: persantage(
-        setting?.segment?.enabled,
-        setting?.segment?.total,
-      ),
-      value: setting?.segment?.enabled,
-      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.enabled?.replace("gid://shopify/Segment/", "")}`,
-    },
-    {
-      title: "Disabled",
-      color: "critical",
-      content: "View",
-      persantage: persantage(
-        setting?.segment?.disabled,
-        setting?.segment?.total,
-      ),
-      value: setting?.segment?.disabled,
-      url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.disabled?.replace("gid://shopify/Segment/", "")}`,
-    },
-  ];
+const cardData = [];
+  // const cardData = [
+  //   {
+  //     title: "Invited",
+  //     color: "primary",
+  //     content: "View",
+  //     persantage: persantage(
+  //       setting?.segment?.invited,
+  //       setting?.segment?.total,
+  //     ),
+  //     value: setting?.segment?.invited,
+  //     url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.invited?.replace("gid://shopify/Segment/", "")}`,
+  //   },
+  //   {
+  //     title: "Enabled",
+  //     color: "success",
+  //     content: "View",
+  //     persantage: persantage(
+  //       setting?.segment?.enabled,
+  //       setting?.segment?.total,
+  //     ),
+  //     value: setting?.segment?.enabled,
+  //     url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.enabled?.replace("gid://shopify/Segment/", "")}`,
+  //   },
+  //   {
+  //     title: "Disabled",
+  //     color: "critical",
+  //     content: "View",
+  //     persantage: persantage(
+  //       setting?.segment?.disabled,
+  //       setting?.segment?.total,
+  //     ),
+  //     value: setting?.segment?.disabled,
+  //     url: `https://admin.shopify.com/store/${myShop}/customers/segments/${setting?.segment?.id?.disabled?.replace("gid://shopify/Segment/", "")}`,
+  //   },
+  // ];
 
 
   const customerStatus = useMemo(() => {
@@ -889,9 +890,6 @@ export default function Index(props) {
     if (!partnerCollOut) return null;
     return (
       <Layout.Section variant="fullWidth">
-        <button style={{ display: "none" }} onClick={DeleteMetafields}>
-          Delete Metafields
-        </button>
         <Card>
           <div
             className="show_hide_collapsed_parant"
@@ -1074,6 +1072,11 @@ export default function Index(props) {
           <SkeletonExample />
         ) : (
           <Layout>
+          <button 
+          style={{ display: "none" }} 
+          onClick={DeleteMetafields}>
+            Delete Metafields
+          </button>
             {/* {setting?.billing?.status !== "active" && (
               <Layout.Section fullWidth>
                 <Banner
@@ -1132,7 +1135,7 @@ export default function Index(props) {
             }
             {onBoarding ? (
               <OnBoardingNew
-                {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes }}
+                {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes, billingNew }}
               />
             ) : null}
             {analyticsComponent}
