@@ -309,9 +309,7 @@ export async function checkCustomerEmailAdmin(shop, reqbody, accessToken) {
 export async function postProfileData(shop, reqbody, accessToken) {
   try {
     const url = `https://${shop}/admin/api/2025-01/customers.json`;
-    const tags = reqbody?.tags
-      ? "EmailCheckrSubscriber," + reqbody.tags
-      : "EmailCheckrSubscriber";
+    const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
     const requestbody = {
       customer: {
         first_name: reqbody.first_name,
@@ -321,12 +319,12 @@ export async function postProfileData(shop, reqbody, accessToken) {
         verified_email: true,
         send_email_welcome: false,
         send_email_invite: true,
-        // if (reqbody.accepts_marketing) {
-        //   customer.email_marketing_consent = {
+        // ...(reqbody.accepts_marketing && {
+        //   email_marketing_consent: {
         //     state: "subscribed",
         //     opt_in_level: "single_opt_in",
-        //   };
-        // }
+        //   },
+        // }),
       },
     };
     const response = await fetch(url, {
@@ -347,9 +345,40 @@ export async function postProfileData(shop, reqbody, accessToken) {
     }
 
     const data = await response.json()
+    console.log("data customer", data);
     return data;
   } catch (error) {
     console.error("Error posting profile data:", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function updateProfileData(shop, customerId, accessToken) {
+  try {
+    const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
+
+    const inviteResponse = await fetch(inviteUrl, {
+      method: "POST",
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer_invite: {
+          custom_message: "Welcome! Please activate your account.",
+        }
+      }),
+    });
+
+    if (!inviteResponse.ok) {
+      const inviteError = await inviteResponse.json();
+      throw new Error(`Invite Error: ${JSON.stringify(inviteError.errors || inviteResponse.statusText)}`);
+    }
+
+    const inviteData = await inviteResponse.json();
+    return inviteData;
+  } catch (error) {
+    console.error("Error:", error.message);
     return { error: error.message };
   }
 }

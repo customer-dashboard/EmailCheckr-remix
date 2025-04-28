@@ -1,6 +1,6 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "verification";
+proxy = "verification-1";
 // proxy = "test-api";
 // console.log("In scriptTag file.");      
 // console.log("pathname--", pathname);
@@ -47,7 +47,7 @@ if (form.length > 0) {
   var elemDiv1 = document.createElement("div");
   var elemDiv2 = document.createElement("div");
   function myGreeting() {
-    elemDiv2.style.bottom = "-100px";
+    elemDiv2.style.bottom = "-110px";
   }
   function returnCall(value, color) {
     elemDiv2.style.bottom = "70px";
