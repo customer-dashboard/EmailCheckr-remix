@@ -448,8 +448,6 @@ export async function getCheckbillingNew(session, billing, name) {
   ) {
     isTest = true;
   }
-  console.log("session", session);
-  console.log("billing", billing);
 
   var newShop = session.shop;
   var shop = newShop.replace(".myshopify.com", "");
@@ -590,7 +588,7 @@ export const getAppStatus = async (session, data) => {
         if (text) {
           json = JSON.parse(text);
         } else {
-          console.warn(`⚠️ Empty response for theme ${themeId}`);
+          // console.warn(`⚠️ Empty response for theme ${themeId}`);
           continue;
         }
       } catch (err) {

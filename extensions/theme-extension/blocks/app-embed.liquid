@@ -6,6 +6,8 @@
 Detect if the old block exists and prevent its script from running
 {% endcomment %}
 
+
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const remixBlock = document.querySelector("[data-remix-app]");
@@ -16,7 +18,10 @@ Detect if the old block exists and prevent its script from running
       loadScript("{{ 'script.js' | asset_url }}");
     } else {
       console.log("Only Old Theme Embedded Block detected - Running old script");
-      loadScript("{{ 'scripttag.js' | asset_url }}");
+      {% if template == 'customers/register' %}
+         console.log("scripttag runs!");
+        loadScript("{{ 'scripttag.js' | asset_url }}");
+      {% endif %}
     }
   });
 
@@ -32,13 +37,15 @@ Detect if the old block exists and prevent its script from running
   "app_status not found"
 {% endif %}
 
+
+
+
 {% schema %}
-  {
-    "name": "EmailCheckr",
-    "target": "head",
-    "templates": ["customers/register"],
-    "settings": []
-  }
+{
+  "name": "EmailCheckr Script<Remix>",
+  "target": "body",
+  "settings": []
+}
 {% endschema %}
 
-
+<script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
