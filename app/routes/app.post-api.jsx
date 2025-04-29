@@ -4,7 +4,7 @@ import { authenticate } from "../shopify.server";
 import { GetCollectionMongoDB } from "../server/mongodb";
 // import { getSubscriptionsFrontEnd } from "../models/actions.server";
 // import { restRequest } from "../shopify.server";
-import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal } from "../Modals/Grapql";
+import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal, updateProfileData } from "../Modals/Grapql";
 
 
 export const loader = async ({ request }) => {
@@ -129,22 +129,55 @@ export const action = async ({ request }) => {
   case "profile-data":
     try {
       const checkMail = await checkCustomerEmailAdmin(shop, reqbody, accessToken);
-      // console.log("checkMail", checkMail);
-    
-      // If the email exists, return 
-      if (checkMail.customers && checkMail.customers.length > 0) {
-        console.log("Email exists");
-        let data = await ReturnProfileSection(session,setting,reqbody);
-        const profile_data = { shop: shop, data: data, message: "This email has already been used for registration!", status: 500 };
-        return json(profile_data);
+      // console.log("checkMail", checkMail?.customers);
+      
+      const customer = checkMail?.customers?.[0];
+      // console.log("customer", customer);
+      // Always prepare translated messages first
+      const data = await ReturnProfileSection(session, setting, reqbody);
+      
+      if (customer) {
+        if (customer.email_marketing_consent?.state === 'not_subscribed') {
+          console.log("Email exists but not subscribed to marketing");
+      
+          const profile_data = {
+            shop: shop,
+            data: data,
+            message: data.error_msg,  
+            status: 500
+          };
+          return json(profile_data);
+      
+        } else if (customer.email_marketing_consent?.state === 'subscribed' && customer.state === 'disabled') {
+          console.log("Customer subscribed via newsletter but account is disabled");
+      
+          const customerId = customer.id;
+          const updateData = await updateProfileData(shop, customerId, accessToken); 
+          console.log("Through newsletter & disabled", updateData);
+      
+          const profile_data = {
+            shop: shop,
+            data: data,
+            message: "successfully_get", 
+            status: 200
+          };
+          return json(profile_data);
+        }
       }
-    
-      // console.log("Email not found");
+      
+      // If no customer found, create a new customer
+      console.log("Email not found, creating new customer...");
       await postProfileData(shop, reqbody, accessToken);
-      let data = await ReturnProfileSection(session,setting,reqbody);
-      const profile_data = { shop: shop, data: data, message: "successfully_get", status: 200 };
+      
+      const profile_data = {
+        shop: shop,
+        data: data,
+        message: "successfully_get",  // success message after creating new customer
+        status: 200
+      };
       console.log("profile_data", profile_data);
       return json(profile_data);
+      
     
     } catch (error) {
       console.error("Error handling profile_data:", error.message);

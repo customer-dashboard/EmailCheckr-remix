@@ -42,7 +42,7 @@ if (form.length > 0) {
   var elemDiv1 = document.createElement("div");
   var elemDiv2 = document.createElement("div");
   function myGreeting() {
-    elemDiv2.style.bottom = "-100px";
+    elemDiv2.style.bottom = "-110px";
   }
   function returnCall(value, color) {
     elemDiv2.style.bottom = "70px";
