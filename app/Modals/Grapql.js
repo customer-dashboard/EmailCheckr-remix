@@ -1,4 +1,5 @@
 import { billingConfig } from "../../app/routes/billing";
+import { MongoDB } from "../server/mongodb";
 
 export async function getStoreLanguages(graphql) {
   const locals = await graphql(`
@@ -792,3 +793,24 @@ export const enableAppEmbed = async (shop, accessToken, themeId) => {
     };
   }
 };
+
+
+export const saveFraudBlockData = async (data,session) => {
+  let { shop, accessToken } = session;
+  const resData = {
+    shop: session.shop,
+    country_blocker_status: JSON.parse(data.country_blocker_status),
+    blocked_countries: JSON.parse(data.selected_countries)
+  }
+  console.log("resData", resData);
+  const result = await MongoDB(resData,"fraud_filter_blocker");
+  console.log("result", result);
+  return resData;
+}
+
+
+export const getCountryFromIp = async (ip) => {
+    const res = await fetch(`https://ipapi.co/${ip}/country_name/`);
+    const country = await res.text();
+    return country;
+  };

@@ -433,20 +433,29 @@
 
 //   }
 
-import { useNavigate, useSearchParams } from "@remix-run/react";
+import { useLocation, useNavigate, useOutletContext, useSearchParams } from "@remix-run/react";
 import RegistrationSetup from "./Feature components/RegistrationSetup";
 import { BlockStack, Box, Button, ButtonGroup, Card, InlineStack, Layout, MediaCard, Modal, Page, Text, VideoThumbnail } from "@shopify/polaris";
 import HelpSupport from "../components/HelpSupport";
-import { useState } from "react";
-import { TitleBar } from "@shopify/app-bridge-react";
+import { useCallback, useEffect, useState } from "react";
+import { SaveBar, TitleBar } from "@shopify/app-bridge-react";
 import ReactPlayer from "react-player";
 
 
 const PreventFakeSignups = () => {
+  const [save, setSave] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [modelFirst, setModelFirst] = useState(false);
   const view = searchParams.get("view");
+  const [setting, setSetting] = useState({});
+  const [defaultSetting, setdefaultSetting] = useState({});
+  const [progress, setProgress] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [partnerType, setpartnerType] = useState("");
+  const [active, setActive] = useState(false);
+  const toggleActive = useCallback(() => setActive((active) => !active), []);
+  const { defSetting, setDefSetting, progress2 } = useOutletContext();
 
   const handleChangeView = (view) => {
     navigate(`?view=${view}`, { replace: true });
@@ -455,27 +464,102 @@ const PreventFakeSignups = () => {
   const handleBack = () => {
     const pathname = window.location.pathname;
     const search = window.location.search;
+
   
     if (pathname.includes("prevent_fake_signups") && search) {
-      navigate("/app/prevent_fake_signups", { replace: true });
+      navigate("/app/features/prevent_fake_signups", { replace: true });
     } else if (pathname.includes("prevent_fake_signups")) {
-      navigate("/app", { replace: true });
+      navigate("/app/features", { replace: true });
     } else {
       navigate(-1);
     }
   };
+
+  const backActionButton = (save, fallbackUrl) => {
+    const navigate = useNavigate();
   
+    const handleAction = () => {
+      const pathname = window.location.pathname;
+      const search = window.location.search;
+  
+      if (save) {
+        window.open("shopify://admin/apps", "_self");
+        return;
+      }
+  
+      if (pathname.includes("prevent_fake_signups") && search) {
+        navigate("/app/features/prevent_fake_signups", { replace: true });
+      } else if (pathname.includes("prevent_fake_signups")) {
+        navigate("/app/features", { replace: true });
+      } else if (fallbackUrl) {
+        navigate(fallbackUrl, { replace: true });
+      } else {
+        navigate(-1);
+      }
+    };
+  
+    return { content: "Back", onAction: handleAction };
+  };
+  
+  const closePopup = () => {
+    setSetting((prev) => ({ ...defaultSetting }));
+    setSave(false);
+  };
+
+  const ClickEvent = () => {
+    window.open("shopify://admin/apps/email-checkr/app", "_self");
+  };
+
+useEffect(() => {
+  setProgress(progress2);
+}, [progress2]);
+
+
+useEffect(() => {
+  setSetting(defSetting);
+  setpartnerType(defSetting?.plan_name);
+  setdefaultSetting(defSetting);
+}, [defSetting]);
+
+const submit = async () => {
+  let formdata = new FormData();
+  formdata.append("_action", "POST_METAFIELD");
+  formdata.append("_postMetafileds", JSON.stringify(setting));
+  setLoading(true);
+  try {
+    const response = await fetch("/app/translation", {
+      method: "POST",
+      body: formdata,
+    });
+    const responseJson = await response.json();
+    setDefSetting(setting);
+    if (response.status === 200) {
+      setActive(
+        shopify.toast.show(responseJson.statusText, {
+          duration: 3000,
+        }),
+      );
+    }
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+  } finally {
+    setLoading(false);
+    setSave(false);
+  }
+};
 
   return (
+    <>
+        <SaveBar id="my-save-bar" open={ save }>
+          <button variant="primary" onClick={()=> submit()} disabled={loading}></button>
+          <button onClick={()=> closePopup()}></button>
+        </SaveBar>
     <Page
       title="Prevent Fake Signups"
-      backAction={{
-        content: "Back",
-        onAction: handleBack,
-      }}
+      backAction={backActionButton(save, "/app/features")}
     >
         {view ? (
-          view === "registration" && <RegistrationSetup />
+          view === "registration" && <RegistrationSetup setSave={setSave} defSetting={defSetting} setDefSetting={setDefSetting} setting={setting} setSetting={setSetting} defaultSetting={defaultSetting} setdefaultSetting={setdefaultSetting} progress2={progress2} />
         ) : (
       <Layout>
         <Layout.Section>
@@ -544,6 +628,7 @@ const PreventFakeSignups = () => {
   )}
 
     </Page>
+    </>
   );
 };
 

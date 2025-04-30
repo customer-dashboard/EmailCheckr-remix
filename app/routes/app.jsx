@@ -17,25 +17,25 @@ export const loader = async ({ request }) => {
   const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
   console.log("ip", ip);
 
-  const getCountryFromIp = async (ip) => {
-    const res = await fetch(`https://ipapi.co/${ip}/country/`);
-    const country = await res.text();
-    return country;
-  };
+  // const getCountryFromIp = async (ip) => {
+  //   const res = await fetch(`https://ipapi.co/${ip}/country/`);
+  //   const country = await res.text();
+  //   return country;
+  // };
 
-  const country = await getCountryFromIp(ip);
-  console.log("country", country);
+  // const country = await getCountryFromIp(ip);
+  // console.log("country", country);
 
-  const blockedCountries = ["CN", "US", "IR"];
+  // const blockedCountries = ["CN", "US", "IR"];
 
-  if (blockedCountries.includes(country)) {
-    console.log("US access denied!");
-    return new Response("Access Denied", { status: 403 });
-  }
+  // if (blockedCountries.includes(country)) {
+  //   console.log("US access denied!");
+  //   return new Response("Access Denied", { status: 403 });
+  // }
 
-  if (!session) {
-    throw new Response("Unauthorized", { status: 401 });
-  }
+  // if (!session) {
+  //   throw new Response("Unauthorized", { status: 401 });
+  // }
 
   return json({
     apiKey: process.env.SHOPIFY_API_KEY || "",
@@ -358,6 +358,7 @@ const app_Status = async() =>{
         <Link to="/app/partners">Partners</Link>
         <Link to="/app/settings">Settings</Link>
         <Link to="/app/plans">Plan</Link>
+        {/* <Link to="/app/features">countryBlocker</Link> */}
       </ui-nav-menu>
       {/* } */}
         <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus, billingNew}} />

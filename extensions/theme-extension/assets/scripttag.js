@@ -1,6 +1,6 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "verification";
+proxy = "verification-1";
 // proxy = "test-api";
 // console.log("In scriptTag file.");      
 // console.log("pathname--", pathname);
@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
 // proxy = "verification";
 var form = document.querySelectorAll("input[value=create_customer]");
 
@@ -36,6 +37,7 @@ if (form.length > 0) {
   let billing = {};
   billing.target = "check_billing";
   InstallMetafields(`https://${hostDomain}/apps/${proxy}`, billing);
+
   form = form[0].form;
   var password = form.querySelectorAll("input[type=password]");
   for (let i = 0; i < password.length; i++) {

@@ -32,57 +32,21 @@ import SkeletonExample from "../../components/SkeletonExample";
 import { SaveBar, TitleBar } from "@shopify/app-bridge-react";
 import { AlertCircleIcon } from "@shopify/polaris-icons";
 
-const RegistrationSetup = () => {
+const RegistrationSetup = (props) => {
   const navigate = useNavigate();
-  const [setting, setSetting] = useState({});
+  // const [setting, setSetting] = useState({});
   const [openStates, setOpenStates] = useState({});
-  const [defaultSetting, setdefaultSetting] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [partnerType, setpartnerType] = useState("");
-  const [progress, setProgress] = useState(true);
-  const [save, setSave] = useState(false);
-  const [active, setActive] = useState(false);
+  // const [defaultSetting, setdefaultSetting] = useState({});
+  // const [loading, setLoading] = useState(false);
+  // const [partnerType, setpartnerType] = useState("");
+  // const [progress, setProgress] = useState(true);
+  // const [active, setActive] = useState(false);
   const [modelUrl, setModelUrl] = useState("");
   const [exitpop, setExitpop] = useState(false);
-  const toggleActive = useCallback(() => setActive((active) => !active), []);
-  const { defSetting, setDefSetting, progress2 } = useOutletContext();
+  // const toggleActive = useCallback(() => setActive((active) => !active), []);
+  const { setSave, defSetting, setDefSetting, setting, setSetting, defaultSetting, setdefaultSetting, progress2 } = props;
 
-  useEffect(() => {
-    setProgress(progress2);
-  }, [progress2]);
 
-  useEffect(() => {
-    setSetting(defSetting);
-    setpartnerType(defSetting.plan_name);
-    setdefaultSetting(defSetting);
-  }, [defSetting]);
-
-  const submit = async () => {
-    let formdata = new FormData();
-    formdata.append("_action", "POST_METAFIELD");
-    formdata.append("_postMetafileds", JSON.stringify(setting));
-    setLoading(true);
-    try {
-      const response = await fetch("/app/translation", {
-        method: "POST",
-        body: formdata,
-      });
-      const responseJson = await response.json();
-      setDefSetting(setting);
-      if (response.status === 200) {
-        setActive(
-          shopify.toast.show(responseJson.statusText, {
-            duration: 3000,
-          }),
-        );
-      }
-    } catch (error) {
-      console.error("An error occurred:", error.message);
-    } finally {
-      setLoading(false);
-      setSave(false);
-    }
-  };
 
   const handleColorSetting = (e) => {
     selectChangeColor(Object.values(e)[0], Object.keys(e)[0]);
@@ -193,29 +157,9 @@ const RegistrationSetup = () => {
     textAlign: "right",
   };
 
-  const closePopup = () => {
-    setSetting((prev) => ({ ...defaultSetting }));
-    setSave(false);
-  };
-
-  const ClickEvent = () => {
-    window.open("shopify://admin/apps/email-checkr/app", "_self");
-  };
 
   return (
     <>
-      <SaveBar id="my-save-bar" open={save}>
-        <button
-          variant="primary"
-          onClick={() => submit()}
-          disabled={loading}
-        ></button>
-        <button onClick={() => closePopup()}></button>
-      </SaveBar>
-      {progress ? (
-        <SkeletonExample />
-      ) : (
-        <div>
           {/* <Page
             title="Prevent fake signups"
             backAction={{ onAction: ClickEvent }}
@@ -301,12 +245,12 @@ const RegistrationSetup = () => {
                     {
                       key: "main_heading_color",
                       name: "Main heading color",
-                      value: setting.main_heading_color,
+                      value: setting?.main_heading_color,
                     },
                     {
                       key: "success_message_color",
                       name: "Success message text color",
-                      value: setting.success_message_color,
+                      value: setting?.success_message_color,
                     },
                   ].map((ele, index) => (
                     <Box key={index} padding="100">
@@ -350,7 +294,7 @@ const RegistrationSetup = () => {
                 <Card>
                   <RangeSlider
                     label="Main heading font size"
-                    value={setting.typography?.main_heading_font_size || ""}
+                    value={setting?.typography?.main_heading_font_size || ""}
                     name="main_heading_font_size"
                     min={10}
                     max={60}
@@ -372,7 +316,7 @@ const RegistrationSetup = () => {
                   <RangeSlider
                     label="Success message font size"
                     name="success_message_font_size"
-                    value={setting.typography?.success_message_font_size || ""}
+                    value={setting?.typography?.success_message_font_size || ""}
                     min={10}
                     max={60}
                     onChange={(e) =>
@@ -393,7 +337,7 @@ const RegistrationSetup = () => {
                   <RangeSlider
                     label="Error message font size"
                     name="error_message_font_size"
-                    value={setting.typography?.error_message_font_size || ""}
+                    value={setting?.typography?.error_message_font_size || ""}
                     min={10}
                     max={60}
                     onChange={(e) =>
@@ -433,8 +377,6 @@ const RegistrationSetup = () => {
             {/* </Layout>
             <Footer />
           </Page> */}
-        </div>
-      )}
     </>
   );
 };

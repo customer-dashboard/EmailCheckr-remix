@@ -591,7 +591,7 @@ export default function Index(props) {
   }));
 
   const managePage = () => {
-    navigate("/app/prevent_fake_signups", {
+    navigate("/app/features/prevent_fake_signups", {
       replace: true,
       state: {
         defSetting,
