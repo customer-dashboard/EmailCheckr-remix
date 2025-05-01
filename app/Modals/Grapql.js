@@ -214,7 +214,7 @@ export async function postMetafileds(admin, formValue, shop, accessToken) {
               key: "Settings",
               namespace: "customer_accounts_email_verification",
               ownerId: shopGid,
-              type: "multi_line_text_field",
+              type: "json",
               value: formDatavalue,
             },
           ],
@@ -319,12 +319,12 @@ export async function postProfileData(shop, reqbody, accessToken) {
         verified_email: true,
         send_email_welcome: false,
         send_email_invite: true,
-        // ...(reqbody.accepts_marketing && {
-        //   email_marketing_consent: {
-        //     state: "subscribed",
-        //     opt_in_level: "single_opt_in",
-        //   },
-        // }),
+        ...(reqbody.accepts_marketing && {
+          email_marketing_consent: {
+            state: "subscribed",
+            opt_in_level: "single_opt_in",
+          },
+        }),
       },
     };
     const response = await fetch(url, {
