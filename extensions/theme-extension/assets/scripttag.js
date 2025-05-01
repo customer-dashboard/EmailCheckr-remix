@@ -1,6 +1,6 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "verification";
+proxy = "verification-1";
 
 document.addEventListener("DOMContentLoaded", function () {
   var formInputs = document.querySelectorAll("input[value=create_customer]");
@@ -44,6 +44,24 @@ if (form.length > 0) {
   function myGreeting() {
     elemDiv2.style.bottom = "-110px";
   }
+
+//for disabling button
+  const inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+// console.log(form);
+// console.log(inputs);
+// console.log(submit_button);
+  function checkInputs() {
+    const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+    submit_button.disabled = !allFilled;
+  }
+
+  checkInputs();
+
+  inputs.forEach(input => {
+    input.addEventListener('input', checkInputs);
+  });
+//
+
   function returnCall(value, color) {
     elemDiv2.style.bottom = "70px";
     elemDiv2.style.background = color;
@@ -115,3 +133,23 @@ if (form.length > 0) {
     }
   });
 }
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   const form = document.getElementById('create_customer');
+//   const inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+//   const submitButton = form.querySelector('button[type="button"]'); 
+// console.log(form);
+// console.log(inputs);
+// console.log(submitButton);
+//   function checkInputs() {
+//     const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+//     submitButton.disabled = !allFilled;
+//   }
+
+//   checkInputs();
+
+//   inputs.forEach(input => {
+//     input.addEventListener('input', checkInputs);
+//   });
+// });
