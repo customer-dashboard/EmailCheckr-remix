@@ -461,19 +461,6 @@ const PreventFakeSignups = () => {
     navigate(`?view=${view}`, { replace: true });
   };
 
-  const handleBack = () => {
-    const pathname = window.location.pathname;
-    const search = window.location.search;
-
-  
-    if (pathname.includes("prevent_fake_signups") && search) {
-      navigate("/app/features/prevent_fake_signups", { replace: true });
-    } else if (pathname.includes("prevent_fake_signups")) {
-      navigate("/app/features", { replace: true });
-    } else {
-      navigate(-1);
-    }
-  };
 
   const backActionButton = (save, fallbackUrl) => {
     const navigate = useNavigate();
@@ -504,10 +491,6 @@ const PreventFakeSignups = () => {
   const closePopup = () => {
     setSetting((prev) => ({ ...defaultSetting }));
     setSave(false);
-  };
-
-  const ClickEvent = () => {
-    window.open("shopify://admin/apps/email-checkr/app", "_self");
   };
 
 useEffect(() => {
@@ -597,12 +580,12 @@ const submit = async () => {
               </Text>
               </Box>
               <MediaCard
-            title="Turn your side-project into a business"
+            title="Protect your platform from fake signups"
             primaryAction={{
               content: 'Learn more',
               onAction: () => setModelFirst(true),
             }}
-            description={`In this course, you’ll learn how the Kular family turned their mom’s recipe book into a global business.`}
+            description={`In this guide, you’ll learn how to set up the Email Checker feature to automatically detect and block invalid or duplicate email addresses—ensuring only genuine users make it through your registration process.`}
             popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
           >
             <VideoThumbnail
@@ -610,15 +593,6 @@ const submit = async () => {
               thumbnailUrl="https://mandasa1.b-cdn.net/emailcheckr/email%20checker%20installation.mp4"
               onClick={() => setModelFirst(true)}
             />
-            <Modal
-                open={modelFirst}
-                onClose={() => setModelFirst(false)}
-            >
-                {/* <TitleBar title='Installation process' /> */}
-                <Box padding={200}>
-                    <ReactPlayer url='https://mandasa1.b-cdn.net/emailcheckr/email%20checker%20installation.mp4' width="100%" height="360px" controls={true} />
-                </Box>
-            </Modal>
           </MediaCard>
           </Card>
         </Layout.Section>

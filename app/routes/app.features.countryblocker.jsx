@@ -24,7 +24,8 @@ export default function CountryBlocker() {
   const [active, setActive] = useState(false);
   const [defaultTags, setDefaultTags] = useState(["United States"]);
   const [selectedTags, setSelectedTags] = useState(defaultTags);
-  const [selected, setSelected] = useState(["enable"]);
+  const [defaultSelected, setDefaultSelected] = useState(["enable"]);
+  const [selected, setSelected] = useState(defaultSelected);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -64,7 +65,7 @@ export default function CountryBlocker() {
 
   const closePopup = () => {
     setSelectedTags(defaultTags);
-    setSelected(["enable"]);
+    setSelected(defaultSelected);
     setSave(false);
   };
 
@@ -83,7 +84,9 @@ export default function CountryBlocker() {
 
       console.log("getData", parsedData);
       console.log("blocked", parsedData.blocked_countries);
+        setDefaultSelected(parsedData.country_blocker_status);
         setSelected(parsedData.country_blocker_status);
+        setDefaultTags(parsedData.blocked_countries);
         setSelectedTags(parsedData.blocked_countries);
 
     } catch (error) {
@@ -150,6 +153,7 @@ export default function CountryBlocker() {
               setSelectedTags={setSelectedTags}
               selected={selected}
               setSelected={setSelected}
+              defaultSelected={defaultSelected}
               value={value}
               setValue={setValue}
             />
@@ -193,12 +197,12 @@ export default function CountryBlocker() {
                   </Text>
                 </Box>
                 <MediaCard
-                  title="Turn your side-project into a business"
+                  title="Control where your services are accessed"
                   primaryAction={{
                     content: "Learn more",
                     onAction: () => setModelFirst(true),
                   }}
-                  description={`In this course, you’ll learn how the Kular family turned their mom’s recipe book into a global business.`}
+                  description={`In this guide, you’ll learn how to use the Country Block feature to restrict access from specific countries—helping you stay compliant, reduce fraud, or simply focus on your target market.`}
                   popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
                 >
                   <VideoThumbnail

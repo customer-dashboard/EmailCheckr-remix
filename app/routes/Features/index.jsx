@@ -18,6 +18,7 @@ import { Outlet, useLocation, useNavigate, useOutletContext, useSearchParams } f
 import { authenticate } from "../../shopify.server";
 import HelpSupport from "../../components/HelpSupport";
 import { universalFeaturesData } from "./features";
+import "../../components/style.css";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);

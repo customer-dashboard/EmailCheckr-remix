@@ -1,14 +1,17 @@
 import { AccountConnection, AutoSelection, Box, Card, ChoiceList, Combobox, EmptySearchResult, InlineStack, Layout, LegacyStack, List, Listbox, Page, Tag, Text } from '@shopify/polaris'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import countries from '../../components/countries';
 
 export default function CountryblockSetup(props) {
-    const { setSave, selectedTags, setSelectedTags, selected, setSelected, value, setValue } = props;
+    const { setSave, selectedTags, setSelectedTags, selected, setSelected, value, setValue, defaultSelected } = props;
+
 
     const handleChange = useCallback((value) => {
       setSelected(value);
-      setSave(true); 
-    }, [setSave]);
+      const isEqual = JSON.stringify(value) === JSON.stringify(defaultSelected);
+      setSave(!isEqual); 
+    }, [defaultSelected]);
 
     const [suggestion, setSuggestion] = useState('');
   
@@ -53,7 +56,10 @@ export default function CountryblockSetup(props) {
   
     const getAllTags = useCallback(() => {
         
-      const savedTags = ['United States', 'Canada', 'Germany', 'France', 'India', 'Australia', 'Japan', 'Brazil', 'Italy', 'Spain'];
+      // const savedTags = ['United States', 'Canada', 'Germany', 'France', 'India', 'Australia', 'Japan', 'Brazil', 'Italy', 'Spain'];
+      const savedTags = countries.map(country => country.name);
+
+      console.log(savedTags); 
       return [...new Set([...savedTags, ...selectedTags].sort())];
     }, [selectedTags]);
   
@@ -182,7 +188,7 @@ export default function CountryblockSetup(props) {
                 <div style={{height: '225px'}}>
                     <Combobox
                         allowMultiple
-                        preferredPosition='cover'
+                        preferredPosition='below'
                         activator={
                         <Combobox.TextField
                             autoComplete="off"

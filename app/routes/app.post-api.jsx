@@ -131,10 +131,6 @@ export const action = async ({ request }) => {
     return json(metafieldsData);
 
   case "get_country":
-    // const res = await getSettings(admin);
-    // const metafield = res?.get_account_validation_status;
-    // const metafieldsData = { shop: shop, data: metafield, message: "successfully_get", status: 200 };
-    // return json(metafieldsData);
     const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
     const singleIp = ip.split(',')[0];
     console.log("ip in postApi", singleIp);
