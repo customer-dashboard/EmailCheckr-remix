@@ -809,8 +809,20 @@ export const saveFraudBlockData = async (data,session) => {
 }
 
 
+// export const getCountryFromIp = async (ip) => {
+//     // const res = await fetch(`https://ipapi.co/${ip}/country_name/`);
+//     const res = await fetch(`http://ip-api.com/json/${ip}`);
+//     const country = await res.text();
+//     const newCon = JSON.parse(country);
+//     console.log("country", country);
+//     console.log("country", country.country);
+//     return country.country;
+//   };
+
 export const getCountryFromIp = async (ip) => {
-    const res = await fetch(`https://ipapi.co/${ip}/country_name/`);
-    const country = await res.text();
-    return country;
-  };
+  const res = await fetch(`http://ip-api.com/json/${ip}`);
+  const data = await res.json(); // directly parse JSON here
+  console.log("country", data);
+  console.log("country", data.country);
+  return data.country;
+};

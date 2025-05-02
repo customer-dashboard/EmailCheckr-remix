@@ -1,4 +1,4 @@
-import { AccountConnection, AutoSelection, Box, Card, ChoiceList, Combobox, EmptySearchResult, InlineStack, Layout, LegacyStack, List, Listbox, Page, Tag, Text } from '@shopify/polaris'
+import { AccountConnection, AutoSelection, Box, Card, ChoiceList, Combobox, EmptySearchResult, Icon, InlineStack, Layout, LegacyStack, List, Listbox, Page, Tag, Text } from '@shopify/polaris'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import countries from '../../components/countries';
@@ -58,8 +58,8 @@ export default function CountryblockSetup(props) {
         
       // const savedTags = ['United States', 'Canada', 'Germany', 'France', 'India', 'Australia', 'Japan', 'Brazil', 'Italy', 'Spain'];
       const savedTags = countries.map(country => country.name);
+      // console.log('Total countries:', savedTags.length);
 
-      console.log(savedTags); 
       return [...new Set([...savedTags, ...selectedTags].sort())];
     }, [selectedTags]);
   
@@ -155,7 +155,7 @@ export default function CountryblockSetup(props) {
           onSelect={updateSelection}
           onActiveOptionChange={handleActiveOptionChange}
         >
-          {actionMarkup}
+          {/* {actionMarkup} */}
           {optionMarkup}
         </Listbox>
       ) : null;
@@ -192,12 +192,13 @@ export default function CountryblockSetup(props) {
                         activator={
                         <Combobox.TextField
                             autoComplete="off"
-                            label="Search tags"
+                            label="Search countries"
                             labelHidden
                             value={value}
                             suggestion={suggestion}
-                            placeholder="Search tags"
+                            placeholder="Search countries"
                             onChange={setValue}
+                            willLoadMoreOptions
                             // verticalContent={verticalContentMarkup}
                             />
                         }

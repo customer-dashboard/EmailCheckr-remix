@@ -138,7 +138,9 @@ export const action = async ({ request }) => {
     const countries = await GetCollectionMongoDB('fraud_filter_blocker',shop);
     const parsed = typeof countries === 'string' ? JSON.parse(countries) : countries;
     const blockedCountries = parsed.blocked_countries;
+    console.log("blockedCountries", blockedCountries);
     const country_blocker_status = parsed.country_blocker_status;
+    console.log("country_blocker_status", country_blocker_status);
     if(country_blocker_status == 'enable'){
     if (blockedCountries.includes(country)) {
     console.log("Access Denied!");
@@ -163,7 +165,7 @@ export const action = async ({ request }) => {
       await postProfileData(shop, reqbody, accessToken);
       let data = await ReturnProfileSection(session,setting,reqbody);
       const profile_data = { shop: shop, data: data, message: "successfully_get", status: 200 };
-      console.log("profile_data", profile_data);
+      // console.log("profile_data", profile_data);
       return json(profile_data);
     
     } catch (error) {

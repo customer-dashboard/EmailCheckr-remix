@@ -17,7 +17,7 @@
 
   try {
     const response = await InstallMetafields(`https://${hostDomain}/apps/${proxy}`, country);
-
+console.log("res", response);
     if (response.status === 403) {
       document.body.innerHTML = `
         <div style="

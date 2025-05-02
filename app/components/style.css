@@ -18,7 +18,7 @@
   gap: 10px;
 }
 
-.Polaris-MediaCard__InfoContainer {
+.features_mediacard .Polaris-MediaCard__InfoContainer {
   display: none;
 }
 
