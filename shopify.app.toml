@@ -3,7 +3,7 @@
 client_id = "fe04d82cbf1ba0a5aa5ec702f06dd73d"
 name = "EmailCheckr: Activation Link"
 handle = "customer-account-verification"
-application_url = "https://customer-account-verification.fly.dev/"
+application_url = "https://out-initiative-dispute-hl.trycloudflare.com"
 embedded = true
 
 [webhooks]
@@ -27,13 +27,13 @@ scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://customer-account-verification.fly.dev/auth/callback",
-  "https://customer-account-verification.fly.dev/auth/shopify/callback",
-  "https://customer-account-verification.fly.dev/api/auth/callback"
+  "https://out-initiative-dispute-hl.trycloudflare.com/auth/callback",
+  "https://out-initiative-dispute-hl.trycloudflare.com/auth/shopify/callback",
+  "https://out-initiative-dispute-hl.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://customer-account-verification.fly.dev/app/post-api"
+url = "https://out-initiative-dispute-hl.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 
@@ -42,3 +42,4 @@ embedded = false
 
 [build]
 automatically_update_urls_on_dev = true
+dev_store_url = "silver-heritage-heaven.myshopify.com"

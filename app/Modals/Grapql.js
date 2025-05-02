@@ -307,6 +307,7 @@ export async function checkCustomerEmailAdmin(shop, reqbody, accessToken) {
 }
 
 export async function postProfileData(shop, reqbody, accessToken) {
+  console.log("reqBody", reqbody);
   try {
     const url = `https://${shop}/admin/api/2025-01/customers.json`;
     const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
@@ -353,8 +354,68 @@ export async function postProfileData(shop, reqbody, accessToken) {
   }
 }
 
-export async function updateProfileData(shop, customerId, accessToken) {
+// export async function updateProfileData(shop, customerId, accessToken, reqbody) {
+//   console.log("updating profile data");
+//   console.log("reqbody", reqbody);
+//   try {
+//     const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
+//     const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
+
+//     const inviteResponse = await fetch(inviteUrl, {
+//       method: "POST",
+//       headers: {
+//         "X-Shopify-Access-Token": accessToken,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         tags: tags,
+//         customer_invite: {
+//           custom_message: "Welcome! Please activate your account.",
+//         }
+//       }),
+//     });
+
+//     if (!inviteResponse.ok) {
+//       const inviteError = await inviteResponse.json();
+//       throw new Error(`Invite Error: ${JSON.stringify(inviteError.errors || inviteResponse.statusText)}`);
+//     }
+
+//     const inviteData = await inviteResponse.json();
+//     return inviteData;
+//   } catch (error) {
+//     console.error("Error:", error.message);
+//     return { error: error.message };
+//   }
+// }
+
+export async function updateProfileData(shop, customerId, accessToken, reqbody) {
+  console.log("Updating profile data");
+  console.log("reqbody", reqbody);
   try {
+    const updateUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}.json`;
+
+    const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
+
+    // Update the customer
+    const updateResponse = await fetch(updateUrl, {
+      method: "PUT",
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer: {
+          id: customerId,
+          tags: tags
+        }
+      }),
+    });
+
+    if (!updateResponse.ok) {
+      const updateError = await updateResponse.json();
+      throw new Error(`Customer Update Error: ${JSON.stringify(updateError.errors || updateResponse.statusText)}`);
+    }
+
     const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
 
     const inviteResponse = await fetch(inviteUrl, {
@@ -382,6 +443,7 @@ export async function updateProfileData(shop, customerId, accessToken) {
     return { error: error.message };
   }
 }
+
 
 export async function createSegment(name, status, shop, accessToken) {
   const endpoint = `https://${shop}/admin/api/2025-01/graphql.json`;

@@ -1,6 +1,6 @@
-{% assign setting = shop.metafields.customer_accounts_email_verification.Settings.value %}
+{% assign settings = shop.metafields.customer_accounts_email_verification.Settings.value %}
 
-{% if setting contains "app_status" %}
+{% if settings.app_status == true %}
 
 {% comment %}
 Detect if the old block exists and prevent its script from running
@@ -29,7 +29,8 @@ Detect if the old block exists and prevent its script from running
 </script>
 
 {% else %}
-  "app_status not found"
+
+
 {% endif %}
 
 {% schema %}

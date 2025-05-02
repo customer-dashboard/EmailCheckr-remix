@@ -129,7 +129,7 @@ export const action = async ({ request }) => {
   case "profile-data":
     try {
       const checkMail = await checkCustomerEmailAdmin(shop, reqbody, accessToken);
-      // console.log("checkMail", checkMail?.customers);
+      console.log("checkMail", checkMail?.customers);
       
       const customer = checkMail?.customers?.[0];
       // console.log("customer", customer);
@@ -152,11 +152,12 @@ export const action = async ({ request }) => {
           console.log("Customer subscribed via newsletter but account is disabled");
       
           const customerId = customer.id;
-          const updateData = await updateProfileData(shop, customerId, accessToken); 
+          const updateData = await updateProfileData(shop, customerId, accessToken, reqbody); 
           console.log("Through newsletter & disabled", updateData);
       
           const profile_data = {
             shop: shop,
+            updateData: updateData,
             data: data,
             message: "successfully_get", 
             status: 200
