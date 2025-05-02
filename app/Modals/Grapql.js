@@ -417,7 +417,6 @@ export async function updateProfileData(shop, customerId, accessToken, reqbody) 
       throw new Error(`Customer Update Error: ${JSON.stringify(updateError.errors || updateResponse.statusText)}`);
     }
 
-    // Optionally send an invite afterward if needed
     const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
 
     const inviteResponse = await fetch(inviteUrl, {
