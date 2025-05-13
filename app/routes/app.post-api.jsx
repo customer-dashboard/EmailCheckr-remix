@@ -131,6 +131,8 @@ export const action = async ({ request }) => {
     return json(metafieldsData);
 
   case "get_country":
+    
+    // console.log("shopify", shopify);
     const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
     const singleIp = ip.split(',')[0];
     console.log("ip in postApi", singleIp);

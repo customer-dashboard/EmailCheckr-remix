@@ -14,24 +14,55 @@ import {
 } from "@shopify/polaris";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
-import CountryblockSetup from "./Feature components/CountryblockSetup";
+// import CountryblockSetup from "./Feature components/CountryblockSetup";
 import HelpSupport from "../components/HelpSupport";
 import ReactPlayer from "react-player";
 import { SaveBar } from "@shopify/app-bridge-react";
+import countries from "../components/countries";
+import CountryBlockerSetup from "./Feature components/CountryBlocker";
+import UniversalSaveBar from "../universal-components/UniversalSaveBar";
+import { DeepEqual } from "./DeepEqual";
 
 export default function CountryBlocker() {
   const [save, setSave] = useState(false);
   const [active, setActive] = useState(false);
-  const [defaultTags, setDefaultTags] = useState(["United States"]);
-  const [selectedTags, setSelectedTags] = useState(defaultTags);
-  const [defaultSelected, setDefaultSelected] = useState(["enable"]);
-  const [selected, setSelected] = useState(defaultSelected);
+  const [setup, setSetup] = useState({});
+  const [content, setContent] = useState({});
+  const [settings, setSettings] = useState({});
+  const [countryblocker, setCountryblocker] = useState({});
+  const [originalCountryblocker, setOriginalCountryblocker] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [modelFirst, setModelFirst] = useState(false);
-  const [value, setValue] = useState("");
+  const [getAllMetafields, setGetAllMetafields] = useState({});
+  // const [value, setValue] = useState("");
   const view = searchParams.get("view");
+
+  const selectChange = (mainObj, name, value, locale_name) => {
+    const newFormValues = { ...getAllMetafields };
+    const target = locale_name ? newFormValues[locale_name] : newFormValues;
+    target[mainObj] = { ...target[mainObj], [name]: value };
+    setSave(!DeepEqual(getStoreMetafields, newFormValues));
+    setGetAllMetafields(newFormValues);
+  };
+
+  const hasTemplateParam = searchParams.get('template') !== null;
+  const pathName = window.location.pathname;
+  const template = pathName?.includes("template");
+  console.log("pathname:", pathName);
+  console.log("hasTemplateParam:", pathName?.includes("template"));
+
+  // useEffect(() => {
+  //   setCountryblocker(prev => ({
+  //     ...prev,
+  //     setup,
+  //     content,
+  //     settings,
+  //   }));
+  // }, [setup, content, settings]);
+
+  // console.log("countryblocker", countryblocker);
 
   const handleChangeView = (view) => {
     navigate(`?view=${view}`, { replace: true });
@@ -49,9 +80,9 @@ export default function CountryBlocker() {
         return;
       }
 
-      if (pathname.includes("countryblocker") && search) {
+      if (pathname?.includes("countryblocker") && search) {
         navigate("/app/features/countryblocker", { replace: true });
-      } else if (pathname.includes("countryblocker")) {
+      } else if (pathname?.includes("countryblocker")) {
         navigate("/app/features", { replace: true });
       } else if (fallbackUrl) {
         navigate(fallbackUrl, { replace: true });
@@ -64,10 +95,25 @@ export default function CountryBlocker() {
   };
 
   const closePopup = () => {
-    setSelectedTags(defaultTags);
-    setSelected(defaultSelected);
-    setSave(false);
+    setCountryblocker(originalCountryblocker);
+  
+    setSave(false); // Also close the save bar
   };
+
+
+
+  useEffect(() => {
+    const isChanged =
+      !DeepEqual(countryblocker, originalCountryblocker);
+  console.log(isChanged);
+    setSave(isChanged);
+  }, [countryblocker, originalCountryblocker]);
+      
+  const getCountryCodeFromName = (name) => {
+    const match = countries.find(c => c.name === name);
+    return match ? match.code : name;
+  };
+  
 
   
   useEffect(() => {
@@ -81,13 +127,24 @@ export default function CountryBlocker() {
       });
       const responseJson = await response.json();
       const parsedData = JSON.parse(responseJson.data);
+      const initialData = parsedData.countryData;
+      console.log("initialData", initialData);
+      // setCountryblocker(parsedData.countryData);/
 
-      console.log("getData", parsedData);
-      console.log("blocked", parsedData.blocked_countries);
-        setDefaultSelected(parsedData.country_blocker_status);
-        setSelected(parsedData.country_blocker_status);
-        setDefaultTags(parsedData.blocked_countries);
-        setSelectedTags(parsedData.blocked_countries);
+      if (initialData) {
+        setCountryblocker(initialData);
+        setOriginalCountryblocker(initialData);
+    
+        setSetup(initialData.setup || {});
+        setContent(initialData.content || {});
+        setSettings(initialData.settings || {});
+      }
+      console.log("countryblocker in fetch", countryblocker);
+        // setDefaultSelected(parsedData.country_blocker_status);
+        // setSelected(parsedData.country_blocker_status);
+        // const codes = parsedData.blocked_countries.map(getCountryCodeFromName);
+        // setDefaultTags(codes);
+        // setSelectedTags(codes);
 
     } catch (error) {
       console.error("An error occurred:", error.message);
@@ -103,8 +160,7 @@ export default function CountryBlocker() {
   const submit = async () => {
     let formdata = new FormData();
     formdata.append("_action", "country_blocker_data");
-    formdata.append("country_blocker_status", JSON.stringify(selected));
-    formdata.append("selected_countries", JSON.stringify(selectedTags));
+    formdata.append("CountryBlockerData", JSON.stringify(countryblocker));
     // console.log("postMetafileds", formdata.get("postMetafileds"));
     setLoading(true);
     try {
@@ -113,7 +169,12 @@ export default function CountryBlocker() {
         body: formdata,
       });
       const responseJson = await response.json();
-      // setSelected(responseJson.data.country_blocker_status);
+      // console.log("responseJson", responseJson);
+      // console.log("data",responseJson.data.data.metafieldsSet.metafields[0].value);
+      const data = responseJson.data.data.metafieldsSet.metafields[0].value;
+
+      // console.log(JSON.parse(data).countryData);
+      setOriginalCountryblocker(JSON.parse(data).countryData);
       // setSelectedTags(responseJson.data.blocked_countries);
       if (responseJson.status === 200) {
         setActive(
@@ -129,33 +190,34 @@ export default function CountryBlocker() {
       setSave(false);
     }
   };
-
+  console.log("countryBlocker", countryblocker);
+  console.log("originalCountryblocker", originalCountryblocker);
 
   return (
     <>
-      <SaveBar id="my-save-bar" open={save}>
-        <button
-          variant="primary"
-          onClick={() => submit()}
-          disabled={loading}
-        ></button>
-        <button onClick={() => closePopup()}></button>
-      </SaveBar>
+    {template ? (
+                <Outlet context={{ countryblocker, setCountryblocker }} />
+                )
+    :
+    (
       <Page
         title="Country Blocker"
         backAction={backActionButton(save, "/app/features")}
-      >
+      > 
+      <UniversalSaveBar open={save} loading={loading} unsave={closePopup} save={submit} />
         {view ? (
           view === "countryblocker" && (
-            <CountryblockSetup
+            <CountryBlockerSetup
+              save={save}
               setSave={setSave}
-              selectedTags={selectedTags}
-              setSelectedTags={setSelectedTags}
-              selected={selected}
-              setSelected={setSelected}
-              defaultSelected={defaultSelected}
-              value={value}
-              setValue={setValue}
+              setup={setup}
+              setSetup={setSetup}
+              content={content}
+              setContent={setContent}
+              settings={settings}
+              setSettings={setSettings}
+              setCountryblocker={setCountryblocker}
+              countryblocker={countryblocker}
             />
           )
         ) : (
@@ -228,7 +290,9 @@ export default function CountryBlocker() {
             <HelpSupport />
           </Layout>
         )}
-      </Page>
+       </Page>
+       )
+    }
     </>
   );
 }

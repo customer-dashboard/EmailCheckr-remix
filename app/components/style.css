@@ -50,6 +50,9 @@
   }
 }
 
+.features_mediacard .Polaris-MediaCard__InfoContainer.Polaris-MediaCard--portrait {
+    display: none;
+}
 /* .Polaris-Page-Header__RightAlign button.Polaris-Button.Polaris-Button--pressable.Polaris-Button--variantPrimary,
 .installation .Polaris-Button--variantPrimary.Polaris-Button--sizeMedium.Polaris-Button--textAlignCenter {
   background: rgba(0, 122, 92, 1);

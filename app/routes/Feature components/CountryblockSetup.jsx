@@ -29,16 +29,27 @@ export default function CountryblockSetup(props) {
       },
       [value, selectedTags]
     );
+
+    const getCountryNameFromCode = (code) => {
+      const match = countries.find(c => c.code === code);
+      return match ? match.name : code;
+    };
+    const getCountryCodeFromName = (name) => {
+      const match = countries.find(c => c.name === name);
+      return match ? match.code : name;
+    };
   
     const updateSelection = useCallback(
-      (selected) => {
+      (selectedName) => {
+        const selectedCode = getCountryCodeFromName(selectedName);
         const nextSelectedTags = new Set([...selectedTags]);
-  
-        if (nextSelectedTags.has(selected)) {
-          nextSelectedTags.delete(selected);
+    
+        if (nextSelectedTags.has(selectedCode)) {
+          nextSelectedTags.delete(selectedCode);
         } else {
-          nextSelectedTags.add(selected);
+          nextSelectedTags.add(selectedCode);
         }
+    
         setSelectedTags([...nextSelectedTags]);
         setValue('');
         setSuggestion('');
@@ -46,6 +57,7 @@ export default function CountryblockSetup(props) {
       },
       [selectedTags]
     );
+    
   
     const removeTag = useCallback(
       (tag) => () => {
@@ -55,12 +67,9 @@ export default function CountryblockSetup(props) {
     );
   
     const getAllTags = useCallback(() => {
-        
-      // const savedTags = ['United States', 'Canada', 'Germany', 'France', 'India', 'Australia', 'Japan', 'Brazil', 'Italy', 'Spain'];
-      const savedTags = countries.map(country => country.name);
-      // console.log('Total countries:', savedTags.length);
-
-      return [...new Set([...savedTags, ...selectedTags].sort())];
+      const savedTags = countries.map(c => c.name);
+      const selectedNames = selectedTags.map(getCountryNameFromCode);
+      return [...new Set([...savedTags, ...selectedNames].sort())];
     }, [selectedTags]);
   
     const formatOptionText = useCallback(
@@ -110,30 +119,34 @@ export default function CountryblockSetup(props) {
       selectedTags.length > 0 ? (
         <Box padding={200} paddingBlockStart={400}>
         <LegacyStack spacing="extraTight" alignment="center">
-          {selectedTags.map((tag) => (
-            <Tag key={`option-${tag}`} onRemove={removeTag(tag)}>
-              {tag}
-            </Tag>
-          ))}
+        {selectedTags.map((code) => (
+          <Tag key={`option-${code}`} onRemove={removeTag(code)}>
+            {getCountryNameFromCode(code)}
+          </Tag>
+        ))}
         </LegacyStack>
         </Box>
       ) : null;
   
-    const optionMarkup =
-      options.length > 0
-        ? options.map((option) => (
+      const optionMarkup = options.length > 0
+      ? options.map((optionName) => {
+          const isSelected = selectedTags.includes(getCountryCodeFromName(optionName));
+    
+          return (
             <Listbox.Option
-              key={option}
-              value={option}
-              selected={selectedTags.includes(option)}
-              accessibilityLabel={option}
+              key={optionName}
+              value={optionName}
+              selected={isSelected}
+              accessibilityLabel={optionName}
             >
-              <Listbox.TextOption selected={selectedTags.includes(option)}>
-                {formatOptionText(option)}
+              <Listbox.TextOption selected={isSelected}>
+                {formatOptionText(optionName)}
               </Listbox.TextOption>
             </Listbox.Option>
-          ))
-        : null;
+          );
+        })
+      : null;
+    
   
     const noResults = value && !getAllTags().includes(value);
   

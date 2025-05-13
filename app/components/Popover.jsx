@@ -5,6 +5,7 @@ import "./style.css";
 export default function PopoverSetting(props) {
   const { cd_title, ColorChange, value } = props;
 
+
   const ShopifyAdmin = { r: 28, g: 34, b: 96 };
   const MINIMUM_DIFFERENCE = 100;
   

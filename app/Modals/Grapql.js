@@ -735,7 +735,7 @@ const uploadSettingsData = async (shop, accessToken, themeId, data) => {
         body: JSON.stringify(body),
       }
     );
-  console.log("res", res);
+  // console.log("res", res);
   return await res.json();
 };
 
@@ -749,8 +749,8 @@ export const enableAppEmbed = async (shop, accessToken, themeId) => {
     let updated = false;
     for (const key in settingsData?.current?.blocks) {
       const block = settingsData.current.blocks[key];
-      console.log("block",block);
-      console.log("block.disabled",block.disabled);
+      // console.log("block",block);
+      // console.log("block.disabled",block.disabled);
       if (block.type.includes('emailcheckr-activation-remix') && block.disabled) {
         block.disabled = false;
         updated = true;
@@ -795,19 +795,99 @@ export const enableAppEmbed = async (shop, accessToken, themeId) => {
 };
 
 
-export const saveFraudBlockData = async (data,session) => {
-  let { shop, accessToken } = session;
-  const resData = {
-    shop: session.shop,
-    country_blocker_status: JSON.parse(data.country_blocker_status),
-    blocked_countries: JSON.parse(data.selected_countries)
+// export const saveFraudBlockData = async (data,session) => {
+//   let { shop, accessToken } = session;
+//   const resData = {
+//     shop: session.shop,
+//     country_blocker_status: JSON.parse(data.country_blocker_status),
+//     blocked_countries: JSON.parse(data.selected_countries)
+//   }
+//   console.log("resData", resData);
+//   const result = await MongoDB(resData,"fraud_filter_blocker");
+//   console.log("result", result);
+//   return resData;
+// }
+
+export async function saveFraudBlockData(admin, countryData, shop, accessToken) {
+  let formDatavalue = {
+    shop: shop,
+    countryData: JSON.parse(countryData.CountryBlockerData)
   }
-  console.log("resData", resData);
-  const result = await MongoDB(resData,"fraud_filter_blocker");
-  console.log("result", result);
-  return resData;
+  // console.log("formDatavalue", formDatavalue);
+  let shopGid = await getShopId(shop, accessToken);
+  try {
+    const metafileds = await admin.graphql(
+      `#graphql
+      mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) {
+          metafields {
+            key
+            namespace
+            value
+            createdAt
+            updatedAt
+          }
+          userErrors {
+            field
+            message
+            code
+          }
+        }
+      }`,
+      {
+        variables: {
+          metafields: [
+            {
+              key: "fraud_filter_blocker",
+              namespace: "customer_accounts_email_verification",
+              ownerId: shopGid,
+              type: "json",
+              value: JSON.stringify(formDatavalue),
+            },
+          ],
+        },
+      },
+    );
+
+    const response = await metafileds.json();
+    return response;
+  } catch (error) {
+    // console.error("Error in setTranslation:", error);
+    throw error;
+  }
 }
 
+export async function CountryBlockerData(admin) {
+  try {
+    const get_setting = await admin.graphql(
+      `query MyQuery {
+        shop {
+          metafields(namespace: "customer_accounts_email_verification", first: 10) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
+            }
+          }
+        }
+      }`,
+    );
+    const response = await get_setting.json();
+    // const data = response.data.shop.metafields.edges;
+    const metafields = response?.data?.shop?.metafields?.edges;
+    // Filter metafields by key
+    const keyName = "fraud_filter_blocker";
+    const targetMetafield = metafields.find(
+      (edge) => edge.node.key === keyName,
+    );
+    return targetMetafield ? targetMetafield?.node?.value : null;
+  } catch (error) {
+    // console.error("Error fetching settings:", error);
+    return null;
+  }
+}
 
 // export const getCountryFromIp = async (ip) => {
 //     // const res = await fetch(`https://ipapi.co/${ip}/country_name/`);

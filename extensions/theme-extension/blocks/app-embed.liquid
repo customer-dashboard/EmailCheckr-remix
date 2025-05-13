@@ -48,4 +48,11 @@ Detect if the old block exists and prevent its script from running
 }
 {% endschema %}
 
+<script>
+  window.shopMetafields = {
+    metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }}
+  };
+  
+</script>
+
 <script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
