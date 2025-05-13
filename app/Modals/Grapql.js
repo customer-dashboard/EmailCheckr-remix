@@ -388,13 +388,13 @@ export async function postProfileData(shop, reqbody, accessToken) {
 //   }
 // }
 
-export async function updateProfileData(shop, customerId, accessToken, reqbody) {
+export async function updateProfileData(shop, customerId, accessToken, reqbody, oldTags) {
   console.log("Updating profile data");
-  console.log("reqbody", reqbody);
+  console.log("oldTags", oldTags);
   try {
     const updateUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}.json`;
 
-    const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
+    const tags = oldTags ? "EmailCheckrSubscriber," + oldTags : "EmailCheckrSubscriber";
 
     // Update the customer
     const updateResponse = await fetch(updateUrl, {

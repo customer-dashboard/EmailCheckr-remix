@@ -1,6 +1,6 @@
 pathname = window.location.pathname;
 hostDomain = window.location.hostname;
-proxy = "verification-1";
+proxy = "verification";
 
 document.addEventListener("DOMContentLoaded", function () {
   var formInputs = document.querySelectorAll("input[value=create_customer]");
