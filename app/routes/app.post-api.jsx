@@ -152,7 +152,8 @@ export const action = async ({ request }) => {
           console.log("Customer subscribed via newsletter but account is disabled");
       
           const customerId = customer.id;
-          const updateData = await updateProfileData(shop, customerId, accessToken, reqbody, customer.tags); 
+          const allTags = `${reqbody?.tags || ''},${customer?.tags || ''}`.replace(/^,|,$/g, '');
+          const updateData = await updateProfileData(shop, customerId, accessToken, allTags); 
           console.log("Through newsletter & disabled", updateData);
       
           const profile_data = {
