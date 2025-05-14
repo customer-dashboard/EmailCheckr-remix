@@ -21,14 +21,16 @@ import Appearance from "./Feature components/CountryBlocker/appearance";
 
 export default function Template1() {
   const {countryblocker, setCountryblocker} = useOutletContext();
+  const [uploadedFile, setUploadedFile] = useState(null); // single JSX element
   const [localContent, setLocalContent] = useState({
     heading: "",
     description: "",
     file: null,
   });
-
+  const [setting, setSetting] = useState(() => countryblocker?.settings?.setting);
+console.log("countryTempl", countryblocker);
       const [selectedtab, setSelectedTab] = useState(0);
-  
+      const { heading, description, file } = localContent || {};
   
       const tabs = [
           {
@@ -36,12 +38,12 @@ export default function Template1() {
             content: 'Configuration',
             panelID: 'configuration',
             data:<Configuaration
-            // setSave={setSave} 
-            // selectChange={selectChange}
-            // setup={setup}
-            // setSetup={setSetup}
+            localContent={localContent}
+            setLocalContent={setLocalContent}
             countryblocker={countryblocker}
             setCountryblocker={setCountryblocker}
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
             />
           },
           {
@@ -49,8 +51,8 @@ export default function Template1() {
             content: 'Appearance',
             panelID: 'appearance',
             data:<Appearance
-            // content={content}
-            // setContent={setContent}
+            setting={setting}
+            setSetting={setSetting}
             countryblocker={countryblocker}
             setCountryblocker={setCountryblocker}
             />
@@ -62,14 +64,56 @@ export default function Template1() {
           [],
         );
 
+console.log("fontsize", setting?.typography?.heading_font_size);
+
   return (
     <Page title="Template1">
-      <Layout>
-
-        {/* <Layout.Section> */}
+            {/* Settings Panel */}
         <Tabs tabs={tabs} selected={selectedtab} onSelect={handleTabChange}></Tabs>
-        {/* </Layout.Section> */}
+      <Layout>
+        <Layout.Section variant="oneThird">
         {tabs[selectedtab].data}
+        </Layout.Section>
+      
+        {/* Live Preview */}
+        <Layout.Section>
+          <Card sectioned>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '300px',
+                height: '100%',
+                textAlign: 'center',
+                flexDirection: 'column',
+                backgroundColor: '#f4f6f8',
+              }}
+            >
+              {uploadedFile}
+              <Box
+                as="h2"
+                style={{
+                  color: setting?.heading_color?.heading_color || '#ff0000',
+                  fontSize: `${setting?.typography?.heading_font_size || 32}px`,
+                  fontWeight: 600,
+                }}
+              >
+                {heading}
+              </Box>
+
+              <Box
+                as="p"
+                style={{
+                  color: setting?.description_color.description_color || '#fff',
+                  fontSize: `${setting?.typography?.description_font_size || 32}px`,
+                }}
+              >
+                {description}
+              </Box>
+            </div>
+          </Card>
+        </Layout.Section>
       </Layout>
     </Page>
   );

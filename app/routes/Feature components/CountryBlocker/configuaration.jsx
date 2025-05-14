@@ -18,24 +18,17 @@ import { useOutletContext } from '@remix-run/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NoteIcon } from "@shopify/polaris-icons";
 
-export default function Configuaration() {  
-  const {countryblocker, setCountryblocker} = useOutletContext();
-  const [localContent, setLocalContent] = useState({
-    heading: "",
-    description: "",
-    file: null,
-  });
-
-
+export default function Configuaration(props) {  
+  const {countryblocker, setCountryblocker, localContent, setLocalContent, uploadedFile, setUploadedFile } = props;
 
   const isSyncingFromParent = useRef(false);
 
   useEffect(() => {
     const incoming = countryblocker?.content || {};
     const isSame =
-      incoming.heading === localContent.heading &&
-      incoming.description === localContent.description &&
-      incoming.file === localContent.file;
+      incoming.heading === localContent?.heading &&
+      incoming.description === localContent?.description &&
+      incoming.file === localContent?.file;
 
     if (!isSame) {
       isSyncingFromParent.current = true;
@@ -77,37 +70,42 @@ export default function Configuaration() {
   }, []);
 
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-  const { heading, description, file } = localContent;
+  const { heading, description, file } = localContent || {};
 
   const fileUpload = !file && <DropZone.FileUpload />;
 
   const handleHeadingChange = useCallback((value) => setHeading(value), []);
-  const uploadedFile = file && (
+
+useEffect(() => {
+  if (!file) return;
+
+  const isValid = validImageTypes.includes(file.type);
+  const thumbnail = (
     <LegacyStack>
       <Thumbnail
         size="small"
         alt={file.name}
         source={
-          validImageTypes.includes(file.type)
-            ? window.URL.createObjectURL(file)
-            : NoteIcon
+          isValid ? window.URL.createObjectURL(file) : NoteIcon
         }
       />
       <div>
-        {/* {file.name}{' '}
         <Text variant="bodySm" as="p">
           {file.size} bytes
-        </Text> */}
+        </Text>
       </div>
     </LegacyStack>
   );
 
+  setUploadedFile(thumbnail);
+}, [file]);
+
+
   return (
     <>
-    <Layout>
-            {/* Settings Panel */}
-        <Layout.Section variant="oneThird">
+
           <Card sectioned>
+            <BlockStack gap={400}>
           <DropZone allowMultiple={false} onDrop={handleDropZoneDrop}>
             {uploadedFile}
             {fileUpload}
@@ -125,35 +123,8 @@ export default function Configuaration() {
               multiline={4}
               autoComplete="off"
             />
+            </BlockStack>
           </Card>
-        </Layout.Section>
-        
-        {/* Live Preview */}
-        <Layout.Section>
-          <Card sectioned>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '300px',
-                height: '100%',
-                textAlign: 'center',
-                flexDirection: 'column',
-                backgroundColor: '#f4f6f8',
-              }}
-            >
-              {uploadedFile}
-              <Text as="h2" variant="headingLg" style={{ color: '#ff0000' }}>
-                {heading}
-              </Text>
-              <Text variant="bodyLg" as="p" style={{ color: '#ff0000' }}>
-                {description}
-              </Text>
-            </div>
-          </Card>
-        </Layout.Section>
-        </Layout>
         </>
   )
 }
