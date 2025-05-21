@@ -12,47 +12,88 @@ import {
   DropZone,
   LegacyStack,
   Thumbnail,
-  Tabs,
 } from "@shopify/polaris";
-import { useOutletContext } from '@remix-run/react';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useOutletContext, useSearchParams } from "@remix-run/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { NoteIcon } from "@shopify/polaris-icons";
+import Img_icon from '../../../assets/image/564619.png'
+// import ReactQuill from "react-quill";
 
-export default function Configuaration(props) {  
-  const {countryblocker, setCountryblocker, localContent, setLocalContent, uploadedFile, setUploadedFile } = props;
+export default function Configuaration(props) {
+  const [ReactQuill, setReactQuill] = useState(null);
+  const {
+    countryblocker,
+    setCountryblocker,
+    localContent,
+    setLocalContent,
+    uploadedFile,
+    setUploadedFile,
+  } = props;
+  const [searchParams] = useSearchParams();
+
+  const view = searchParams.get("view");
 
   const isSyncingFromParent = useRef(false);
 
-  useEffect(() => {
-    const incoming = countryblocker?.content || {};
-    const isSame =
-      incoming.heading === localContent?.heading &&
-      incoming.description === localContent?.description &&
-      incoming.file === localContent?.file;
+  // useEffect(() => {
+  //   const incoming = countryblocker?.[view]?.content || {};
+  //   const isSame =
+  //     incoming.heading === localContent?.heading &&
+  //     incoming.description === localContent?.description &&
+  //     incoming.file === localContent?.file;
 
-    if (!isSame) {
-      isSyncingFromParent.current = true;
-      setLocalContent({
-        heading: incoming.heading || '',
-        description: incoming.description || '',
-        file: incoming.file || null,
-      });
-    }
-  }, [countryblocker]);
+  //   if (!isSame) {
+  //     isSyncingFromParent.current = true;
+  //     setLocalContent({
+  //       heading: incoming.heading || "",
+  //       description: incoming.description || "",
+  //       file: incoming.file || null,
+  //     });
+  //   }
+  // }, [countryblocker]);
+
+  useEffect(() => {
+  const incoming = countryblocker?.[view]?.content || {};
+console.log("incoming", incoming);
+const isSame =
+  incoming.heading === localContent?.heading &&
+  incoming.description === localContent?.description &&
+  (
+    (!incoming.file && !localContent.file) ||
+    (incoming.file?.name === localContent.file?.name)
+  );
+
+console.log("isSame", isSame);
+if (!isSame) {
+  console.log("Syncing content from parent", incoming);
+}
+  if (!isSame) {
+    isSyncingFromParent.current = true;
+    setLocalContent({
+      heading: incoming.heading || "",
+      description: incoming.description || "",
+      file: incoming.file || null,
+    });
+  }
+}, [countryblocker?.[view]?.content]);
+
 
   useEffect(() => {
     if (isSyncingFromParent.current) {
       isSyncingFromParent.current = false;
       return;
     }
-
-    setCountryblocker(prev => ({
-      ...prev,
+  setCountryblocker((prev) => ({
+    ...prev,
+    // template: view,
+    [view]: {
+      ...prev[view], // Keep existing content and settings
       content: {
-        ...prev.content,
+        ...prev[view]?.content,
         ...localContent,
-      },
-    }));
+      }
+    }
+  }));
   }, [localContent]);
 
   const handleContentChange = useCallback((key, value) => {
@@ -74,57 +115,71 @@ export default function Configuaration(props) {
 
   const fileUpload = !file && <DropZone.FileUpload />;
 
-  const handleHeadingChange = useCallback((value) => setHeading(value), []);
+  useEffect(() => {
+    if (!file) return;
 
-useEffect(() => {
-  if (!file) return;
-
-  const isValid = validImageTypes.includes(file.type);
-  const thumbnail = (
-    <LegacyStack>
-      <Thumbnail
-        size="small"
-        alt={file.name}
-        source={
-          isValid ? window.URL.createObjectURL(file) : NoteIcon
-        }
-      />
-      <div>
+    const isValid = validImageTypes.includes(file.type);
+    const thumbnail = (
+      <LegacyStack>
+        <Thumbnail
+          size="small"
+          transparent="true"
+          alt={file.name}
+          source={isValid ? window.URL.createObjectURL(file) : Img_icon}
+        />
+        {/* <div>
         <Text variant="bodySm" as="p">
           {file.size} bytes
         </Text>
-      </div>
-    </LegacyStack>
-  );
+      </div> */}
+      </LegacyStack>
+    );
 
-  setUploadedFile(thumbnail);
-}, [file]);
+    setUploadedFile(thumbnail);
+  }, [file]);
 
+
+
+  useEffect(() => {
+    import('react-quill').then((mod) => {
+      setReactQuill(() => mod.default);
+    });
+  }, []);
+
+  if (!ReactQuill) return <div>Loading editor...</div>;
 
   return (
     <>
-
-          <Card sectioned>
-            <BlockStack gap={400}>
-          <DropZone allowMultiple={false} onDrop={handleDropZoneDrop}>
+      <Card sectioned>
+        <BlockStack gap={400}>
+          {/* <DropZone allowMultiple={false} onDrop={handleDropZoneDrop}>
             {uploadedFile}
             {fileUpload}
-          </DropZone>
-            <TextField
-              label="Heading"
-              value={heading}
-              onChange={(value) => handleContentChange("heading", value)}
-              autoComplete="off"
-            />
-            <TextField
-              label="Description"
-              value={description}
-              onChange={(value) => handleContentChange("description", value)}
-              multiline={4}
-              autoComplete="off"
-            />
-            </BlockStack>
-          </Card>
-        </>
-  )
+          </DropZone> */}
+          <TextField
+            label="Heading"
+            value={heading}
+            onChange={(value) => handleContentChange("heading", value)}
+            autoComplete="off"
+          />
+          {/* <TextField
+            label="Description"
+            value={description}
+            onChange={(value) => handleContentChange("description", value)}
+            multiline={4}
+            autoComplete="off"
+          /> */}
+
+        <Text variant="bodyMd" as="h5">
+          Description
+        </Text>
+          <ReactQuill
+            theme="snow"
+            value={description}
+            onChange={(value) => handleContentChange("description", value)}
+          />
+        </BlockStack>
+      </Card>
+    </>
+  );
 }

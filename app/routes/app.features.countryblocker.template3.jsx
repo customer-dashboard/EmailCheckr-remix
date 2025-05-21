@@ -4,7 +4,6 @@ import {
   Card,
   Box,
   Tabs,
-  BlockStack,
 } from "@shopify/polaris";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useOutletContext } from "@remix-run/react";
@@ -81,7 +80,7 @@ console.log("countryTempl", countryblocker);
 
 
   return (
-    <Page title="Template1">
+    <Page title="Template3">
             {/* Settings Panel */}
         <Tabs tabs={tabs} selected={selectedtab} onSelect={handleTabChange}></Tabs>
       <Layout>
@@ -94,7 +93,7 @@ console.log("countryTempl", countryblocker);
           <Card sectioned>
             <div
               style={{
-                backgroundColor: setting?.background_color?.background_color,
+                backgroundColor: setting?.template3?.background_color?.background_color,
                 minHeight: '600px',
                 display: 'flex',
                 justifyContent: 'center',
@@ -110,13 +109,13 @@ console.log("countryTempl", countryblocker);
                 height: '100%',
                 textAlign: 'center',
                 flexDirection: 'column',
-                maxWidth: `${setting?.typography?.container_width}px`,
-                lineHeight: `${setting?.typography?.line_height}px`,
+                maxWidth: `${setting?.template3?.typography?.container_width}px`,
+                lineHeight: `${setting?.template3?.typography?.line_height}px`,
                 gap: '10px',
                 padding: '15px',
-                ...(setting?.form_style === 'boxed' && {
-                  backgroundColor: setting?.box_background_color?.box_background_color,
-                  border: `1px solid ${setting?.border_color?.border_color}`,
+                ...(setting?.template3?.form_style === 'boxed' && {
+                  backgroundColor: setting?.template3?.box_background_color?.box_background_color,
+                  border: `1px solid ${setting?.template3?.border_color?.border_color}`,
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
                 }),
               }}
@@ -126,8 +125,8 @@ console.log("countryTempl", countryblocker);
               <Box
                 as="h2"
                 style={{
-                  color: setting?.heading_color?.heading_color || '#ff0000',
-                  fontSize: `${setting?.typography?.heading_font_size || 32}px`,
+                  color: setting?.template3?.heading_color?.heading_color || '#ff0000',
+                  fontSize: `${setting?.template3?.typography?.heading_font_size || 32}px`,
                   fontWeight: 600,
                 }}
               >
@@ -137,8 +136,8 @@ console.log("countryTempl", countryblocker);
               <Box
                 as="p"
                 style={{
-                  color: setting?.description_color.description_color || '#fff',
-                  fontSize: `${setting?.typography?.description_font_size || 32}px`,
+                  color: setting?.template3?.description_color.description_color || '#fff',
+                  fontSize: `${setting?.template3?.typography?.description_font_size || 32}px`,
                 }}
               >
                 {description}
@@ -146,12 +145,6 @@ console.log("countryTempl", countryblocker);
             </div>
             </div>
           </Card>
-        </Layout.Section>
-
-        <Layout.Section>
-          <BlockStack>
-                  <Text>Description</Text>
-          </BlockStack>
         </Layout.Section>
       </Layout>
     </Page>

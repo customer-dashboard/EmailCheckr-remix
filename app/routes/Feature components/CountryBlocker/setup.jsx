@@ -2,8 +2,9 @@ import {AutoSelection, Box, Card, ChoiceList, Combobox, EmptySearchResult, Icon,
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import countries from '../../../components/countries';
 
-export default function SetUp(props) {
-  const { setSave, countryblocker, setCountryblocker, setup, setSetup } = props;
+export default function SetUpFeature(props) {
+  const { countryblocker, setCountryblocker, setup, setSetup, setSave } = props;
+  // const { setSave, countryblocker, setCountryblocker, setup, setSetup } = props;
   
   const getCountryCodeFromName = (name) => {
     const match = countries.find(c => c.name === name);

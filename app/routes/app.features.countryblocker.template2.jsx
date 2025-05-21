@@ -4,7 +4,6 @@ import {
   Card,
   Box,
   Tabs,
-  BlockStack,
 } from "@shopify/polaris";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useOutletContext } from "@remix-run/react";
@@ -81,7 +80,7 @@ console.log("countryTempl", countryblocker);
 
 
   return (
-    <Page title="Template1">
+    <Page title="Template2">
             {/* Settings Panel */}
         <Tabs tabs={tabs} selected={selectedtab} onSelect={handleTabChange}></Tabs>
       <Layout>
@@ -146,12 +145,6 @@ console.log("countryTempl", countryblocker);
             </div>
             </div>
           </Card>
-        </Layout.Section>
-
-        <Layout.Section>
-          <BlockStack>
-                  <Text>Description</Text>
-          </BlockStack>
         </Layout.Section>
       </Layout>
     </Page>
