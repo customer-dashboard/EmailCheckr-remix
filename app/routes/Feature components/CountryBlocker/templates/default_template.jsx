@@ -1,6 +1,6 @@
 const defaultTemplateSettings = {
   setup: {
-    selected: ["enable"],
+    selected: ["disable"],
     selectedTags: ["US", "IN"]
   },
   template1: {
