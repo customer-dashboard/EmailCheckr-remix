@@ -12,6 +12,7 @@ import {
   LegacyStack,
   Thumbnail,
   ChoiceList,
+  Checkbox,
 } from "@shopify/polaris";
 import { useCallback, useEffect, useState } from "react";
 import "../../../components/style.css";
@@ -27,6 +28,7 @@ export default function Appearance({
   setting,
   setSetting,
 }) {
+   const [checked, setChecked] = useState(false);
 
     const [searchParams] = useSearchParams();
   
@@ -97,7 +99,7 @@ export default function Appearance({
   }
 
   setSetting(updated);
-
+  setChecked(value);
   // Propagate changes to parent
   setCountryblocker((prev) => ({
     ...prev,
@@ -132,6 +134,16 @@ export default function Appearance({
             <Text variant="headingMd" as="h6">
               Appearance
             </Text>
+                {/* <Checkbox
+                    label="Set default settings"
+                    checked={checked}
+                    onChange={(val) =>
+                    handleSettingChange(
+                      val,
+                      "SetDefaultSettings",
+                    )
+                  }
+                  /> */}
             <Card sectioned>
               <BlockStack gap={200}>
                 <Text variant="headingMd" as="h6">

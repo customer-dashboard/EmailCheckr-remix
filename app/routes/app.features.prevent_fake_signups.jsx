@@ -588,13 +588,13 @@ const submit = async () => {
             description={`In this guide, you’ll learn how to set up the Email Checker feature to automatically detect and block invalid or duplicate email addresses—ensuring only genuine users make it through your registration process.`}
             // popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
           >
-            {/* <img
+            <img
               alt=""
               width="100%"
               height="100%"
               style={{objectFit: 'cover', objectPosition: 'center'}}
-              src=""
-            /> */}
+              src="https://cdn.shopify.com/app-store/listing_images/fe04d82cbf1ba0a5aa5ec702f06dd73d/promotional_image/CPi_irK6lP4CEAE=.jpeg?height=720&quality=90&width=1280"
+            />
           </MediaCard>
           </Card>
         </Layout.Section>

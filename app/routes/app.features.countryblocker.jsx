@@ -29,6 +29,7 @@ import defaultTemplateSettings from "./Feature components/CountryBlocker/templat
 import 'react-quill/dist/quill.snow.css';
 import SetUp from "./Feature components/CountryBlocker/setup";
 import SetUpFeature from "./Feature components/CountryBlocker/setup";
+import AllSetup from "./Feature components/CountryBlocker/all_setup";
 
 export default function CountryBlocker() {
   const [save, setSave] = useState(false);
@@ -86,7 +87,7 @@ export default function CountryBlocker() {
         search &&
         view?.includes("template")
       ) {
-        navigate("/app/features/countryblocker?view=countryblocker", {
+        navigate("/app/features/countryblocker?view=setup", {
           replace: true,
         });
       } 
@@ -355,6 +356,22 @@ console.log("view", view);
               />
             )}
 
+
+            {view === "setup" && (
+              <AllSetup
+                save={save}
+                setSave={setSave}
+                setup={setup}
+                setSetup={setSetup}
+                content={content}
+                setContent={setContent}
+                settings={settings}
+                setSettings={setSettings}
+                setCountryblocker={setCountryblocker}
+                countryblocker={countryblocker}
+              />
+            )}
+
        
             {view === "settings" && (
               <SetUpFeature
@@ -431,7 +448,7 @@ console.log("view", view);
                   <InlineStack align="start">
                     <ButtonGroup>
                       <Button
-                        onClick={() => handleChangeView("countryblocker")}
+                        onClick={() => handleChangeView("setup")}
                         accessibilityLabel="Country blocker setup"
                       >
                         Country blocker setup
