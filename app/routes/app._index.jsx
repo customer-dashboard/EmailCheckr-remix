@@ -507,6 +507,7 @@ import IndexOnBoarding from "../universal-components/on-boarding/indexOnBoarding
 import OnBoardingNew from "../universal-components/on-boarding/onBoardingNew";
 import MyModal from "../components/MyModal";
 import { Footer } from "../components/footer";
+import HelpSupport from "../components/HelpSupport";
 
 export const loader = async ({ request }) => {
   // await authenticate.admin(request);
@@ -590,7 +591,7 @@ export default function Index(props) {
   }));
 
   const managePage = () => {
-    navigate("/app/manage", {
+    navigate("/app/features/prevent_fake_signups", {
       replace: true,
       state: {
         defSetting,
@@ -695,7 +696,7 @@ export default function Index(props) {
     formdata.append("theme_id", theme_id);
     const response = await fetch("/app/emailCh-api", { method: "POST", body: formdata });
     const responseJson = await response.json();
-    console.log("responseJson", responseJson);
+    // console.log("responseJson", responseJson);
     if (responseJson.status == 200) {
       setLoading2(false);
     }
@@ -998,46 +999,6 @@ const cardData = [];
     );
   }, [partnerCollOut, handleCollOutCard]);
 
-  const helpSupportCard = useMemo(() => {
-    return (
-      <Layout.Section>
-        <Card>
-          <Text as="h2" variant="headingMd">
-            Help & Support
-          </Text>
-          <Box paddingBlockStart="400">
-            <ButtonGroup>
-              <Button
-                fullWidth
-                target="_blank"
-                icon={EmailFollowUpIcon}
-                size="medium"
-                url="mailto:cav.support@mandasadevelopment.com"
-              >
-                Email us
-              </Button>
-              {/* <Button
-                fullWidth
-                size="medium"
-                icon={ChatIcon}
-                onClick={() => Beacon("open")}
-              >
-                Live chat
-              </Button>
-              <Button
-                fullWidth
-                size="medium"
-                url="https://customer-dashboard-pro.helpscoutdocs.com"
-                icon={QuestionCircleIcon}
-              >
-                Help
-              </Button> */}
-            </ButtonGroup>
-          </Box>
-        </Card>
-      </Layout.Section>
-    );
-  }, []);
 
   const handleActionPlan = async (setloading, name) => {
     setloading(true);
@@ -1141,7 +1102,7 @@ const cardData = [];
             {analyticsComponent}
             {/* {customerStatus} */}
             {moreAppsCard}
-            {helpSupportCard}
+            <HelpSupport />
             {/* <MyModal {...{enableTheme, livetheme, allthemes}} /> */}
           </Layout>
         )}

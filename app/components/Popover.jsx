@@ -5,6 +5,7 @@ import "./style.css";
 export default function PopoverSetting(props) {
   const { cd_title, ColorChange, value } = props;
 
+
   const ShopifyAdmin = { r: 28, g: 34, b: 96 };
   const MINIMUM_DIFFERENCE = 100;
   
@@ -66,10 +67,17 @@ export default function PopoverSetting(props) {
     <div>
       <Popover
         active={popoverActive}
-        activator={<div className='color_picker' style={{ backgroundColor: first }} onClick={togglePopoverActive}></div>}
+        activator={<div className='color_picker' style={{ backgroundColor: first, height: '25px', width: '70px', cursor: 'pointer', borderRadius: '4px', border: '1px solid black', transition: '0.1s ease-in' }} 
+        onClick={togglePopoverActive}></div>}
         onClose={togglePopoverActive}
         ariaHaspopup={false}
         sectioned
+        // onMouseEnter={(e) => {
+        //   e.currentTarget.style.boxShadow = 'rgba(0, 0, 0, 0.5) 0px 5px 10px';
+        // }}
+        // onMouseLeave={(e) => {
+        //   e.currentTarget.style.boxShadow = 'none';
+        // }}
       >
         <ColorPicker
           onChange={handleColorChange}

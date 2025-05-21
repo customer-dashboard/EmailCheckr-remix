@@ -14,9 +14,28 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }) => {
   const {session} = await authenticate.admin(request);
-  if (!session) {
-    throw new Response("Unauthorized", { status: 401 });
-  }
+  const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
+  console.log("ip", ip);
+
+  // const getCountryFromIp = async (ip) => {
+  //   const res = await fetch(`https://ipapi.co/${ip}/country/`);
+  //   const country = await res.text();
+  //   return country;
+  // };
+
+  // const country = await getCountryFromIp(ip);
+  // console.log("country", country);
+
+  // const blockedCountries = ["CN", "US", "IR"];
+
+  // if (blockedCountries.includes(country)) {
+  //   console.log("US access denied!");
+  //   return new Response("Access Denied", { status: 403 });
+  // }
+
+  // if (!session) {
+  //   throw new Response("Unauthorized", { status: 401 });
+  // }
 
   return json({
     apiKey: process.env.SHOPIFY_API_KEY || "",
@@ -245,7 +264,7 @@ const getCheckBilling = async() =>{
   formdata.append("_action", "get_check_billing");
   const response = await fetch("/app/emailCh-api", {method: "POST", body: formdata});
   const responseJson = await response.json();
-  console.log("responseJson", responseJson);
+  // console.log("responseJson", responseJson);
   if (responseJson?.hasActivePayment === true) {
     setBillingNew(responseJson?.appSubscriptions);
   }else{
@@ -255,7 +274,7 @@ const getCheckBilling = async() =>{
   //  setPaymentcheck(responseJson?.data)
   }
 }
-console.log("BillingNewState", billingNew);
+
 const customerStatus = async() =>{
   let formdata = new FormData();
   formdata.append("_action", "get_customer_status");
@@ -328,18 +347,18 @@ const app_Status = async() =>{
     return (responseJson?.app_status);
 }
 
-console.log("billingDef", defSetting);
-
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       {/* { onBoarding ? null :  */}
       <ui-nav-menu> 
         <Link to="/app" rel="home">Home</Link>
+        <Link to="/app/features">Features</Link>
         <Link to="/app/translations">Translations</Link>
         <Link to="/app/installation">Installation</Link>
         <Link to="/app/partners">Partners</Link>
         <Link to="/app/settings">Settings</Link>
         <Link to="/app/plans">Plan</Link>
+        {/* <Link to="/app/features">countryBlocker</Link> */}
       </ui-nav-menu>
       {/* } */}
         <Outlet context={{allthemes, defSetting, setDefSetting, progress2, appStatus, classic, enableTheme, livetheme, onBoarding, setOnBoarding, isShopifyPlus, billingNew}} />

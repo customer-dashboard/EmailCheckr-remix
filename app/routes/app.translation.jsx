@@ -1,7 +1,7 @@
-import { GetMongoData, MongoDB } from "../server/mongodb";
+import { GetCollectionMongoDB, GetMongoData, MongoDB } from "../server/mongodb";
 import { json } from '@remix-run/node';
 import { authenticate } from "../shopify.server";
-import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData } from "../Modals/Grapql";
+import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData, saveFraudBlockData, CountryBlockerData } from "../Modals/Grapql";
 import { CurrentDate } from "../server/apicontroller";
 
 
@@ -50,6 +50,39 @@ export async function action({ request }) {
             console.error("Error fetching installation FAQ:", error);
             return { status: 500, data: error.message };
           }
+
+        case "country_blocker_data":
+          let countryData = [];
+          countryData.CountryBlockerData = formValue.get("CountryBlockerData");
+          console.log("countryData", countryData);
+          try {
+            const data = await saveFraudBlockData(admin, countryData, shop, accessToken);
+            // console.log("saved data", data.metafieldsSet.metafields);
+            return json({data,status,statusText:"Setting Saved"})
+          } catch (error) {
+            console.error("Error fetching country_blocker_data:", error);
+            return { status: 500, data: error.message };
+          }
+
+        case "fetch_country_blocker_data":
+          try {
+            const data = await CountryBlockerData(admin);
+            console.log("fetch blocker Data", data);
+            return json({data,status})
+          } catch (error) {
+            console.error("Error fetching country blocker data", error);
+            return { status: 500, data: error.message };
+          }
+          // try {
+          //   const data = await GetCollectionMongoDB(
+          //             'fraud_filter_blocker',
+          //             session.shop
+          //           );
+          //   return json({data,status})
+          // } catch (error) {
+          //   console.error("Error fetching installation FAQ:", error);
+          //   return { status: 500, data: error.message };
+          // }
           
         default:
           break;
@@ -82,3 +115,5 @@ export const onAppInstall = async (admin,session) => {
     // console.log("result", result);
     return resData;
   }
+
+
