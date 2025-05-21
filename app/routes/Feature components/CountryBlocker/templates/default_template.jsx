@@ -1,9 +1,13 @@
 const defaultTemplateSettings = {
+  setup: {
+    selected: ["enable"],
+    selectedTags: ["US", "IN"]
+  },
   template1: {
     settings: {
       setting: {
-        heading_color: { heading_color: "#1a73e8" },
-        description_color: { description_color: "#333333" },
+        heading_color: { heading_color: "#fff" },
+        description_color: { description_color: "#fff" },
         typography: {
           heading_font_size: 36,
           description_font_size: 14,
@@ -11,7 +15,7 @@ const defaultTemplateSettings = {
           line_height: 22,
         },
         form_style: "default",
-        background_color: { background_color: "#f0f4f8" },
+        background_color: { background_color: "#002D2D" },
         box_background_color: { box_background_color: "#ffffff" },
         border_color: { border_color: "#cccccc" }
       }
@@ -52,8 +56,8 @@ const defaultTemplateSettings = {
   template3: {
     settings: {
       setting: {
-        heading_color: { heading_color: "#e91e63" },
-        description_color: { description_color: "#212121" },
+        heading_color: { heading_color: "#fff" },
+        description_color: { description_color: "#fff" },
         typography: {
           heading_font_size: 32,
           description_font_size: 16,
@@ -61,8 +65,8 @@ const defaultTemplateSettings = {
           line_height: 24,
         },
         form_style: "boxed",
-        background_color: { background_color: "#ffffff" },
-        box_background_color: { box_background_color: "#f8f8f8" },
+        background_color: { background_color: "#C7F9CC" },
+        box_background_color: { box_background_color: "#002D2D" },
         border_color: { border_color: "#e0e0e0" },
       }
     },

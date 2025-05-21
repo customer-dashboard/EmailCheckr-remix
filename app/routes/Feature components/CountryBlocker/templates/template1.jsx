@@ -62,16 +62,17 @@ export default function Template1(props) {
   // }, []);
 
   useEffect(() => {
-  if (countryblocker.template === "template1" && countryblocker?.template1?.content) {
-    setLocalContent(countryblocker.template1.content);
+  if (countryblocker?.template1?.content) {
+    setLocalContent(countryblocker?.template1?.content);
+    setSetting(countryblocker?.template1?.settings?.setting);
   }
-}, [countryblocker.template, countryblocker?.template1?.content]);
+}, [countryblocker]);
 
-useEffect(() => {
-  if (countryblocker.template === "template1" && countryblocker?.template1?.settings?.setting) {
-    setSetting(countryblocker.template1.settings.setting);
-  }
-}, [countryblocker.template, countryblocker?.template1?.settings?.setting]);
+// useEffect(() => {
+//   if (countryblocker?.template1?.settings?.setting) {
+//     setSetting(countryblocker.template1.settings.setting);
+//   }
+// }, [countryblocker]);
 
   const [selectedtab, setSelectedTab] = useState(0);
   const { heading, description, file } = localContent || {};

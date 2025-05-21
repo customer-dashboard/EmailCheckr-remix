@@ -55,6 +55,7 @@ export default function Configuaration(props) {
   useEffect(() => {
   const incoming = countryblocker?.[view]?.content || {};
 console.log("incoming", incoming);
+console.log("incoming view", view);
 const isSame =
   incoming.heading === localContent?.heading &&
   incoming.description === localContent?.description &&
@@ -78,23 +79,24 @@ if (!isSame) {
 }, [countryblocker?.[view]?.content]);
 
 
-  useEffect(() => {
-    if (isSyncingFromParent.current) {
-      isSyncingFromParent.current = false;
-      return;
-    }
+useEffect(() => {
+  if (isSyncingFromParent.current) {
+    isSyncingFromParent.current = false;
+    return;
+  }
+
   setCountryblocker((prev) => ({
     ...prev,
-    // template: view,
     [view]: {
-      ...prev[view], // Keep existing content and settings
+      ...prev[view],
       content: {
         ...prev[view]?.content,
         ...localContent,
       }
     }
   }));
-  }, [localContent]);
+}, [localContent]);
+
 
   const handleContentChange = useCallback((key, value) => {
     setLocalContent((prev) => ({

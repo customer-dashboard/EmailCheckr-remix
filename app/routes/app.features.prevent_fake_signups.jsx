@@ -581,18 +581,20 @@ const submit = async () => {
               </Box>
               <MediaCard
             title="Protect your platform from fake signups"
-            primaryAction={{
-              content: 'Learn more',
-              onAction: () => setModelFirst(true),
-            }}
+            // primaryAction={{
+            //   content: 'Learn more',
+            //   onAction: () => setModelFirst(true),
+            // }}
             description={`In this guide, you’ll learn how to set up the Email Checker feature to automatically detect and block invalid or duplicate email addresses—ensuring only genuine users make it through your registration process.`}
-            popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
+            // popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
           >
-            <VideoThumbnail
-              videoLength={80}
-              thumbnailUrl="https://mandasa1.b-cdn.net/emailcheckr/email%20checker%20installation.mp4"
-              onClick={() => setModelFirst(true)}
-            />
+            {/* <img
+              alt=""
+              width="100%"
+              height="100%"
+              style={{objectFit: 'cover', objectPosition: 'center'}}
+              src=""
+            /> */}
           </MediaCard>
           </Card>
         </Layout.Section>

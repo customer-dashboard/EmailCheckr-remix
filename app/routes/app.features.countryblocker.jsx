@@ -12,7 +12,7 @@ import {
   Text,
   VideoThumbnail,
 } from "@shopify/polaris";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 // import CountryblockSetup from "./Feature components/CountryblockSetup";
 import HelpSupport from "../components/HelpSupport";
@@ -136,11 +136,36 @@ setCountryblocker(originalCountryblocker);
 };
 
 
-  useEffect(() => {
-    const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
-    // console.log(isChanged);
-    setSave(isChanged);
-  }, [countryblocker, originalCountryblocker]);
+  // useEffect(() => {
+  //   const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
+  //   // console.log(isChanged);
+  //   setSave(isChanged);
+  // }, [countryblocker, originalCountryblocker]);
+
+const firstLoad = useRef(true);
+
+const [hasLoaded, setHasLoaded] = useState(false);
+
+useEffect(() => {
+  const countryblockerLoaded = countryblocker && Object.keys(countryblocker).length > 0;
+  const originalLoaded = originalCountryblocker && Object.keys(originalCountryblocker).length > 0;
+
+  if (countryblockerLoaded && originalLoaded && view) {
+    setHasLoaded(true);
+  }
+}, [countryblocker, originalCountryblocker, view]);
+
+console.log("hasLoaded", hasLoaded);
+
+useEffect(() => {
+  if (!hasLoaded) return;
+
+  const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
+  setSave(isChanged);
+}, [countryblocker, originalCountryblocker, hasLoaded]);
+
+
+
 
   const getCountryCodeFromName = (name) => {
     const match = countries.find((c) => c.name === name);
@@ -158,7 +183,7 @@ setCountryblocker(originalCountryblocker);
         });
         const responseJson = await response.json();
         const parsedData = JSON.parse(responseJson.data);
-        const initialData = parsedData.countryData;
+        const initialData = parsedData?.countryData;
 
         if (initialData) {
           setCountryblocker(initialData);
@@ -213,13 +238,47 @@ setCountryblocker(originalCountryblocker);
     }
   };
 
-  useEffect(() => {
+//   useEffect(() => {
+//   setCountryblocker((prev) => ({
+//     ...prev,
+//     template: prev.template || "template2",
+//     template1: prev.template1 || defaultTemplateSettings.template1,
+//     template2: prev.template2 || defaultTemplateSettings.template2,
+//     template3: prev.template3 || defaultTemplateSettings.template3
+//   }));
+// }, []);
+
+function deepMergeDefaults(obj, defaults) {
+  const result = { ...defaults };
+  for (const key in obj) {
+    if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+      result[key] = deepMergeDefaults(obj[key], defaults[key] || {});
+    } else {
+      result[key] = obj[key];
+    }
+  }
+  return result;
+}
+
+useEffect(() => {
+  setOriginalCountryblocker((prev) => ({
+    ...prev,  
+    setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
+    template: prev.template || "template2",
+    template1: deepMergeDefaults(prev.template1 || {}, defaultTemplateSettings.template1),
+    template2: deepMergeDefaults(prev.template2 || {}, defaultTemplateSettings.template2),
+    template3: deepMergeDefaults(prev.template3 || {}, defaultTemplateSettings.template3)
+  }));
+}, []);
+
+useEffect(() => {
   setCountryblocker((prev) => ({
     ...prev,
+    setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
     template: prev.template || "template2",
-    template1: prev.template1 || defaultTemplateSettings.template1,
-    template2: prev.template2 || defaultTemplateSettings.template2,
-    template3: prev.template3 || defaultTemplateSettings.template3
+    template1: deepMergeDefaults(prev.template1 || {}, defaultTemplateSettings.template1),
+    template2: deepMergeDefaults(prev.template2 || {}, defaultTemplateSettings.template2),
+    template3: deepMergeDefaults(prev.template3 || {}, defaultTemplateSettings.template3)
   }));
 }, []);
 
@@ -392,30 +451,21 @@ console.log("view", view);
                 </Box>
                 <MediaCard
                   title="Control where your services are accessed"
-                  primaryAction={{
-                    content: "Learn more",
-                    onAction: () => setModelFirst(true),
-                  }}
+                  // primaryAction={{
+                  //   content: "Learn more",
+                  //   onAction: () => setModelFirst(true),
+                  // }}
                   description={`In this guide, you’ll learn how to use the Country Block feature to restrict access from specific countries—helping you stay compliant, reduce fraud, or simply focus on your target market.`}
-                  popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
+                  // popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
                 >
-                  <VideoThumbnail
-                    videoLength={80}
-                    thumbnailUrl="https://mandasa1.b-cdn.net/emailcheckr/email%20checker%20installation.mp4"
-                    onClick={() => setModelFirst(true)}
-                  />
-                  <Modal open={modelFirst} onClose={() => setModelFirst(false)}>
-                    {/* <TitleBar title='Installation process' /> */}
-                    <Box padding={200}>
-                      <ReactPlayer
-                        url="https://mandasa1.b-cdn.net/emailcheckr/email%20checker%20installation.mp4"
-                        width="100%"
-                        height="360px"
-                        controls={true}
-                      />
-                    </Box>
-                  </Modal>
-                </MediaCard>
+                <img
+                  alt=""
+                  width="100%"
+                  height="100%"
+                  style={{objectFit: 'cover', objectPosition: 'center'}}
+                  src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+                />
+              </MediaCard>
               </Card>
             </Layout.Section>
 

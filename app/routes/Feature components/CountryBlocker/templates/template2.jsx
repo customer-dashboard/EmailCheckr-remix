@@ -29,16 +29,17 @@ export default function Template2(props) {
   const [setting, setSetting] = useState({});
 
   useEffect(() => {
-  if (countryblocker.template === "template2" && countryblocker?.template2?.content) {
-    setLocalContent(countryblocker.template2.content);
+  if (countryblocker?.template2?.content) {
+    setLocalContent(countryblocker?.template2?.content);
+    setSetting(countryblocker?.template2?.settings?.setting);
   }
-}, [countryblocker.template, countryblocker?.template2?.content]);
+}, [countryblocker]);
 
-useEffect(() => {
-  if (countryblocker.template === "template2" && countryblocker?.template2?.settings?.setting) {
-    setSetting(countryblocker.template2.settings.setting);
-  }
-}, [countryblocker.template, countryblocker?.template2?.settings?.setting]);
+// useEffect(() => {
+//   if (countryblocker?.template2?.settings?.setting) {
+//     setSetting(countryblocker.template2.settings.setting);
+//   }
+// }, [countryblocker]);
 
   const [selectedtab, setSelectedTab] = useState(0);
   const { heading, description, file } = localContent || {};

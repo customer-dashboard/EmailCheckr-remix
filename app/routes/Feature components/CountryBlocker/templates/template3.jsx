@@ -37,16 +37,17 @@ export default function Template3(props) {
   // }, [countryblocker?.settings?.setting]);
 
   useEffect(() => {
-  if (countryblocker.template === "template3" && countryblocker?.template3?.content) {
-    setLocalContent(countryblocker.template3.content);
+  if (countryblocker?.template3?.content) {
+    setLocalContent(countryblocker?.template3?.content);
+    setSetting(countryblocker?.template3?.settings?.setting);
   }
-}, [countryblocker.template, countryblocker?.template3?.content]);
+}, [countryblocker]);
 
-useEffect(() => {
-  if (countryblocker.template === "template3" && countryblocker?.template3?.settings?.setting) {
-    setSetting(countryblocker.template3.settings.setting);
-  }
-}, [countryblocker.template, countryblocker?.template3?.settings?.setting]);
+// useEffect(() => {
+//   if (countryblocker?.template3?.settings?.setting) {
+//     setSetting(countryblocker.template3.settings.setting);
+//   }
+// }, [countryblocker]);
 
 
   const [selectedtab, setSelectedTab] = useState(0);

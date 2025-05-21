@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://advertiser-does-pittsburgh-tt.trycloudflare.com"
+application_url = "https://flight-suggestions-mo-applicants.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -31,13 +31,13 @@ scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://advertiser-does-pittsburgh-tt.trycloudflare.com/auth/callback",
-  "https://advertiser-does-pittsburgh-tt.trycloudflare.com/auth/shopify/callback",
-  "https://advertiser-does-pittsburgh-tt.trycloudflare.com/api/auth/callback"
+  "https://flight-suggestions-mo-applicants.trycloudflare.com/auth/callback",
+  "https://flight-suggestions-mo-applicants.trycloudflare.com/auth/shopify/callback",
+  "https://flight-suggestions-mo-applicants.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://advertiser-does-pittsburgh-tt.trycloudflare.com/app/post-api"
+url = "https://flight-suggestions-mo-applicants.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 
