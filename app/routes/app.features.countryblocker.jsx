@@ -30,6 +30,7 @@ import 'react-quill/dist/quill.snow.css';
 import SetUp from "./Feature components/CountryBlocker/setup";
 import SetUpFeature from "./Feature components/CountryBlocker/setup";
 import AllSetup from "./Feature components/CountryBlocker/all_setup";
+import countryblockerImg from '../assets/image/countryblocker.png'
 
 export default function CountryBlocker() {
   const [save, setSave] = useState(false);
@@ -480,7 +481,7 @@ console.log("view", view);
                   width="100%"
                   height="100%"
                   style={{objectFit: 'cover', objectPosition: 'center'}}
-                  src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+                  src={countryblockerImg}
                 />
               </MediaCard>
               </Card>
