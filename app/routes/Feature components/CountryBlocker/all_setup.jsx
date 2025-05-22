@@ -1,12 +1,25 @@
 import { Page, Layout, Card, Box, Tabs } from "@shopify/polaris";
 import { useCallback, useEffect, useState, useRef } from "react";
 import SetUpFeature from "./setup";
-import CountryBlockerSetup from ".";
+import { useSearchParams } from "@remix-run/react";
+import CountryBlockerSetup from "./CountryBlockerSetup";
 
 export default function AllSetup(props) {
-  const { countryblocker, setCountryblocker, setup, setSetup, save, setSave, originalCountryblocker } = props;
+  const { countryblocker, setCountryblocker, setup, setSetup, save, setSave } = props;
 
   const [selectedtab, setSelectedTab] = useState(0);
+
+  const [searchParams] = useSearchParams(); 
+
+useEffect(() => {
+  const view = searchParams.get('back');
+  if (view) {
+    const tabIndex = Number(view);
+    if (!isNaN(tabIndex)) {
+      setSelectedTab(tabIndex);
+    }
+  }
+}, [searchParams]);
 
   const tabs = [
     {
