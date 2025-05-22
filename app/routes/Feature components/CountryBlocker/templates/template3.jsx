@@ -6,6 +6,7 @@ import Appearance from "../../CountryBlocker/appearance";
 import defaultTemplateSettings from "./default_template";
 import SetUp from "../setup";
 import ActiveTemplate from "../active_template";
+import IconTemp3 from "../../../../assets/image/564619.png"
 
 export default function Template3(props) {
   const { countryblocker, setCountryblocker, setup, setSetup, setSave, originalCountryblocker } = props;
@@ -166,7 +167,8 @@ export default function Template3(props) {
                   }),
                 }}
               >
-                {uploadedFile}
+                {/* {uploadedFile} */}
+                 <img src={IconTemp3} alt="Blocked" style={{width: "50px", height: "50px", marginBottom: "1rem"}} />
                 <Box
                   as="h2"
                   style={{

@@ -252,6 +252,9 @@ import {
     //   ["Custom Fields", checkIcon, checkIcon, checkIcon, checkIcon],
     ["Real-time email activation", checkIcon],
     ["Prevent fake signups", checkIcon],
+    ["Real-time country blocker", checkIcon],
+    ["Prevent access from restricted regions", checkIcon],
+    ["Customizable templates", checkIcon],
     ["Multi language", checkIcon],
     ["Theme support ( unlimited )", checkIcon],
 

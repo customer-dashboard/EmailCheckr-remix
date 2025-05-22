@@ -53,18 +53,23 @@
 document.addEventListener("DOMContentLoaded", () => {
   if (window.shopMetafields && window.shopMetafields.metafields) {
     const data = window.shopMetafields.metafields;
-    console.log("Country blocker metafield:", data);
+    // console.log("Country blocker metafield:", data);
     // console.log("shopify", window.Shopify);
 const selectedTemplate = data.countryData?.template ?? 'template2';
 
-console.log("selectedTemp", selectedTemplate);
+// console.log("selectedTemp", selectedTemplate);
     const blockedCountries = data.countryData.setup.selectedTags || [];
     const status = data.countryData.setup.selected;
     const content = data.countryData[selectedTemplate].content;
     const settings = data.countryData[selectedTemplate].settings.setting;
 
-    console.log("Country blocker status:", status);
-    console.log("blockedCountries:", blockedCountries);
+    const icon = {
+      template1: "https://cdn-icons-png.flaticon.com/512/595/595067.png",
+      template2: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+      template3: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
+    }
+    // console.log("Country blocker status:", status);
+    // console.log("blockedCountries:", blockedCountries);warning_3756712
 
     const getUserIP = async () => {
       const res = await fetch("https://api.ipify.org?format=json");
@@ -82,10 +87,10 @@ console.log("selectedTemp", selectedTemplate);
       (async () => {
         try {
           const ip = await getUserIP();
-          console.log("IP Address:", ip);
+          // console.log("IP Address:", ip);
 
           const countryCode = await getCountryFromIP(ip);
-          console.log("Detected Country Code:", countryCode);
+          // console.log("Detected Country:", countryCode);
 
           // const blockedCountries = ['US', 'BR', 'FR', 'DE', 'AF', 'IN'];
           if (blockedCountries.includes(countryCode)) {
@@ -141,7 +146,7 @@ console.log("selectedTemp", selectedTemplate);
               </style>
           <div class="parentElement" style="${parentDiv}">
           <div style="${baseStyles + boxedStyles}">
-            <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Blocked" style="width: 40px; height: 40px; margin-bottom: 1rem;" />
+            <img src=${icon[selectedTemplate]} alt="Blocked" style="width: 50px; height: 50px; margin-bottom: 1rem;" />
             <h1 style="font-size: ${settings.typography.heading_font_size}px; font-weight: 600; margin: 0.5rem 0; color: ${settings.heading_color.heading_color};">${content.heading}</h1>
            
             ${content.description}

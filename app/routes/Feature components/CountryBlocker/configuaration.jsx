@@ -52,22 +52,16 @@ export default function Configuaration(props) {
   //   }
   // }, [countryblocker]);
 
-  useEffect(() => {
+// Effect A: Sync from parent state to localContent
+useEffect(() => {
   const incoming = countryblocker?.[view]?.content || {};
-console.log("incoming", incoming);
-console.log("incoming view", view);
-const isSame =
-  incoming.heading === localContent?.heading &&
-  incoming.description === localContent?.description &&
-  (
-    (!incoming.file && !localContent.file) ||
-    (incoming.file?.name === localContent.file?.name)
-  );
 
-console.log("isSame", isSame);
-if (!isSame) {
-  console.log("Syncing content from parent", incoming);
-}
+  const isSame =
+    incoming.heading === localContent?.heading &&
+    incoming.description === localContent?.description &&
+    ((!incoming.file && !localContent?.file) ||
+      incoming.file?.name === localContent?.file?.name);
+
   if (!isSame) {
     isSyncingFromParent.current = true;
     setLocalContent({
@@ -76,14 +70,24 @@ if (!isSame) {
       file: incoming.file || null,
     });
   }
-}, [countryblocker?.[view]?.content]);
+}, [countryblocker?.[view]?.content, view]);
 
-
+// Effect B: Sync from localContent to parent state (countryblocker)
 useEffect(() => {
   if (isSyncingFromParent.current) {
     isSyncingFromParent.current = false;
     return;
   }
+
+  const current = countryblocker?.[view]?.content || {};
+
+  const isSame =
+    current.heading === localContent.heading &&
+    current.description === localContent.description &&
+    ((!current.file && !localContent?.file) ||
+      current.file?.name === localContent?.file?.name);
+
+  if (isSame) return; // 🔒 Avoid unnecessary update to state
 
   setCountryblocker((prev) => ({
     ...prev,
@@ -95,7 +99,8 @@ useEffect(() => {
       }
     }
   }));
-}, [localContent]);
+}, [localContent, countryblocker, view]);
+
 
 
   const handleContentChange = useCallback((key, value) => {
@@ -164,14 +169,6 @@ useEffect(() => {
             onChange={(value) => handleContentChange("heading", value)}
             autoComplete="off"
           />
-          {/* <TextField
-            label="Description"
-            value={description}
-            onChange={(value) => handleContentChange("description", value)}
-            multiline={4}
-            autoComplete="off"
-          /> */}
-
         <Text variant="bodyMd" as="h5">
           Description
         </Text>

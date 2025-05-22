@@ -12,25 +12,29 @@ import {
   Text,
   VideoThumbnail,
 } from "@shopify/polaris";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 // import CountryblockSetup from "./Feature components/CountryblockSetup";
 import HelpSupport from "../components/HelpSupport";
 import ReactPlayer from "react-player";
-import { SaveBar } from "@shopify/app-bridge-react";
-import countries from "../components/countries";
-import CountryBlockerSetup from "./Feature components/CountryBlocker";
 import UniversalSaveBar from "../universal-components/UniversalSaveBar";
 import { DeepEqual } from "./DeepEqual";
 import Template1 from "./Feature components/CountryBlocker/templates/template1";
 import Template2 from "./Feature components/CountryBlocker/templates/template2";
 import Template3 from "./Feature components/CountryBlocker/templates/template3";
 import defaultTemplateSettings from "./Feature components/CountryBlocker/templates/default_template";
-import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.snow.css";
 import SetUp from "./Feature components/CountryBlocker/setup";
 import SetUpFeature from "./Feature components/CountryBlocker/setup";
 import AllSetup from "./Feature components/CountryBlocker/all_setup";
-import countryblockerImg from '../assets/image/countryblocker.png'
+import countryblockerImg from "../assets/image/countryblocker.png";
+import CountryBlockerSetup from "./Feature components/CountryBlocker/CountryBlockerSetup";
 
 export default function CountryBlocker() {
   const [save, setSave] = useState(false);
@@ -47,25 +51,6 @@ export default function CountryBlocker() {
   const [getAllMetafields, setGetAllMetafields] = useState({});
   // const [value, setValue] = useState("");
   const view = searchParams.get("view");
-
-  const selectChange = (mainObj, name, value, locale_name) => {
-    const newFormValues = { ...getAllMetafields };
-    const target = locale_name ? newFormValues[locale_name] : newFormValues;
-    target[mainObj] = { ...target[mainObj], [name]: value };
-    setSave(!DeepEqual(getStoreMetafields, newFormValues));
-    setGetAllMetafields(newFormValues);
-  };
-
-  // useEffect(() => {
-  //   setCountryblocker(prev => ({
-  //     ...prev,
-  //     setup,
-  //     content,
-  //     settings,
-  //   }));
-  // }, [setup, content, settings]);
-
-  // console.log("countryblocker", countryblocker);
 
   const handleChangeView = (view) => {
     navigate(`?view=${view}`, { replace: true });
@@ -88,11 +73,10 @@ export default function CountryBlocker() {
         search &&
         view?.includes("template")
       ) {
-        navigate("/app/features/countryblocker?view=setup", {
+        navigate("/app/features/countryblocker?view=setup&back=1", {
           replace: true,
         });
-      } 
-      else if (
+      } else if (
         pathname?.includes("countryblocker") &&
         search &&
         view?.includes("settings")
@@ -100,17 +84,13 @@ export default function CountryBlocker() {
         navigate("/app/features/countryblocker?view=countryblocker", {
           replace: true,
         });
-      } 
-      else if (pathname?.includes("countryblocker") && search) {
+      } else if (pathname?.includes("countryblocker") && search) {
         navigate("/app/features/countryblocker", { replace: true });
-      } 
-      else if (pathname?.includes("countryblocker")) {
+      } else if (pathname?.includes("countryblocker")) {
         navigate("/app/features", { replace: true });
-      } 
-      else if (fallbackUrl) {
+      } else if (fallbackUrl) {
         navigate(fallbackUrl, { replace: true });
-      } 
-      else {
+      } else {
         navigate(-1);
       }
     };
@@ -118,61 +98,30 @@ export default function CountryBlocker() {
     return { content: "Back", onAction: handleAction };
   };
 
-const closePopup = () => {
-  // if (view === originalCountryblocker?.template) {
-  //   // Restore entire state if template hasn't changed
-  //   setCountryblocker(originalCountryblocker);
-  // } else {
-  //   // Only reset current view's data and template if changed
-  //   setCountryblocker((prev) => ({
-  //     ...prev,
-  //     template: originalCountryblocker.template, // restore selected template
-  //     [view]: {
-  //       content: originalCountryblocker?.[view]?.content || {},
-  //       settings: originalCountryblocker?.[view]?.settings || defaultTemplateSettings[view] || {},
-  //     }
-  //   }));
-  // }
-setCountryblocker(originalCountryblocker);
-  setSave(false);
-};
-
-
-  // useEffect(() => {
-  //   const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
-  //   // console.log(isChanged);
-  //   setSave(isChanged);
-  // }, [countryblocker, originalCountryblocker]);
-
-const firstLoad = useRef(true);
-
-const [hasLoaded, setHasLoaded] = useState(false);
-
-useEffect(() => {
-  const countryblockerLoaded = countryblocker && Object.keys(countryblocker).length > 0;
-  const originalLoaded = originalCountryblocker && Object.keys(originalCountryblocker).length > 0;
-
-  if (countryblockerLoaded && originalLoaded && view) {
-    setHasLoaded(true);
-  }
-}, [countryblocker, originalCountryblocker, view]);
-
-console.log("hasLoaded", hasLoaded);
-
-useEffect(() => {
-  if (!hasLoaded) return;
-
-  const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
-  setSave(isChanged);
-}, [countryblocker, originalCountryblocker, hasLoaded]);
-
-
-
-
-  const getCountryCodeFromName = (name) => {
-    const match = countries.find((c) => c.name === name);
-    return match ? match.code : name;
+  const closePopup = () => {
+    setCountryblocker(originalCountryblocker);
+    setSave(false);
   };
+
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  useEffect(() => {
+    const countryblockerLoaded =
+      countryblocker && Object.keys(countryblocker).length > 0;
+    const originalLoaded =
+      originalCountryblocker && Object.keys(originalCountryblocker).length > 0;
+
+    if (countryblockerLoaded && originalLoaded && view) {
+      setHasLoaded(true);
+    }
+  }, [countryblocker, originalCountryblocker, view]);
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+
+    const isChanged = !DeepEqual(countryblocker, originalCountryblocker);
+    setSave(isChanged);
+  }, [countryblocker, originalCountryblocker, hasLoaded]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -195,7 +144,6 @@ useEffect(() => {
           setContent(initialData.content || {});
           setSettings(initialData.settings || {});
         }
-
       } catch (error) {
         console.error("An error occurred:", error.message);
       } finally {
@@ -210,7 +158,6 @@ useEffect(() => {
     let formdata = new FormData();
     formdata.append("_action", "country_blocker_data");
     formdata.append("CountryBlockerData", JSON.stringify(countryblocker));
-    // console.log("postMetafileds", formdata.get("postMetafileds"));
     setLoading(true);
     try {
       const response = await fetch("/app/translation", {
@@ -218,13 +165,8 @@ useEffect(() => {
         body: formdata,
       });
       const responseJson = await response.json();
-      // console.log("responseJson", responseJson);
-      // console.log("data",responseJson.data.data.metafieldsSet.metafields[0].value);
       const data = responseJson.data.data.metafieldsSet.metafields[0].value;
-
-      // console.log(JSON.parse(data).countryData);
       setOriginalCountryblocker(JSON.parse(data).countryData);
-      // setSelectedTags(responseJson.data.blocked_countries);
       if (responseJson.status === 200) {
         setActive(
           shopify.toast.show(responseJson.statusText, {
@@ -240,100 +182,135 @@ useEffect(() => {
     }
   };
 
-//   useEffect(() => {
-//   setCountryblocker((prev) => ({
-//     ...prev,
-//     template: prev.template || "template2",
-//     template1: prev.template1 || defaultTemplateSettings.template1,
-//     template2: prev.template2 || defaultTemplateSettings.template2,
-//     template3: prev.template3 || defaultTemplateSettings.template3
-//   }));
-// }, []);
+  //   useEffect(() => {
+  //   setCountryblocker((prev) => ({
+  //     ...prev,
+  //     template: prev.template || "template2",
+  //     template1: prev.template1 || defaultTemplateSettings.template1,
+  //     template2: prev.template2 || defaultTemplateSettings.template2,
+  //     template3: prev.template3 || defaultTemplateSettings.template3
+  //   }));
+  // }, []);
 
-function deepMergeDefaults(obj, defaults) {
-  const result = { ...defaults };
-  for (const key in obj) {
-    if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-      result[key] = deepMergeDefaults(obj[key], defaults[key] || {});
-    } else {
-      result[key] = obj[key];
+  function deepMergeDefaults(obj, defaults) {
+    const result = { ...defaults };
+    for (const key in obj) {
+      if (
+        obj[key] &&
+        typeof obj[key] === "object" &&
+        !Array.isArray(obj[key])
+      ) {
+        result[key] = deepMergeDefaults(obj[key], defaults[key] || {});
+      } else {
+        result[key] = obj[key];
+      }
     }
+    return result;
   }
-  return result;
-}
 
-useEffect(() => {
-  setOriginalCountryblocker((prev) => ({
-    ...prev,  
-    setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
-    template: prev.template || "template2",
-    template1: deepMergeDefaults(prev.template1 || {}, defaultTemplateSettings.template1),
-    template2: deepMergeDefaults(prev.template2 || {}, defaultTemplateSettings.template2),
-    template3: deepMergeDefaults(prev.template3 || {}, defaultTemplateSettings.template3)
-  }));
-}, []);
+  useEffect(() => {
+    setOriginalCountryblocker((prev) => ({
+      ...prev,
+      setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
+      template: prev.template || "template2",
+      template1: deepMergeDefaults(
+        prev.template1 || {},
+        defaultTemplateSettings.template1,
+      ),
+      template2: deepMergeDefaults(
+        prev.template2 || {},
+        defaultTemplateSettings.template2,
+      ),
+      template3: deepMergeDefaults(
+        prev.template3 || {},
+        defaultTemplateSettings.template3,
+      ),
+    }));
+  }, []);
 
-useEffect(() => {
-  setCountryblocker((prev) => ({
-    ...prev,
-    setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
-    template: prev.template || "template2",
-    template1: deepMergeDefaults(prev.template1 || {}, defaultTemplateSettings.template1),
-    template2: deepMergeDefaults(prev.template2 || {}, defaultTemplateSettings.template2),
-    template3: deepMergeDefaults(prev.template3 || {}, defaultTemplateSettings.template3)
-  }));
-}, []);
+  useEffect(() => {
+    setCountryblocker((prev) => ({
+      ...prev,
+      setup: deepMergeDefaults(prev.setup || {}, defaultTemplateSettings.setup),
+      template: prev.template || "template2",
+      template1: deepMergeDefaults(
+        prev.template1 || {},
+        defaultTemplateSettings.template1,
+      ),
+      template2: deepMergeDefaults(
+        prev.template2 || {},
+        defaultTemplateSettings.template2,
+      ),
+      template3: deepMergeDefaults(
+        prev.template3 || {},
+        defaultTemplateSettings.template3,
+      ),
+    }));
+  }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (originalCountryblocker?.template === null) {
+        setCountryblocker((prev) => ({
+          ...prev,
+          template: "template2",
+          template2: {
+            ...(typeof prev.template2 === "object" ? prev.template2 : {}),
+            status: "enable",
+          },
+        }));
+      }
+      // if (originalCountryblocker?.template === null) {
+      //   setCountryblocker((prev) => ({
+      //     ...prev,
+      //     template: 'template2',
+      //     template2: {
+      //       ...(typeof prev.template2 === 'object' ? prev.template2 : {}),
+      //       status: 'enable'
+      //     }
+      //   }));
+      // }else{
+      //   setCountryblocker((prev) => ({
+      //     ...prev,
+      //     template: originalCountryblocker?.template,
+      //     [originalCountryblocker?.template]: {
+      //       ...(typeof prev[originalCountryblocker?.template] === 'object' ? prev[originalCountryblocker?.template] : {}),
+      //       status: 'enable'
+      //     }
+      //   }));
+      // }
+      if (originalCountryblocker?.template === null) {
+        setOriginalCountryblocker((prev) => ({
+          ...prev,
+          template: "template2",
+          template2: {
+            ...(typeof prev.template2 === "object" ? prev.template2 : {}),
+            status: "enable",
+          },
+        }));
+      }
+    }, 100);
 
-useEffect(() => {
-  const timeout = setTimeout(() => {
-    console.log("originalCountryblocker?.template", originalCountryblocker?.template);
-    console.log("countryblocker?.template", countryblocker?.template);
+    return () => clearTimeout(timeout); // cleanup
+  }, [countryblocker?.template, originalCountryblocker?.template]);
 
-    if (countryblocker?.template === null) {
-      setCountryblocker((prev) => ({
-        ...prev,
-        template: 'template2',
-        template2: {
-          ...(typeof prev.template2 === 'object' ? prev.template2 : {}),
-          status: 'enable'
-        }
-      }));
-    }
-
-    if (originalCountryblocker?.template === null) {
-      setOriginalCountryblocker((prev) => ({
-        ...prev,
-        template: 'template2',
-        template2: {
-          ...(typeof prev.template2 === 'object' ? prev.template2 : {}),
-          status: 'enable'
-        }
-      }));
-    }
-  }, 100); // delay in milliseconds (adjust as needed)
-
-  return () => clearTimeout(timeout); // cleanup
-}, [countryblocker?.template, originalCountryblocker?.template]);
-
-console.log("countryblocker", countryblocker);
-console.log("originalCountryblocker", originalCountryblocker);
-console.log("view", view);
+  // console.log("countryblocker", countryblocker);
+  // console.log("originalCountryblocker", originalCountryblocker);
+  // console.log("view", view);
   return (
     <>
       <Page
         title="Country Blocker"
         backAction={backActionButton(save, "/app/features")}
         primaryAction={
-          view === 'countryblocker'
+          view === "countryblocker"
             ? {
-                content: 'Settings',
-                onAction: () => handleChangeView('settings'),
+                content: "Settings",
+                onAction: () => handleChangeView("settings"),
               }
             : null
         }
       >
-
         <UniversalSaveBar
           open={save}
           loading={loading}
@@ -357,7 +334,6 @@ console.log("view", view);
               />
             )}
 
-
             {view === "setup" && (
               <AllSetup
                 save={save}
@@ -373,7 +349,6 @@ console.log("view", view);
               />
             )}
 
-       
             {view === "settings" && (
               <SetUpFeature
                 save={save}
@@ -476,18 +451,21 @@ console.log("view", view);
                   description={`In this guide, you’ll learn how to use the Country Block feature to restrict access from specific countries—helping you stay compliant, reduce fraud, or simply focus on your target market.`}
                   // popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
                 >
-                <img
-                  alt=""
-                  width="100%"
-                  height="100%"
-                  style={{objectFit: 'cover', objectPosition: 'center'}}
-                  src={countryblockerImg}
-                />
-              </MediaCard>
+                  <img
+                    alt=""
+                    width="100%"
+                    height="100%"
+                    style={{ objectFit: "cover", objectPosition: "center" }}
+                    src={countryblockerImg}
+                  />
+                </MediaCard>
               </Card>
             </Layout.Section>
 
             <HelpSupport />
+            <Layout.Section>
+              <Box padding={200}></Box>
+            </Layout.Section>
           </Layout>
         )}
       </Page>
