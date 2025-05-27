@@ -120,8 +120,8 @@ const managePage = (url) => {
                   {filteredData.map((item) => (
                     <Grid.Cell
                       key={item.name}
-                      // columnSpan={{ xs: 6, sm: 6, md: 6, lg: 4, xl: 4 }}
-                      columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}
+                      columnSpan={{ xs: 6, sm: 6, md: 6, lg: 4, xl: 4 }}
+                      // columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}
                     >
                       <div className="features_mediacard">
                         <MediaCard portrait>

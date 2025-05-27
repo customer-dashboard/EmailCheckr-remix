@@ -215,7 +215,7 @@ export async function postMetafileds(admin, formValue, shop, accessToken) {
               key: "Settings",
               namespace: "customer_accounts_email_verification",
               ownerId: shopGid,
-              type: "multi_line_text_field",
+              type: "json",
               value: formDatavalue,
             },
           ],
@@ -308,11 +308,10 @@ export async function checkCustomerEmailAdmin(shop, reqbody, accessToken) {
 }
 
 export async function postProfileData(shop, reqbody, accessToken) {
+  console.log("reqBody", reqbody);
   try {
     const url = `https://${shop}/admin/api/2025-01/customers.json`;
-    const tags = reqbody?.tags
-      ? "EmailCheckrSubscriber," + reqbody.tags
-      : "EmailCheckrSubscriber";
+    const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
     const requestbody = {
       customer: {
         first_name: reqbody.first_name,
@@ -322,12 +321,12 @@ export async function postProfileData(shop, reqbody, accessToken) {
         verified_email: true,
         send_email_welcome: false,
         send_email_invite: true,
-        // if (reqbody.accepts_marketing) {
-        //   customer.email_marketing_consent = {
-        //     state: "subscribed",
-        //     opt_in_level: "single_opt_in",
-        //   };
-        // }
+        ...(reqbody.accepts_marketing && {
+          email_marketing_consent: {
+            state: "subscribed",
+            opt_in_level: "single_opt_in",
+          },
+        }),
       },
     };
     const response = await fetch(url, {
@@ -348,12 +347,104 @@ export async function postProfileData(shop, reqbody, accessToken) {
     }
 
     const data = await response.json()
+    console.log("data customer", data);
     return data;
   } catch (error) {
     console.error("Error posting profile data:", error.message);
     return { error: error.message };
   }
 }
+
+// export async function updateProfileData(shop, customerId, accessToken, reqbody) {
+//   console.log("updating profile data");
+//   console.log("reqbody", reqbody);
+//   try {
+//     const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
+//     const tags = reqbody?.tags ? "EmailCheckrSubscriber," + reqbody.tags : "EmailCheckrSubscriber";
+
+//     const inviteResponse = await fetch(inviteUrl, {
+//       method: "POST",
+//       headers: {
+//         "X-Shopify-Access-Token": accessToken,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         tags: tags,
+//         customer_invite: {
+//           custom_message: "Welcome! Please activate your account.",
+//         }
+//       }),
+//     });
+
+//     if (!inviteResponse.ok) {
+//       const inviteError = await inviteResponse.json();
+//       throw new Error(`Invite Error: ${JSON.stringify(inviteError.errors || inviteResponse.statusText)}`);
+//     }
+
+//     const inviteData = await inviteResponse.json();
+//     return inviteData;
+//   } catch (error) {
+//     console.error("Error:", error.message);
+//     return { error: error.message };
+//   }
+// }
+
+export async function updateProfileData(shop, customerId, accessToken, allTags) {
+  console.log("Updating profile data");
+  console.log("allTags", allTags);
+  try {
+    const updateUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}.json`;
+
+    const tags = allTags ? "EmailCheckrSubscriber," + allTags : "EmailCheckrSubscriber";
+
+    // Update the customer
+    const updateResponse = await fetch(updateUrl, {
+      method: "PUT",
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer: {
+          id: customerId,
+          tags: tags
+        }
+      }),
+    });
+
+    if (!updateResponse.ok) {
+      const updateError = await updateResponse.json();
+      throw new Error(`Customer Update Error: ${JSON.stringify(updateError.errors || updateResponse.statusText)}`);
+    }
+
+    const inviteUrl = `https://${shop}/admin/api/2025-01/customers/${customerId}/send_invite.json`;
+
+    const inviteResponse = await fetch(inviteUrl, {
+      method: "POST",
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer_invite: {
+          custom_message: "Welcome! Please activate your account.",
+        }
+      }),
+    });
+
+    if (!inviteResponse.ok) {
+      const inviteError = await inviteResponse.json();
+      throw new Error(`Invite Error: ${JSON.stringify(inviteError.errors || inviteResponse.statusText)}`);
+    }
+
+    const inviteData = await inviteResponse.json();
+    return inviteData;
+  } catch (error) {
+    console.error("Error:", error.message);
+    return { error: error.message };
+  }
+}
+
 
 export async function createSegment(name, status, shop, accessToken) {
   const endpoint = `https://${shop}/admin/api/2025-01/graphql.json`;
@@ -417,6 +508,7 @@ export async function hasBillingCheck(session, billing, name) {
   let isTest = false;
   if (
     session.shop === "silver-heritage-heaven.myshopify.com" ||
+    session.shop === "my-diamond-story.myshopify.com" ||
     session.shop === "my-public-app.myshopify.com"
   ) {
     isTest = true;
@@ -857,6 +949,55 @@ export async function saveFraudBlockData(admin, countryData, shop, accessToken) 
   }
 }
 
+export async function saveContentProData(admin, content_protector, shop, accessToken) {
+  let formDatavalue = {
+    shop: shop,
+    content_protector: content_protector
+  }
+  console.log("formDatavalue", formDatavalue);
+  let shopGid = await getShopId(shop, accessToken);
+  try {
+    const metafileds = await admin.graphql(
+      `#graphql
+      mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) {
+          metafields {
+            key
+            namespace
+            value
+            createdAt
+            updatedAt
+          }
+          userErrors {
+            field
+            message
+            code
+          }
+        }
+      }`,
+      {
+        variables: {
+          metafields: [
+            {
+              key: "content_protector",
+              namespace: "customer_accounts_email_verification",
+              ownerId: shopGid,
+              type: "json",
+              value: JSON.stringify(formDatavalue),
+            },
+          ],
+        },
+      },
+    );
+
+    const response = await metafileds.json();
+    return response;
+  } catch (error) {
+    // console.error("Error in setTranslation:", error);
+    throw error;
+  }
+}
+
 export async function CountryBlockerData(admin) {
   try {
     const get_setting = await admin.graphql(
@@ -889,20 +1030,42 @@ export async function CountryBlockerData(admin) {
   }
 }
 
-// export const getCountryFromIp = async (ip) => {
-//     // const res = await fetch(`https://ipapi.co/${ip}/country_name/`);
-//     const res = await fetch(`http://ip-api.com/json/${ip}`);
-//     const country = await res.text();
-//     const newCon = JSON.parse(country);
-//     console.log("country", country);
-//     console.log("country", country.country);
-//     return country.country;
-//   };
+export async function ContentProtectorData(admin) {
+  try {
+    const get_setting = await admin.graphql(
+      `query MyQuery {
+        shop {
+          metafields(namespace: "customer_accounts_email_verification", first: 10) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
+            }
+          }
+        }
+      }`,
+    );
+    const response = await get_setting.json();
+    const metafields = response?.data?.shop?.metafields?.edges;
+    const keyName = "content_protector";
+    const targetMetafield = metafields.find(
+      (edge) => edge.node.key === keyName,
+    );
+    return targetMetafield ? targetMetafield?.node?.value : null;
+  } catch (error) {
+    // console.error("Error fetching settings:", error);
+    return null;
+  }
+}
 
-export const getCountryFromIp = async (ip) => {
-  const res = await fetch(`http://ip-api.com/json/${ip}`);
-  const data = await res.json(); // directly parse JSON here
-  console.log("country", data);
-  console.log("country", data.country);
-  return data.country;
-};
+
+
+// export const getCountryFromIp = async (ip) => {
+//   const res = await fetch(`http://ip-api.com/json/${ip}`);
+//   const data = await res.json(); // directly parse JSON here
+//   console.log("country", data);
+//   console.log("country", data.country);
+//   return data.country;
+// };

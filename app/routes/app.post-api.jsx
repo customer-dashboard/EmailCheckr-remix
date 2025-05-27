@@ -101,14 +101,13 @@ export const action = async ({ request }) => {
         </li>
       </ul>
     </div>`;
-    // console.log("trans", setting.translation[language]["this_email_has_already_been_used_for_registration!"]);
+
     if (setting.translation[language] && setting.translation[language].hasOwnProperty("this_email_has_already_been_used_for_registration!")) {
       var error_message = `<p style="font-size: ${setting.typography.error_message_font_size}px;">${setting.translation[language]["this_email_has_already_been_used_for_registration!"]}</p>`;
     } else {
       var error_message = `<p>This email has already been used for registration!</p>`;
     }
-    
-    
+
      return {
       getemail: main_heading,
       error_msg: error_message,
@@ -153,22 +152,52 @@ export const action = async ({ request }) => {
   case "profile-data":
     try {
       const checkMail = await checkCustomerEmailAdmin(shop, reqbody, accessToken);
-      // console.log("checkMail", checkMail);
-    
-      // If the email exists, return 
-      if (checkMail.customers && checkMail.customers.length > 0) {
-        console.log("Email exists");
-        let data = await ReturnProfileSection(session,setting,reqbody);
-        const profile_data = { shop: shop, data: data, message: "This email has already been used for registration!", status: 500 };
-        return json(profile_data);
+      console.log("checkMail", checkMail?.customers);
+      
+      const customer = checkMail?.customers?.[0];
+      // console.log("customer", customer);
+      // Always prepare translated messages first
+      const data = await ReturnProfileSection(session, setting, reqbody);
+      
+      if (customer) {
+        if (customer.email_marketing_consent?.state === 'not_subscribed') {
+          console.log("Email exists but not subscribed to marketing");
+      
+          const profile_data = {
+            shop: shop,
+            data: data,
+            message: data.error_msg,  
+            status: 500
+          };
+          return json(profile_data);
+      
+        } else if (customer.email_marketing_consent?.state === 'subscribed' && customer.state === 'disabled') {
+          console.log("Customer subscribed via newsletter but account is disabled");
+      
+          const customerId = customer.id;
+          const allTags = `${reqbody?.tags || ''},${customer?.tags || ''}`.replace(/^,|,$/g, '');
+          const updateData = await updateProfileData(shop, customerId, accessToken, allTags); 
+          console.log("Through newsletter & disabled", updateData);
+      
+          const profile_data = {
+            shop: shop,
+            updateData: updateData,
+            data: data,
+            message: "successfully_get", 
+            status: 200
+          };
+          return json(profile_data);
+        }
       }
-    
-      // console.log("Email not found");
+      
+      // If no customer found, create a new customer
+      console.log("Email not found, creating new customer...");
       await postProfileData(shop, reqbody, accessToken);
-      let data = await ReturnProfileSection(session,setting,reqbody);
-      const profile_data = { shop: shop, data: data, message: "successfully_get", status: 200 };
+      let dataTemp = await ReturnProfileSection(session,setting,reqbody);
+      const profile_data = { shop: shop, data: dataTemp, message: "successfully_get", status: 200 };
       // console.log("profile_data", profile_data);
       return json(profile_data);
+      
     
     } catch (error) {
       console.error("Error handling profile_data:", error.message);

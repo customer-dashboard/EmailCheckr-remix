@@ -1,7 +1,7 @@
 import { GetCollectionMongoDB, GetMongoData, MongoDB } from "../server/mongodb";
 import { json } from '@remix-run/node';
 import { authenticate } from "../shopify.server";
-import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData, saveFraudBlockData, CountryBlockerData } from "../Modals/Grapql";
+import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData, saveFraudBlockData, CountryBlockerData, saveContentProData, ContentProtectorData } from "../Modals/Grapql";
 import { CurrentDate } from "../server/apicontroller";
 
 
@@ -73,16 +73,28 @@ export async function action({ request }) {
             console.error("Error fetching country blocker data", error);
             return { status: 500, data: error.message };
           }
-          // try {
-          //   const data = await GetCollectionMongoDB(
-          //             'fraud_filter_blocker',
-          //             session.shop
-          //           );
-          //   return json({data,status})
-          // } catch (error) {
-          //   console.error("Error fetching installation FAQ:", error);
-          //   return { status: 500, data: error.message };
-          // }
+
+        case "content_protector":
+          const raw = formValue.get("ContentProtector");
+          const content_protector = JSON.parse(raw);
+          try {
+            const data = await saveContentProData(admin, content_protector, shop, accessToken);
+            // console.log("saved data", data.metafieldsSet.metafields);
+            return json({data,status,statusText:"Setting Saved"})
+          } catch (error) {
+            console.error("Error saving content_protector:", error);
+            return { status: 500, data: error.message };
+          }
+
+        case "fetch_content_protector":
+          try {
+            const data = await ContentProtectorData(admin);
+            console.log("fetch_content_protector", data);
+            return json({data,status})
+          } catch (error) {
+            console.error("Error fetching content protector data", error);
+            return { status: 500, data: error.message };
+          }
           
         default:
           break;

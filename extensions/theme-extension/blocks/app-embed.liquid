@@ -1,6 +1,6 @@
-{% assign setting = shop.metafields.customer_accounts_email_verification.Settings.value %}
+{% assign settings = shop.metafields.customer_accounts_email_verification.Settings.value %}
 
-{% if setting contains "app_status" %}
+{% if settings.app_status == true %}
 
 {% comment %}
 Detect if the old block exists and prevent its script from running
@@ -33,8 +33,23 @@ Detect if the old block exists and prevent its script from running
   }
 </script>
 
+<script>
+  window.shopMetafields = {
+    metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }}
+  };
+</script>
+<script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
+
+<script>
+  window.shopMetafields = {
+    contentprotector: {{ shop.metafields.customer_accounts_email_verification.content_protector.value | json }}
+  };
+</script>
+<script src="{{ 'content-protector.js' | asset_url }}" defer></script>
+
 {% else %}
-  "app_status not found"
+
+
 {% endif %}
 
 
@@ -48,11 +63,3 @@ Detect if the old block exists and prevent its script from running
 }
 {% endschema %}
 
-<script>
-  window.shopMetafields = {
-    metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }}
-  };
-  
-</script>
-
-<script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
