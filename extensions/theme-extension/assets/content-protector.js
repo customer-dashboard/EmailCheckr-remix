@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   if (window.shopMetafields && window.shopMetafields.contentprotector) {
     const data = window.shopMetafields.contentprotector;
-    const contentprotector = data?.content_protector;
+    const contentprotector = data?.content_protector || {};
     // console.log("contentprotector", contentprotector);
 
   // Disable right-click
@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
  
-  const devToolsDetect = () => {
+  if (contentprotector.deactivate_inspect) {
+      const devToolsDetect = () => {
     const threshold = 160;
     if (
       window.outerWidth - window.innerWidth > threshold ||
@@ -52,8 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 1000);
 
- 
-  if (contentprotector.deactivate_inspect) {
     console.log = console.warn = console.error = console.info = function () {};
   }
   }
