@@ -35,23 +35,19 @@ Detect if the old block exists and prevent its script from running
 
 <script>
   window.shopMetafields = {
-    metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }}
-  };
-</script>
-<script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
-
-<script>
-  window.shopMetafields = {
+    metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }},
     contentprotector: {{ shop.metafields.customer_accounts_email_verification.content_protector.value | json }}
   };
 </script>
+
+<script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
+
 <script src="{{ 'content-protector.js' | asset_url }}" defer></script>
 
 {% else %}
 
 
 {% endif %}
-
 
 
 

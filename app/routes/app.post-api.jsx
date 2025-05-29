@@ -4,7 +4,7 @@ import { authenticate } from "../shopify.server";
 import { GetCollectionMongoDB } from "../server/mongodb";
 // import { getSubscriptionsFrontEnd } from "../models/actions.server";
 // import { restRequest } from "../shopify.server";
-import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal, getCountryFromIp } from "../Modals/Grapql";
+import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal } from "../Modals/Grapql";
 
 
 export const loader = async ({ request }) => {
