@@ -600,6 +600,9 @@ const submit = async () => {
         </Layout.Section>
 
         <HelpSupport />
+          <Layout.Section>
+            <Box padding={200}></Box>
+          </Layout.Section>
       </Layout>
   )}
 

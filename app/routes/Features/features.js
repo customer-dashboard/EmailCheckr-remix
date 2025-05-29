@@ -26,5 +26,19 @@ export const universalFeaturesData = [
             "field": "legacy"
         },
         "version": "CLASSIC"
+    },
+    {
+        "title": "Content protector",
+        "subtitle": "Prevent right-clicks, shortcut keys, and text copying to secure your store’s content and stop unauthorized actions.",
+        "url": "/app/features/contentprotector",
+        // "url": "/app/features/countryblocker?back=country_blocker",
+        "img_url": "",
+        "modelTitle": "Setting Up a Text Banner for Social Proof & Trust",
+        "imageUrl": "https://mandasa1.b-cdn.net/customer-dashbaord-pro/affected/profile%2001.png",
+        "badge": {
+            "title": "legacy",
+            "field": "legacy"
+        },
+        "version": "CLASSIC"
     }
     ]

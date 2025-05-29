@@ -949,6 +949,55 @@ export async function saveFraudBlockData(admin, countryData, shop, accessToken) 
   }
 }
 
+export async function saveContentProData(admin, content_protector, shop, accessToken) {
+  let formDatavalue = {
+    shop: shop,
+    content_protector: content_protector
+  }
+  console.log("formDatavalue", formDatavalue);
+  let shopGid = await getShopId(shop, accessToken);
+  try {
+    const metafileds = await admin.graphql(
+      `#graphql
+      mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) {
+          metafields {
+            key
+            namespace
+            value
+            createdAt
+            updatedAt
+          }
+          userErrors {
+            field
+            message
+            code
+          }
+        }
+      }`,
+      {
+        variables: {
+          metafields: [
+            {
+              key: "content_protector",
+              namespace: "customer_accounts_email_verification",
+              ownerId: shopGid,
+              type: "json",
+              value: JSON.stringify(formDatavalue),
+            },
+          ],
+        },
+      },
+    );
+
+    const response = await metafileds.json();
+    return response;
+  } catch (error) {
+    // console.error("Error in setTranslation:", error);
+    throw error;
+  }
+}
+
 export async function CountryBlockerData(admin) {
   try {
     const get_setting = await admin.graphql(
@@ -981,20 +1030,42 @@ export async function CountryBlockerData(admin) {
   }
 }
 
-// export const getCountryFromIp = async (ip) => {
-//     // const res = await fetch(`https://ipapi.co/${ip}/country_name/`);
-//     const res = await fetch(`http://ip-api.com/json/${ip}`);
-//     const country = await res.text();
-//     const newCon = JSON.parse(country);
-//     console.log("country", country);
-//     console.log("country", country.country);
-//     return country.country;
-//   };
+export async function ContentProtectorData(admin) {
+  try {
+    const get_setting = await admin.graphql(
+      `query MyQuery {
+        shop {
+          metafields(namespace: "customer_accounts_email_verification", first: 10) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
+            }
+          }
+        }
+      }`,
+    );
+    const response = await get_setting.json();
+    const metafields = response?.data?.shop?.metafields?.edges;
+    const keyName = "content_protector";
+    const targetMetafield = metafields.find(
+      (edge) => edge.node.key === keyName,
+    );
+    return targetMetafield ? targetMetafield?.node?.value : null;
+  } catch (error) {
+    // console.error("Error fetching settings:", error);
+    return null;
+  }
+}
 
-export const getCountryFromIp = async (ip) => {
-  const res = await fetch(`http://ip-api.com/json/${ip}`);
-  const data = await res.json(); // directly parse JSON here
-  console.log("country", data);
-  console.log("country", data.country);
-  return data.country;
-};
+
+
+// export const getCountryFromIp = async (ip) => {
+//   const res = await fetch(`http://ip-api.com/json/${ip}`);
+//   const data = await res.json(); // directly parse JSON here
+//   console.log("country", data);
+//   console.log("country", data.country);
+//   return data.country;
+// };

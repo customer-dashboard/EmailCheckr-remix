@@ -2,6 +2,10 @@ pathname = window.location.pathname;
 hostDomain = window.location.hostname;
 proxy = "verification";
 // proxy = "verification-1";
+// proxy = "test-api";
+// console.log("In scriptTag file.");      
+// console.log("pathname--", pathname);
+// console.log("hostDomain--", hostDomain);
 
 document.addEventListener("DOMContentLoaded", function () {
   var formInputs = document.querySelectorAll("input[value=create_customer]");

@@ -1,63 +1,11 @@
-// (async () => {
-//   const pathname = window.location.pathname;
-//   const hostDomain = window.location.hostname;
-//   const proxy = "verification-1";
-
-//   console.log("metafileds0", window.shopMetafields);
-
-//   async function InstallMetafields(path, data) {
-//     const response = await fetch(path, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data),
-//     });
-//     console.log("responce of countryblocker", response);
-//     return await response;
-//   }
-
-//   let country = { target: "get_country" };
-
-//   try {
-//     // const response = await InstallMetafields(`https://${hostDomain}/apps/${proxy}`, country);
-// // console.log("res", response);
-// console.log("window", window);
-// console.log("shopify", window.Shopify.country);
-//     // if (response.status === 403) {
-//     if (window.Shopify.country == "IN") {
-//       document.body.innerHTML = `
-//         <div style="
-//           display: flex;
-//           flex-direction: column;
-//           align-items: center;
-//           justify-content: center;
-//           height: 100vh;
-//           background: linear-gradient(135deg, #1f2937, #4b5563);
-//           color: white;
-//           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-//           text-align: center;
-//           padding: 2rem;
-//         ">
-//           <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Blocked" style="width: 100px; height: 100px; margin-bottom: 1rem;" />
-//           <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: red;">Access Denied</h1>
-//           <p style="font-size: 1.2rem; max-width: 500px;">
-//             We're sorry, but our store is not accessible from your country.
-//           </p>
-//         </div>
-//       `;
-//     }
-//   } catch (error) {
-//     console.error("Error checking access:", error);
-//   }
-// })();
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   if (window.shopMetafields && window.shopMetafields.metafields) {
     const data = window.shopMetafields.metafields;
     // console.log("Country blocker metafield:", data);
     // console.log("shopify", window.Shopify);
-const selectedTemplate = data.countryData?.template ?? 'template2';
+    const selectedTemplate = data.countryData?.template ?? "template2";
 
-// console.log("selectedTemp", selectedTemplate);
+    // console.log("selectedTemp", selectedTemplate);
     const blockedCountries = data.countryData.setup.selectedTags || [];
     const status = data.countryData.setup.selected;
     const content = data.countryData[selectedTemplate].content;
@@ -66,8 +14,8 @@ const selectedTemplate = data.countryData?.template ?? 'template2';
     const icon = {
       template1: "https://cdn-icons-png.flaticon.com/512/595/595067.png",
       template2: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
-      template3: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
-    }
+      template3: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+    };
     // console.log("Country blocker status:", status);
     // console.log("blockedCountries:", blockedCountries);warning_3756712
 
@@ -94,14 +42,14 @@ const selectedTemplate = data.countryData?.template ?? 'template2';
 
           // const blockedCountries = ['US', 'BR', 'FR', 'DE', 'AF', 'IN'];
           if (blockedCountries.includes(countryCode)) {
-            let alignItems = 'center'; // default
+            let alignItems = "center";
 
-            if (data.countryData?.template === 'template1') {
-              alignItems = 'flex-start';
-            } else if (data.countryData?.template === 'template2') {
-              alignItems = 'center';
-            } else if (data.countryData?.template === 'template3') {
-              alignItems = 'flex-end';
+            if (data.countryData?.template === "template1") {
+              alignItems = "flex-start";
+            } else if (data.countryData?.template === "template2") {
+              alignItems = "center";
+            } else if (data.countryData?.template === "template3") {
+              alignItems = "flex-end";
             }
 
             const parentDiv = `
@@ -169,30 +117,6 @@ const selectedTemplate = data.countryData?.template ?? 'template2';
     } else {
       console.warn("country blocker status is disabled from app.");
     }
-
-    //     if (blockedCountries.includes(window.Shopify.country)) {
-    //   document.body.innerHTML = `
-    //     <div style="
-    //       display: flex;
-    //       flex-direction: column;
-    //       align-items: center;
-    //       justify-content: center;
-    //       height: 100vh;
-    //       background: linear-gradient(135deg, #1f2937, #4b5563);
-    //       color: white;
-    //       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    //       text-align: center;
-    //       padding: 2rem;
-    //     ">
-    //       <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Blocked" style="width: 100px; height: 100px; margin-bottom: 1rem;" />
-    //       <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: red;">Access Denied</h1>
-    //       <p style="font-size: 1.2rem; max-width: 500px;">
-    //         We're sorry, but our store is not accessible from your country.
-    //       </p>
-    //     </div>
-    //   `;
-    // }
-    // Use the data as needed...
   } else {
     console.warn("Shop metafields not found.");
   }
