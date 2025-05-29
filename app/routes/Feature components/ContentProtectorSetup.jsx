@@ -2,6 +2,7 @@ import {
   Layout,
   ChoiceList,
   Card,
+  Box,
 } from "@shopify/polaris";
 import { useEffect } from "react";
 
@@ -51,6 +52,9 @@ const settingsList = [
             ))
           }
           </Layout>
+                      <Layout.Section>
+                        <Box padding={200}></Box>
+                      </Layout.Section>
     </>
   );
 };

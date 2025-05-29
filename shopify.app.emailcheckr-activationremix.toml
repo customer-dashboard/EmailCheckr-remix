@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://announces-especially-use-casting.trycloudflare.com"
+application_url = "https://receptors-naval-failures-handled.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -31,13 +31,13 @@ scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://announces-especially-use-casting.trycloudflare.com/auth/callback",
-  "https://announces-especially-use-casting.trycloudflare.com/auth/shopify/callback",
-  "https://announces-especially-use-casting.trycloudflare.com/api/auth/callback"
+  "https://receptors-naval-failures-handled.trycloudflare.com/auth/callback",
+  "https://receptors-naval-failures-handled.trycloudflare.com/auth/shopify/callback",
+  "https://receptors-naval-failures-handled.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://announces-especially-use-casting.trycloudflare.com/app/post-api"
+url = "https://receptors-naval-failures-handled.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.outerWidth - window.innerWidth > threshold ||
       window.outerHeight - window.innerHeight > threshold
     ) {
-    //   document.body.innerHTML = "";
+      document.body.innerHTML = "";
     //   alert("DevTools is blocked!");
     }
   };
