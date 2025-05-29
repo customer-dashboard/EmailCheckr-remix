@@ -553,7 +553,7 @@ const submit = async () => {
           Secure your account with email activation
           </Text>
           <Text as="p" variant="bodyMd">
-          Email Checkr adds a layer of protection by requiring email activation during sign-up. 
+          Nojiro: Spam & Content Guard adds a layer of protection by requiring email activation during sign-up. 
           This ensures that only users with valid and accessible email addresses can complete registration, 
           helping to keep your platform secure and free from fake signups.
           </Text>
@@ -585,7 +585,7 @@ const submit = async () => {
             //   content: 'Learn more',
             //   onAction: () => setModelFirst(true),
             // }}
-            description={`In this guide, you’ll learn how to set up the Email Checker feature to automatically detect and block invalid or duplicate email addresses—ensuring only genuine users make it through your registration process.`}
+            description={`In this guide, you’ll learn how to set up the Nojiro: Spam & Content Guard feature to automatically detect and block invalid or duplicate email addresses—ensuring only genuine users make it through your registration process.`}
             // popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
           >
             <img

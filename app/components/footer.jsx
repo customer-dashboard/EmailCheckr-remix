@@ -4,13 +4,11 @@ import React from 'react'
 export const Footer = () => {
   return (
     <Page>
-      <FooterHelp>
+      {/* <FooterHelp>
         <div style={{ textAlign: "center" }}>
-          Built by Mandasa Technologies  Pvt. Ltd.{' '}<br />
-          <Link url="https://mandasadevelopment.com/customer-account-activation/privacy-policy/" external removeUnderline>Privacy policy</Link>,{' '}
-          <Link url="https://mandasadevelopment.com/customer-account-activation/frequently-asked-questions-faq/" external removeUnderline>FAQ</Link>
+          <Link url="https://apps.shopify.com/partners/mandasa-technologies" external removeUnderline>Built by Mandasa Technologies  Pvt. Ltd.{' '}</Link>
         </div>
-      </FooterHelp>
+      </FooterHelp> */}
     </Page>
   )
 }

@@ -40,7 +40,7 @@ export function MyModal(props) {
       <Modal id="my-modal">
 
 
-        <p>Choose a theme where you want to enable 'EmailCheckr' to display its features on the storefront</p>
+        <p>Choose a theme where you want to enable 'Nojiro: Spam & Content Guard' to display its features on the storefront</p>
         <div class="cdp_popover">
           <button id="popoverActivator" class="popover-button">
             <span id="selectedThemeName">Select a theme</span> ▼
@@ -55,8 +55,8 @@ export function MyModal(props) {
 
 
 
-        <TitleBar title="Try EmailCheckr in other themes">
-          <button onClick={() => shopify.modal.hide('my-modal')} variant="primary">Add EmailCheckr to selected theme</button>
+        <TitleBar title="Try Nojiro: Spam & Content Guard in other themes">
+          <button onClick={() => shopify.modal.hide('my-modal')} variant="primary">Add Nojiro: Spam & Content Guard to selected theme</button>
           <button onClick={() => shopify.modal.hide('my-modal')}>Cancel</button>
         </TitleBar>
 
