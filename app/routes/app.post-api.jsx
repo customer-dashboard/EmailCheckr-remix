@@ -4,7 +4,7 @@ import { authenticate } from "../shopify.server";
 import { GetCollectionMongoDB } from "../server/mongodb";
 // import { getSubscriptionsFrontEnd } from "../models/actions.server";
 // import { restRequest } from "../shopify.server";
-import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal, getCountryFromIp } from "../Modals/Grapql";
+import {  postProfileData, checkCustomerEmailAdmin, getSettings, postMetafileds, checkLocal } from "../Modals/Grapql";
 
 
 export const loader = async ({ request }) => {
@@ -129,25 +129,25 @@ export const action = async ({ request }) => {
     const metafieldsData = { shop: shop, data: metafield, message: "successfully_get", status: 200 };
     return json(metafieldsData);
 
-  case "get_country":
+//   case "get_country":
     
-    // console.log("shopify", shopify);
-    const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
-    const singleIp = ip.split(',')[0];
-    console.log("ip in postApi", singleIp);
-    const country = await getCountryFromIp(singleIp); 
-    const countries = await GetCollectionMongoDB('fraud_filter_blocker',shop);
-    const parsed = typeof countries === 'string' ? JSON.parse(countries) : countries;
-    const blockedCountries = parsed.blocked_countries;
-    console.log("blockedCountries", blockedCountries);
-    const country_blocker_status = parsed.country_blocker_status;
-    console.log("country_blocker_status", country_blocker_status);
-    if(country_blocker_status == 'enable'){
-    if (blockedCountries.includes(country)) {
-    console.log("Access Denied!");
-    return new Response("Access Denied", { status: 403 });
-  }
-}
+//     // console.log("shopify", shopify);
+//     const ip = request.headers.get("x-forwarded-for") || "your fallback IP";
+//     const singleIp = ip.split(',')[0];
+//     console.log("ip in postApi", singleIp);
+//     const country = await getCountryFromIp(singleIp); 
+//     const countries = await GetCollectionMongoDB('fraud_filter_blocker',shop);
+//     const parsed = typeof countries === 'string' ? JSON.parse(countries) : countries;
+//     const blockedCountries = parsed.blocked_countries;
+//     console.log("blockedCountries", blockedCountries);
+//     const country_blocker_status = parsed.country_blocker_status;
+//     console.log("country_blocker_status", country_blocker_status);
+//     if(country_blocker_status == 'enable'){
+//     if (blockedCountries.includes(country)) {
+//     console.log("Access Denied!");
+//     return new Response("Access Denied", { status: 403 });
+//   }
+// }
 
   case "profile-data":
     try {
