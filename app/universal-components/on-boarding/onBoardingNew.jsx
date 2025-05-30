@@ -452,7 +452,7 @@ const options = state.map(ele => ({
                                 >
                             <InlineStack align="left" gap={200}>
                             <Text as="h3" variant="headingMd">
-                              Set up plan
+                              Choose a plan
                             </Text>
                             {/* <Badge tone="success">Active</Badge> */}
                             </InlineStack>
@@ -470,7 +470,7 @@ const options = state.map(ele => ({
                               {billingNew === false ? (
                             <Box paddingBlockEnd={200} paddingInlineStart={100} paddingBlockStart={400}>
                             <Text as="p" variant="bodyMd">
-                            Start 14 days free trial to activate EmailCheckr
+                            Start 14 days free trial to activate Nojiro: Spam & Content Guard
                             </Text>
                             </Box>
                             ) : null }

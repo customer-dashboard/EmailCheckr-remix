@@ -258,8 +258,8 @@ export default function Installation(props) {
                         accountName='need help'
                         connected={true}
                         avatarUrl={help_icon}
-                        title="Need help"
-                        details={<Text>Please contact support if you have problems with installation</Text>}
+                        title="Looking for help?"
+                        details={<Text>Our support team is just a message away!</Text>}
                     />
                 </Layout.Section>
                 </Layout>

@@ -38,6 +38,8 @@ Detect if the old block exists and prevent its script from running
     metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }},
     contentprotector: {{ shop.metafields.customer_accounts_email_verification.content_protector.value | json }}
   };
+
+  console.log('Meta', window.shopMetafields);
 </script>
 
 <script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
@@ -53,7 +55,7 @@ Detect if the old block exists and prevent its script from running
 
 {% schema %}
 {
-  "name": "EmailCheckr Script<Remix>",
+  "name": "Nojiro: Spam Guard<REMIX>",
   "target": "body",
   "settings": []
 }

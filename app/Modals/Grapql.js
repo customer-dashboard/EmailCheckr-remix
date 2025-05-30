@@ -329,6 +329,7 @@ export async function postProfileData(shop, reqbody, accessToken) {
         }),
       },
     };
+    // console.log("reqesty bbody", requestbody);
     const response = await fetch(url, {
       method: "POST",
       headers: {

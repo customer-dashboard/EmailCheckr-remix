@@ -719,10 +719,10 @@ export default function Index(props) {
     return (
       <Layout.Section>
         <Banner
-          title="Add EmailCheckr to theme"
+          title="Add Nojiro: Spam & Content Guard to theme"
           action={{
             loading: loading2,
-            content: "Add EmailCheckr to live theme",
+            content: "Add Nojiro: Spam & Content Guard to live theme",
             onAction: () => {
               window.open(
                 `https://${shop}/admin/themes/${livetheme?.value}/editor?context=apps&activateAppId=20384d45f5b73f1e1a6c806428ab773d/app-embed`,
@@ -732,14 +732,14 @@ export default function Index(props) {
           }}
           secondaryAction={{
             loading: loading3,
-            content: "Try EmailCheckr in other themes",
+            content: "Try Nojiro: Spam & Content Guard in other themes",
             onAction: () => { nextButtonHandler() }
           }}
           tone="warning"
         >
           <p>
-            Click on “Add EmailCheckr to live theme” to display EmailCheckr
-            features on your storefront. You can try EmailCheckr in other themes
+            Click on “Add Nojiro: Spam & Content Guard to live theme” to display Nojiro: Spam & Content Guard
+            features on your storefront. You can try Nojiro: Spam & Content Guard in other themes
             as well. If you close this popup, you can access this option later
             from Settings &gt; Add to Theme.
           </p>
@@ -747,9 +747,9 @@ export default function Index(props) {
         <Modal
           open={active}
           onClose={toggleActive}
-          title="Try EmailCheckr in other themes"
+          title="Try Nojiro: Spam & Content Guard in other themes"
           primaryAction={{
-            content: "Add EmailCheckr to selected theme",
+            content: "Add Nojiro: Spam & Content Guard to selected theme",
             onAction: "",
           }}
           secondaryActions={[
@@ -763,7 +763,7 @@ export default function Index(props) {
             <Box padding={200}>
               <Box paddingBlockEnd={100}>
                 <Text as="p" variant="bodyMd">
-                  Choose a theme where you want to enable 'EmailCheckr' to
+                  Choose a theme where you want to enable 'Nojiro: Spam & Content Guard' to
                   display its features on the storefront
                 </Text>
               </Box>
