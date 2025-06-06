@@ -140,7 +140,7 @@ const successMessageDisplayPosition = [
 ]
 
 const settingsList = [
-  { key: "app_status", label: "App Status", content: "Enable this for the app functioning on the account page." },
+  { key: "app_status", label: "App Status", content: "Enable this for the app functioning." },
   { key: "message_position", label: "Success message display position", content: "" },
 ];
 
