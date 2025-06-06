@@ -440,6 +440,7 @@ import HelpSupport from "../components/HelpSupport";
 import { useCallback, useEffect, useState } from "react";
 import { SaveBar, TitleBar } from "@shopify/app-bridge-react";
 import ReactPlayer from "react-player";
+import fakesignupGif from '../assets/image/Nojiro GIF email01.gif';
 
 
 const PreventFakeSignups = () => {
@@ -553,7 +554,7 @@ const submit = async () => {
           Secure your account with email activation
           </Text>
           <Text as="p" variant="bodyMd">
-          Nojiro: Spam & Content Guard adds a layer of protection by requiring email activation during sign-up. 
+          NOJIRO adds a layer of protection by requiring email activation during sign-up. 
           This ensures that only users with valid and accessible email addresses can complete registration, 
           helping to keep your platform secure and free from fake signups.
           </Text>
@@ -593,7 +594,7 @@ const submit = async () => {
               width="100%"
               height="100%"
               style={{objectFit: 'cover', objectPosition: 'center'}}
-              src="https://cdn.shopify.com/app-store/listing_images/fe04d82cbf1ba0a5aa5ec702f06dd73d/promotional_image/CPi_irK6lP4CEAE=.jpeg?height=720&quality=90&width=1280"
+              src={fakesignupGif}
             />
           </MediaCard>
           </Card>

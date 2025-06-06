@@ -34,6 +34,7 @@ import SetUp from "./Feature components/CountryBlocker/setup";
 import SetUpFeature from "./Feature components/CountryBlocker/setup";
 import AllSetup from "./Feature components/CountryBlocker/all_setup";
 import countryblockerImg from "../assets/image/countryblocker.png";
+import countryblockerGif from "../assets/image/Country Blocker.gif";
 import CountryBlockerSetup from "./Feature components/CountryBlocker/CountryBlockerSetup";
 
 export default function CountryBlocker() {
@@ -456,7 +457,8 @@ export default function CountryBlocker() {
                     width="100%"
                     height="100%"
                     style={{ objectFit: "cover", objectPosition: "center" }}
-                    src={countryblockerImg}
+                    // src={countryblockerImg}
+                    src={countryblockerGif}
                   />
                 </MediaCard>
               </Card>

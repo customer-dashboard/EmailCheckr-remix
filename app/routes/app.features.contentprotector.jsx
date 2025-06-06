@@ -27,6 +27,7 @@ import ContentProtectorSetup from "./Feature components/ContentProtectorSetup";
 import UniversalSaveBar from "../universal-components/UniversalSaveBar";
 import { DeepEqual } from "./DeepEqual";
 import contentprotector from "../assets/image/content-protector.png";
+import contentprotectorGif from "../assets/image/Content Protector02.gif";
 
 const ContentProtector = () => {
   const [save, setSave] = useState(false);
@@ -151,8 +152,9 @@ const ContentProtector = () => {
         body: formdata,
       });
       const responseJson = await response.json();
-      // const data = responseJson.data.data.metafieldsSet.metafields[0].value;
-      // setOriginalCountryblocker(JSON.parse(data).countryData);
+      // console.log('responce of cp', responseJson);
+      const data = responseJson.data.data.metafieldsSet.metafields[0].value;
+      setDefaultContentPro(JSON.parse(data));
       if (responseJson.status === 200) {
         setActive(
           shopify.toast.show(responseJson.statusText, {
@@ -243,7 +245,8 @@ const ContentProtector = () => {
                     width="100%"
                     height="100%"
                     style={{ objectFit: "cover", objectPosition: "center" }}
-                    src={contentprotector}
+                    // src={contentprotector}
+                    src={contentprotectorGif}
                   />
                 </MediaCard>
               </Card>
