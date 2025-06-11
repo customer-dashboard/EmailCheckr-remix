@@ -508,6 +508,8 @@ import OnBoardingNew from "../universal-components/on-boarding/onBoardingNew";
 import MyModal from "../components/MyModal";
 import { Footer } from "../components/footer";
 import HelpSupport from "../components/HelpSupport";
+import ReviewSection from "../components/reviews";
+import ReviewBanner from "../components/reviews";
 
 export const loader = async ({ request }) => {
   // await authenticate.admin(request);
@@ -1099,6 +1101,9 @@ const cardData = [];
                 {...{ classic, setOnBoarding, appStatus, enableTheme, billing, themes, type, myShop, isShopifyPlus, allthemes, billingNew }}
               />
             ) : null}
+
+            <ReviewBanner />
+
             {analyticsComponent}
             {/* {customerStatus} */}
             {moreAppsCard}

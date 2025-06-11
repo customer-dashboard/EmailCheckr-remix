@@ -1,7 +1,8 @@
 const defaultTemplateSettings = {
   setup: {
     selected: ["disable"],
-    selectedTags: ["US", "IN"]
+    selectedTags: ["US", "IN"],
+    selectedTags2: ["allpages"]
   },
   template1: {
     settings: {

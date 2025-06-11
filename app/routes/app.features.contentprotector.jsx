@@ -1,10 +1,7 @@
 import {
-  useLocation,
   useNavigate,
-  useOutletContext,
   useSearchParams,
 } from "@remix-run/react";
-import RegistrationSetup from "./Feature components/RegistrationSetup";
 import {
   BlockStack,
   Box,
@@ -26,7 +23,6 @@ import ReactPlayer from "react-player";
 import ContentProtectorSetup from "./Feature components/ContentProtectorSetup";
 import UniversalSaveBar from "../universal-components/UniversalSaveBar";
 import { DeepEqual } from "./DeepEqual";
-import contentprotector from "../assets/image/content-protector.png";
 import contentprotectorGif from "../assets/image/Content Protector02.gif";
 
 const ContentProtector = () => {

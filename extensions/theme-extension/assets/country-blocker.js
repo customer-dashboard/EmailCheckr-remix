@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // console.log("selectedTemp", selectedTemplate);
     const blockedCountries = data.countryData.setup.selectedTags || [];
+    // const blockedPages = data.countryData.setup.selectedTags2 || ["allpages"];
+    const selectedTags2 = data.countryData.setup.selectedTags2;
+    const blockedPages = (Array.isArray(selectedTags2) && selectedTags2.length > 0) 
+      ? selectedTags2 
+      : ["allpages"];
     const status = data.countryData.setup.selected;
     const content = data.countryData[selectedTemplate].content;
     const settings = data.countryData[selectedTemplate].settings.setting;
@@ -31,28 +36,53 @@ document.addEventListener("DOMContentLoaded", async () => {
       return data.country_code;
     };
 
+    function getCurrentPageType() {
+      const path = window.location.pathname;
+
+      // if (Shopify && Shopify.checkout) return "checkout";
+      if (path === "/") return "home";
+      if (path.includes("/pages/")) return "page";
+      if (path.includes("/products/")) return "product";
+      if (path.includes("/collections/")) return "collection";
+      if (path.includes("/blogs/") && path.includes("/articles/"))
+        return "article";
+      if (path.includes("/blogs/")) return "blog";
+      if (path.includes("/cart")) return "cart";
+      if (path.includes("/account")) return "account";
+      if (path.includes("/search")) return "search";
+
+      return "unknown";
+    }
+
+    const currentPageType = getCurrentPageType();
+    console.log("currentPageType", currentPageType);
+
     if (status == "enable") {
-      (async () => {
-        try {
-          const ip = await getUserIP();
-          // console.log("IP Address:", ip);
+      if (
+        blockedPages.includes("allpages") ||
+        blockedPages.includes(currentPageType)
+      ) {
+        (async () => {
+          try {
+            const ip = await getUserIP();
+            // console.log("IP Address:", ip);
 
-          const countryCode = await getCountryFromIP(ip);
-          // console.log("Detected Country:", countryCode);
+            const countryCode = await getCountryFromIP(ip);
+            // console.log("Detected Country:", countryCode);
 
-          // const blockedCountries = ['US', 'BR', 'FR', 'DE', 'AF', 'IN'];
-          if (blockedCountries.includes(countryCode)) {
-            let alignItems = "center";
+            // const blockedCountries = ['US', 'BR', 'FR', 'DE', 'AF', 'IN'];
+            if (blockedCountries.includes(countryCode)) {
+              let alignItems = "center";
 
-            if (data.countryData?.template === "template1") {
-              alignItems = "flex-start";
-            } else if (data.countryData?.template === "template2") {
-              alignItems = "center";
-            } else if (data.countryData?.template === "template3") {
-              alignItems = "flex-end";
-            }
+              if (data.countryData?.template === "template1") {
+                alignItems = "flex-start";
+              } else if (data.countryData?.template === "template2") {
+                alignItems = "center";
+              } else if (data.countryData?.template === "template3") {
+                alignItems = "flex-end";
+              }
 
-            const parentDiv = `
+              const parentDiv = `
                 display: flex;
                 align-items: ${alignItems};
                 justify-content: center;
@@ -62,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
               `;
 
-            const baseStyles = `
+              const baseStyles = `
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -77,16 +107,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 color: ${settings.description_color.description_color};
               `;
 
-            let boxedStyles = "";
+              let boxedStyles = "";
 
-            if (settings?.form_style === "boxed") {
-              boxedStyles = `
+              if (settings?.form_style === "boxed") {
+                boxedStyles = `
                   background-color: ${settings?.box_background_color?.box_background_color};
                   border: 1px solid ${settings?.border_color?.border_color};
                   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
                 `;
-            }
-            document.body.innerHTML = `
+              }
+              document.body.innerHTML = `
               <style>
                 .parentElement p {
                   margin: 0;
@@ -102,18 +132,19 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           </div>
         `;
-            console.warn("Access blocked for:", countryCode);
-            console.log(
-              "%c------ Country blocker: Access blocked for:" +
-                countryCode +
-                " ------",
-              "color: cyan",
-            );
+              console.warn("Access blocked for:", countryCode);
+              console.log(
+                "%c------ Country blocker: Access blocked for:" +
+                  countryCode +
+                  " ------",
+                "color: cyan",
+              );
+            }
+          } catch (err) {
+            console.error("Geolocation error:", err);
           }
-        } catch (err) {
-          console.error("Geolocation error:", err);
-        }
-      })();
+        })();
+      }
     } else {
       console.warn("country blocker status is disabled from app.");
     }
