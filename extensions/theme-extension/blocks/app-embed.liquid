@@ -36,7 +36,8 @@ Detect if the old block exists and prevent its script from running
 <script>
   window.shopMetafields = {
     metafields: {{ shop.metafields.customer_accounts_email_verification.fraud_filter_blocker.value | json }},
-    contentprotector: {{ shop.metafields.customer_accounts_email_verification.content_protector.value | json }}
+    contentprotector: {{ shop.metafields.customer_accounts_email_verification.content_protector.value | json }},
+    countryredirector: {{ shop.metafields.customer_accounts_email_verification.country_redirector.value | json }}
   };
 
   console.log('Meta', window.shopMetafields);
@@ -45,6 +46,7 @@ Detect if the old block exists and prevent its script from running
 <script src="{{ 'country-blocker.js' | asset_url }}" defer></script>
 
 <script src="{{ 'content-protector.js' | asset_url }}" defer></script>
+
 
 {% else %}
 
@@ -61,3 +63,5 @@ Detect if the old block exists and prevent its script from running
 }
 {% endschema %}
 
+
+<script src="{{ 'country-redirector.js' | asset_url }}" defer></script>

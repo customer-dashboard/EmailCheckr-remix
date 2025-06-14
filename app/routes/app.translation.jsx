@@ -1,7 +1,7 @@
 import { GetCollectionMongoDB, GetMongoData, MongoDB } from "../server/mongodb";
 import { json } from '@remix-run/node';
 import { authenticate } from "../shopify.server";
-import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData, saveFraudBlockData, CountryBlockerData, saveContentProData, ContentProtectorData } from "../Modals/Grapql";
+import { getStoreLanguages, getStoreThemes, deleteMetafields, postMetafileds, getSettings, getShopData, getCustomersData, saveFraudBlockData, CountryBlockerData, saveContentProData, ContentProtectorData, saveCountryredirectorData, CountryRedirectorData } from "../Modals/Grapql";
 import { CurrentDate } from "../server/apicontroller";
 
 
@@ -89,6 +89,28 @@ export async function action({ request }) {
         case "fetch_content_protector":
           try {
             const data = await ContentProtectorData(admin);
+            console.log("fetch_content_protector", data);
+            return json({data,status})
+          } catch (error) {
+            console.error("Error fetching content protector data", error);
+            return { status: 500, data: error.message };
+          }
+
+        case "country_redirector":
+          const raw2 = formValue.get("CountryRedirector");
+          const country_redirector = JSON.parse(raw2);
+          try {
+            const data = await saveCountryredirectorData(admin, country_redirector, shop, accessToken);
+            // console.log("saved data", data.metafieldsSet.metafields);
+            return json({data,status,statusText:"Setting Saved"})
+          } catch (error) {
+            console.error("Error saving content_protector:", error);
+            return { status: 500, data: error.message };
+          }
+
+        case "fetch_country_redirector":
+          try {
+            const data = await CountryRedirectorData(admin);
             console.log("fetch_content_protector", data);
             return json({data,status})
           } catch (error) {

@@ -45,5 +45,19 @@ export const universalFeaturesData = [
             "field": "legacy"
         },
         "version": "CLASSIC"
+    },
+    {
+        "title": "Country Redirector",
+        "subtitle": "Redirect visitors to region-specific pages for localized content, better experience, and improved performance.",
+        "url": "/app/features/countryredirector",
+        // "url": "/app/features/countryblocker?back=country_blocker",
+        "img_url": '',
+        "modelTitle": "Setting Up a Text Banner for Social Proof & Trust",
+        "imageUrl": "https://mandasa1.b-cdn.net/customer-dashbaord-pro/affected/profile%2001.png",
+        "badge": {
+            "title": "legacy",
+            "field": "legacy"
+        },
+        "version": "CLASSIC"
     }
     ]

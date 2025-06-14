@@ -657,7 +657,7 @@ export const getShopData = async (admin, session) => {
 export const getAppStatus = async (session, data) => {
   const { accessToken, shop } = session;
   // const blog_id = "2433038045295417455"; //Live
-  const blog_id = "9545152174720515545";  //Development
+  const blog_id = "9545152174720515545";  
 
   try {
     let array = [];
@@ -950,6 +950,55 @@ export async function saveFraudBlockData(admin, countryData, shop, accessToken) 
   }
 }
 
+export async function saveCountryredirectorData(admin, country_redirector, shop, accessToken) {
+  let formDatavalue = {
+    shop: shop,
+    country_redirector: country_redirector
+  }
+  console.log("content_protector", formDatavalue);
+  let shopGid = await getShopId(shop, accessToken);
+  try {
+    const metafileds = await admin.graphql(
+      `#graphql
+      mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) {
+          metafields {
+            key
+            namespace
+            value
+            createdAt
+            updatedAt
+          }
+          userErrors {
+            field
+            message
+            code
+          }
+        }
+      }`,
+      {
+        variables: {
+          metafields: [
+            {
+              key: "country_redirector",
+              namespace: "customer_accounts_email_verification",
+              ownerId: shopGid,
+              type: "json",
+              value: JSON.stringify(formDatavalue),
+            },
+          ],
+        },
+      },
+    );
+
+    const response = await metafileds.json();
+    return response;
+  } catch (error) {
+    // console.error("Error in setTranslation:", error);
+    throw error;
+  }
+}
+
 export async function saveContentProData(admin, content_protector, shop, accessToken) {
   let formDatavalue = {
     shop: shop,
@@ -1054,6 +1103,37 @@ export async function ContentProtectorData(admin) {
     const targetMetafield = metafields.find(
       (edge) => edge.node.key === keyName,
     );
+    return targetMetafield ? targetMetafield?.node?.value : null;
+  } catch (error) {
+    // console.error("Error fetching settings:", error);
+    return null;
+  }
+}
+
+export async function CountryRedirectorData(admin) {
+  try {
+    const get_setting = await admin.graphql(
+      `query MyQuery {
+        shop {
+          metafields(namespace: "customer_accounts_email_verification", first: 10) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
+            }
+          }
+        }
+      }`,
+    );
+    const response = await get_setting.json();
+    const metafields = response?.data?.shop?.metafields?.edges;
+    const keyName = "country_redirector";
+    const targetMetafield = metafields.find(
+      (edge) => edge.node.key === keyName,
+    );
+    console.log('targetMetafield', targetMetafield);
     return targetMetafield ? targetMetafield?.node?.value : null;
   } catch (error) {
     // console.error("Error fetching settings:", error);

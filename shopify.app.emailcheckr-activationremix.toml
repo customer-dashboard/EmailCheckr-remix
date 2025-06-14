@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "20384d45f5b73f1e1a6c806428ab773d"
-application_url = "https://isa-consciousness-workplace-scenarios.trycloudflare.com"
+application_url = "https://built-anywhere-wilderness-avoid.trycloudflare.com"
 embedded = true
 name = "EmailCheckr: Activation<REMIX>"
 handle = "email-checkr"
@@ -31,13 +31,13 @@ scopes = "read_customers,read_locales,read_themes,write_customers,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://isa-consciousness-workplace-scenarios.trycloudflare.com/auth/callback",
-  "https://isa-consciousness-workplace-scenarios.trycloudflare.com/auth/shopify/callback",
-  "https://isa-consciousness-workplace-scenarios.trycloudflare.com/api/auth/callback"
+  "https://built-anywhere-wilderness-avoid.trycloudflare.com/auth/callback",
+  "https://built-anywhere-wilderness-avoid.trycloudflare.com/auth/shopify/callback",
+  "https://built-anywhere-wilderness-avoid.trycloudflare.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://isa-consciousness-workplace-scenarios.trycloudflare.com/app/post-api"
+url = "https://built-anywhere-wilderness-avoid.trycloudflare.com/app/post-api"
 subpath = "verification"
 prefix = "apps"
 
